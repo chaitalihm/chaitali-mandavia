@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaitali Mandavia | Portfolio</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f8f9fa; color: #333; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 20px 40px; color: white; }
+        .nav-logo { font-weight: bold; font-size: 1.2rem; letter-spacing: 1px; }
+        .nav-tabs a { color: #94a3b8; text-decoration: none; margin-left: 20px; font-weight: 500; transition: color 0.2s; }
+        .nav-tabs a:hover, .nav-tabs a.active { color: white; }
+        .hero { max-width: 800px; margin: 80px auto; padding: 0 20px; text-align: center; }
+        .hero h1 { font-size: 2.8rem; color: #0f172a; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; color: #475569; line-height: 1.6; }
+        .project-grid { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 0 20px; }
+        .project-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border-top: 4px solid #3b82f6; }
+        .project-card h3 { margin-top: 0; color: #0f172a; }
+        .btn { display: inline-block; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; margin-top: 15px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- Global Navigation Tabs -->
+    <div class="nav-bar">
+        <div class="nav-logo">CHAITALI MANDAVIA</div>
+        <div class="nav-tabs">
+            <a href="/" class="active">Home</a>
+            <a href="/simulator">AI TCO Simulator</a>
+            <a href="/project2">Next Project</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="hero">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Senior Analyst specializing in economic modeling, data engineering, and data product strategy. Explore my interactive technical deep-dives below.</p>
+    </div>
+
+    <div class="project-grid">
+        <div class="project-card">
+            <h3>AI TCO Simulator Dashboard</h3>
+            <p>An interactive data tool calculating token usage thresholds and infrastructure costs for LLM architecture deployments.</p>
+            <a href="/simulator" class="btn">Launch App →</a>
+        </div>
+    </div>
+
+</body>
+</html>
