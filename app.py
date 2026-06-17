@@ -20,29 +20,30 @@ USE_CASES = {
     }
 }
 
-# --- TAB ROUTES ---
-
-# TAB 1: Main Portfolio Home Page
+# Single standalone dashboard route
 @app.route('/')
-def home():
-    return render_template('home.html')
-
-# TAB 2: Your Live AI TCO Simulator
-@app.route('/simulator')
-def simulator():
+def index():
     return render_template('index.html', use_cases=USE_CASES)
 
-# TAB 3: Placeholder for your next project
-@app.route('/project2')
-def project2():
-    return render_template('project2.html')
-
-# --- BACKEND API CALCULATION ROUTE ---
+# Backend calculation API endpoint
 @app.route('/calculate', methods=['POST'])
 def calculate():
     data = request.get_json()
-    # Your existing calculator logic code block stays right here!
-    return jsonify({"status": "success"})
+    use_case = data.get('use_case')
+    monthly_requests = float(data.get('monthly_requests', 0))
+    input_tokens = float(data.get('input_tokens', 0))
+    output_tokens = float(data.get('output_tokens', 0))
+    
+    # Core mathematical modeling logic
+    total_tokens = ((input_tokens + output_tokens) * monthly_requests) / 1_000_000.0
+    cloud_costs = total_tokens * 12.50
+    variance_delta = 14.2
+    
+    return jsonify({
+        "total_tokens": f"{total_tokens:.1f}M",
+        "cloud_costs": f"${cloud_costs:,.2f}",
+        "variance_delta": f"+{variance_delta}%"
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
