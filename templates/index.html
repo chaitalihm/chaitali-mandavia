@@ -3,153 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI TCO Simulator Dashboard</title>
+    <title>TCO Simulator Dashboard</title>
     <style>
-        /* --- Core Layout & Centering Logic --- */
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background: #0B0F19; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            overflow-x: hidden;
+        /* --- 1. YOUR ORIGINAL EXACT PRESENTATION CANVAS STYLES --- */
+        body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+            overflow: hidden;
         }
 
         .master-canvas {
             width: 1280px;
             height: 1240px;
             position: relative;
-            background: #0B0F19;
+            background: black;
             overflow: hidden;
             box-sizing: border-box;
             padding: 40px 54px;
         }
 
-        /* --- Header Padding Adjustment to clear Navbar Safely --- */
         .header-block {
-            padding-top: 55px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            padding-top: 50px; /* Gently cushions the title under the navbar layer */
         }
 
         .main-title {
-            color: #FFFFFF;
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            letter-spacing: -0.5px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
         }
 
         .sub-abstract {
-            color: #64748B;
-            font-size: 0.95rem;
-            margin: 0;
-            line-height: 1.5;
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0 0 0;
         }
 
-        /* --- Grid Structure --- */
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 32px;
-            height: calc(100% - 140px);
+            display: flex;
+            gap: 20px;
+            height: 1100px;
         }
 
-        /* --- Control Panel Styling --- */
         .control-panel {
-            background: #111827;
-            border: 1px solid #1F2937;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            width: 320px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        .panel-section-title {
-            color: #9CA3AF;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        label {
-            color: #E5E7EB;
-            font-size: 0.87rem;
-            font-weight: 500;
-        }
-
-        select, input {
-            background: #1F2937;
-            border: 1px solid #374151;
-            border-radius: 8px;
-            color: #FFFFFF;
-            padding: 12px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        select:focus, input:focus {
-            border-color: #3B82F6;
-        }
-
-        /* --- Analytics Display Cards --- */
         .analytics-stage {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 20px;
         }
 
         .metrics-summary-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            display: flex;
+            gap: 20px;
         }
 
         .metric-card {
-            background: #111827;
-            border: 1px solid #1F2937;
-            border-radius: 16px;
-            padding: 24px;
-            position: relative;
-        }
-
-        .metric-card.accented {
-            border-color: #3B82F6;
-            background: linear-gradient(180deg, #111827 0%, rgba(59, 130, 246, 0.05) 100%);
-        }
-
-        .metric-label {
-            color: #9CA3AF;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .metric-value {
-            color: #FFFFFF;
-            font-size: 1.75rem;
-            font-weight: 700;
+            flex: 1;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .visualization-viewport {
             flex: 1;
-            background: #111827;
-            border: 1px solid #1F2937;
-            border-radius: 16px;
-            padding: 24px;
-            min-height: 400px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .panel-section-title {
+            color: #444;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 0 15px 0;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .input-group select, .input-group input {
+            width: 100%;
+            background: #222;
+            border: 1px solid #333;
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -186,17 +153,17 @@
 
                 <div class="input-group">
                     <label for="monthly_requests">Target Run Volume (Monthly Runs)</label>
-                    <input type="number" id="monthly_requests" value="50000" min="1000">
+                    <input type="number" id="monthly_requests" value="50000">
                 </div>
 
                 <div class="input-group">
                     <label for="input_tokens">Average Prompt Size (Input Tokens)</label>
-                    <input type="number" id="input_tokens" value="350" min="1">
+                    <input type="number" id="input_tokens" value="350">
                 </div>
 
                 <div class="input-group">
                     <label for="output_tokens">Average Response Size (Output Tokens)</label>
-                    <input type="number" id="output_tokens" value="200" min="1">
+                    <input type="number" id="output_tokens" value="200">
                 </div>
             </div>
 
@@ -204,22 +171,22 @@
                 
                 <div class="metrics-summary-row">
                     <div class="metric-card">
-                        <div class="metric-label">API Tokens Consumed / Month</div>
-                        <div class="metric-value" id="total_tokens">27.5M</div>
+                        <p class="panel-section-title" style="margin-bottom: 5px;">API Tokens Consumed / Month</p>
+                        <div style="color: white; font-size: 24px; font-weight: bold;" id="total_tokens">27.5M</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Operational Cloud Compute TCO</div>
-                        <div class="metric-value" id="cloud_costs">$340.50</div>
+                        <p class="panel-section-title" style="margin-bottom: 5px;">Operational Cloud Compute TCO</p>
+                        <div style="color: white; font-size: 24px; font-weight: bold;" id="cloud_costs">$340.50</div>
                     </div>
-                    <div class="metric-card accented">
-                        <div class="metric-label">Infrastructure Threshold Variance</div>
-                        <div class="metric-value" id="variance_delta">+14.2%</div>
+                    <div class="metric-card">
+                        <p class="panel-section-title" style="margin-bottom: 5px;">Infrastructure Threshold Variance</p>
+                        <div style="color: #3b82f6; font-size: 24px; font-weight: bold;" id="variance_delta">+14.2%</div>
                     </div>
                 </div>
 
                 <div class="visualization-viewport">
                     <p class="panel-section-title">Projected Expense Allocation Over Scale Curves</p>
-                    </div>
+                </div>
 
             </div>
 
@@ -227,5 +194,5 @@
 
     </div>
 
-    </body>
+</body>
 </html>
