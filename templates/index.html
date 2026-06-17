@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCO Simulator Dashboard</title>
+    <title>Enterprise AI TCO Simulator</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: black;
+            background-color: #000000;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: sans-serif;
-            overflow: hidden;
+            font-family: 'Anonymous Pro', monospace;
         }
-
+        
         .master-canvas {
             width: 1280px;
-            height: 1240px;
+            height: 1240px; /* Expanded slightly to perfectly accommodate the 6-item FAQ matrix */
             position: relative;
             background: black;
             overflow: hidden;
@@ -28,160 +27,469 @@
         }
 
         .header-block {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-
-        .main-title {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
+        .main-title { 
+            color: white; 
+            font-size: 32px; 
+            font-weight: 400; 
+            margin: 0 0 10px 0;
+        }
+        .sub-abstract { 
+            color: #D9D9D9; 
+            font-size: 15px; 
+            font-style: italic; 
+            font-weight: 400; 
+            line-height: 1.4;
             margin: 0;
         }
-
-        .sub-abstract {
-            color: #666;
-            font-size: 14px;
-            margin: 5px 0 0 0;
-        }
-
-        .dashboard-grid {
+        
+        .main-row-container {
             display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 5px;
+            width: 1172px;
+        }
+        
+        .left-panel { 
+            width: 450px; 
+            height: 620px; 
+            background: white; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            padding: 35px; 
+            position: relative;
+        }
+        
+        .right-column-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .right-panel { 
+            width: 602px; 
+            height: 340px; 
+            background: white; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            padding: 35px; 
+            position: relative;
+        }
+        
+        .step-badge {
+            position: absolute;
+            top: 15px; 
+            left: 20px; 
+            font-size: 16px;
+            font-weight: 700;
+            color: #475569; 
+        }
+        
+        .section-title { font-size: 16px; font-weight: 700; color: black; margin-bottom: 12px; margin-left: 15px; }
+        .input-label { font-size: 14px; font-weight: 700; color: black; margin-bottom: 8px; }
+        
+        .dropdown-container {
+            width: 380px;
+            height: 40px;
+            margin-bottom: 30px;
+            margin-left: 15px;
+        }
+        select {
+            width: 100%;
+            height: 100%;
+            background: #D9D9D9;
+            border: none;
+            padding-left: 12px;
+            padding-right: 40px;
+            font-family: 'Anonymous Pro', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1E1E1E;
+            appearance: none;
+            cursor: pointer;
+            border-radius: 4px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .slider-wrapper { margin-top: 32px; position: relative; width: 380px; margin-left: 15px; }
+        .wave-container { position: relative; width: 380px; height: 32px; }
+        
+        .wave-container input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            position: absolute;
+            z-index: 10;
+            margin: 0;
+            height: 100%;
+            cursor: pointer;
+        }
+        .wave-container input[type=range]:focus { outline: none; }
+        .wave-svg-track { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 1; }
+
+        .wave-container input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            position: relative;
+            z-index: 12;
+            box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+        }
+        #volume::-webkit-slider-thumb { background: #7B9BDE; }
+        #minutes::-webkit-slider-thumb { background: #DE7B7D; }
+        #wage::-webkit-slider-thumb { background: #369148; border: 1px solid #2B8C3E; }
+
+        .readout-text { font-size: 12px; font-weight: 700; color: black; margin-top: 6px; display: block; text-align: center; }
+
+        .metrics-inner-layout {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 25px;
             gap: 20px;
-            height: 1100px;
+            width: 100%;
         }
-
-        .control-panel {
-            width: 320px;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .analytics-stage {
+        .left-substack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             flex: 1;
+        }
+        .sub-card { 
+            background: #D9D9D9; 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            padding: 18px; 
+            width: 100%;
+            height: 104px;
+        }
+        .sub-card.highlight { 
+            background: #88D397; 
+            padding: 22px; 
+            flex: 1;
+            height: 228px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card-label { font-size: 15px; font-weight: 700; color: black; line-height: 1.3; }
+        .card-value { font-size: 20px; font-weight: 700; color: black; margin-top: 12px; }
+        
+        .bottom-card { 
+            width: 602px; 
+            height: 96px; 
+            background: white; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px 35px 20px 45px; 
+            box-sizing: border-box; 
+            position: relative;
+        }
+        .bottom-text { width: 540px; text-align: center; color: black; font-size: 17px; font-weight: 400; line-height: 1.4; }
+
+        .instruction-box {
+            width: 602px;
+            box-sizing: border-box;
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .instruction-line {
+            color: #FAFE00;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* FAQ Component Box Section Styles */
+        .faq-section {
+            width: 1172px;
+            margin-top: 40px;
+            border-top: 1px solid #27272A;
+            padding-top: 25px;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
-        .metrics-summary-row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .metric-card {
-            flex: 1;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .visualization-viewport {
-            flex: 1;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .panel-section-title {
-            color: #444;
-            font-size: 12px;
-            font-weight: bold;
+        .faq-header {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: 700;
             text-transform: uppercase;
-            margin: 0 0 15px 0;
+            letter-spacing: 0.5px;
         }
-
-        .input-group {
-            margin-bottom: 15px;
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px 40px;
         }
-
-        .input-group label {
-            display: block;
-            color: #aaa;
+        .faq-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .faq-question {
+            color: #FAFE00; 
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .faq-answer {
+            color: #A1A1AA;
             font-size: 12px;
-            margin-bottom: 5px;
+            line-height: 1.5;
         }
 
-        .input-group select, .input-group input {
-            width: 100%;
-            background: #222;
-            border: 1px solid #333;
-            color: white;
-            padding: 8px;
-            border-radius: 6px;
-            box-sizing: border-box;
+        @media (max-width: 1100px) {
+            body { align-items: flex-start; }
+            .master-canvas { width: 100vw; height: auto; padding: 24px; overflow-y: auto; }
+            .main-title { font-size: 26px; }
+            .sub-abstract { font-size: 14px; }
+            .main-row-container { flex-direction: column; width: 100%; gap: 24px; }
+            .left-panel { width: 100%; height: auto; padding-bottom: 40px; }
+            .dropdown-container, .slider-wrapper { width: calc(100% - 15px); }
+            .wave-container { width: 100%; }
+            .right-column-stack { width: 100%; gap: 24px; }
+            .right-panel { width: 100%; height: auto; }
+            .metrics-inner-layout { flex-direction: column; gap: 16px; }
+            .sub-card.highlight { height: auto !important; min-height: 120px; }
+            .bottom-card, .instruction-box, .faq-section { width: 100% !important; height: auto !important; padding: 10px 0 !important; }
+            .faq-grid { grid-template-columns: 1fr; gap: 20px; }
+            .bottom-text { width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <div class="master-canvas">
-        
         <div class="header-block">
             <h1 class="main-title">TCO (Total Cost of Ownership) Simulator</h1>
-            <p class="sub-abstract">Calculate modeling orchestration metrics, structural hardware outlays, and platform maintenance expenses across LLM architecture instances.</p>
+            <p class="sub-abstract">This simulator calculates the true cost of deploying enterprise AI by balancing API server fees and human oversight time against your current manual labor spend.</p>
         </div>
 
-        <div class="dashboard-grid">
+        <div class="main-row-container">
             
-            <div class="control-panel">
-                <p class="panel-section-title">Deployment Parameters</p>
-                
-                <div class="input-group">
-                    <label for="use_case">Predefined Use Case Profile</label>
-                    <select id="use_case">
-                        <option value="customer_support">AI Customer Support Framework</option>
-                        <option value="document_search">Enterprise Semantic Document Search</option>
+            <div class="left-panel">
+                <div class="step-badge">01.</div>
+                <div class="section-title">Select Enterprise Operational Task</div>
+                <div class="dropdown-container">
+                    <select id="use_case" onchange="handleUseCaseChange()">
+                        <option value="document-extraction" selected>Document Auditing & Structured Extraction</option>
+                        <option value="support-routing">High-Volume Customer Support Routing & Resolution</option>
+                        <option value="knowledge-search">Enterprise Knowledge Management & Search (RAG)</option>
                     </select>
                 </div>
 
-                <div class="input-group">
-                    <label for="monthly_requests">Target Run Volume (Monthly Runs)</label>
-                    <input type="number" id="monthly_requests" value="50000">
+                <div class="section-title" style="margin-top: 45px;">Select Inputs</div>
+
+                <div class="slider-wrapper">
+                    <div id="volume_label" class="input-label">Monthly number of documents</div>
+                    <div class="wave-container">
+                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none">
+                            <path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#56A0DC" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <input type="range" id="volume" min="500" max="25000" step="500" value="5000" oninput="updateSimulation()">
+                    </div>
+                    <span id="volume_val" class="readout-text">5,000 documents</span>
                 </div>
 
-                <div class="input-group">
-                    <label for="input_tokens">Average Prompt Size (Input Tokens)</label>
-                    <input type="number" id="input_tokens" value="350">
+                <div class="slider-wrapper">
+                    <div id="minutes_label" class="input-label">Minutes Spent Per Task</div>
+                    <div class="wave-container">
+                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none">
+                            <path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#DE7B7D" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <input type="range" id="minutes" min="5" max="120" step="5" value="45" oninput="updateSimulation()">
+                    </div>
+                    <span id="minutes_val" class="readout-text">45 minutes</span>
                 </div>
 
-                <div class="input-group">
-                    <label for="output_tokens">Average Response Size (Output Tokens)</label>
-                    <input type="number" id="output_tokens" value="200">
+                <div class="slider-wrapper">
+                    <div class="input-label">Employee Hourly Wage ($)</div>
+                    <div class="wave-container">
+                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none">
+                            <path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#2B8C3E" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <input type="range" id="wage" min="15" max="200" step="5" value="60" oninput="updateSimulation()">
+                    </div>
+                    <span id="wage_val" class="readout-text">$60</span>
                 </div>
             </div>
 
-            <div class="analytics-stage">
+            <div class="right-column-stack">
                 
-                <div class="metrics-summary-row">
-                    <div class="metric-card">
-                        <p class="panel-section-title" style="margin-bottom: 5px;">API Tokens Consumed / Month</p>
-                        <div style="color: white; font-size: 24px; font-weight: bold;" id="total_tokens">27.5M</div>
+                <div class="right-panel">
+                    <div class="step-badge">02.</div>
+                    <div style="font-size: 24px; font-weight: 700; color: black; margin-bottom: 5px; margin-left: 15px;">Value Realization Dashboard</div>
+                    
+                    <div class="metrics-inner-layout">
+                        <div class="left-substack">
+                            <div class="sub-card">
+                                <div class="card-label">Legacy Monthly Baseline</div>
+                                <div class="card-value" id="legacy_baseline">...</div>
+                            </div>
+                            <div class="sub-card">
+                                <div class="card-label">Projected AI TCO</div>
+                                <div class="card-value" id="ai_tco">...</div>
+                            </div>
+                        </div>
+
+                        <div class="sub-card highlight">
+                            <div class="card-label" style="text-align: center; font-size: 18px;">Net Monthly Value Captured</div>
+                            <div class="card-value" id="monthly_savings" style="text-align: center; font-size: 24px; margin-top: 20px;">...</div>
+                        </div>
                     </div>
-                    <div class="metric-card">
-                        <p class="panel-section-title" style="margin-bottom: 5px;">Operational Cloud Compute TCO</p>
-                        <div style="color: white; font-size: 24px; font-weight: bold;" id="cloud_costs">$340.50</div>
-                    </div>
-                    <div class="metric-card">
-                        <p class="panel-section-title" style="margin-bottom: 5px;">Infrastructure Threshold Variance</p>
-                        <div style="color: #3b82f6; font-size: 24px; font-weight: bold;" id="variance_delta">+14.2%</div>
+                </div>
+                
+                <div class="bottom-card">
+                    <div class="step-badge">03.</div>
+                    <div class="bottom-text">
+                        Calculated upfront implementation costs of <span id="upfront_cost" style="font-weight: 700;">...</span> are completely recovered in <span id="payback_period" style="font-weight: 700;">...</span> months, maximizing capital efficiency.
                     </div>
                 </div>
 
-                <div class="visualization-viewport">
-                    <p class="panel-section-title">Projected Expense Allocation Over Scale Curves</p>
+                <div class="instruction-box">
+                    <div class="instruction-line">Step 1: Calibrate your human operational scale levers</div>
+                    <div class="instruction-line">Step 2: Monitor your net value realization and operational efficiency gain here</div>
+                    <div class="instruction-line">Step 3: Track your net break-even investment timeline and structural assumptions</div>
                 </div>
 
             </div>
+        </div>
 
+        <!-- ========================================================
+           UPDATED: Expanded 6-Item Reference FAQ Matrix
+           ======================================================== */ -->
+        <div class="faq-section">
+            <div class="faq-header">Frequently Asked Questions & Methodology Assumptions</div>
+            <div class="faq-grid">
+                
+                <div class="faq-item">
+                    <div class="faq-question">Q: What are the core assumptions for the Extraction Task?</div>
+                    <div class="faq-answer">A: It assumes an expansive average document size of 45,000 input tokens and a rigid schema extraction profile of 1,500 output tokens. To maintain institutional accuracy, a strict 15% manual fallback safety margin is budgeted to account for complex document variances.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q: What exactly does "Token Usage" mean?</div>
+                    <div class="faq-answer">A: A token is a basic structural unit of text processed by the model (roughly 4 characters or 0.75 words). Every API request carries a specific utility charge based on data payload sizes. This engine budgets standard input costs at $0.005/1K tokens and output creation at $0.015/1K tokens.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q: What are the core assumptions for the Support Routing Task?</div>
+                    <div class="faq-answer">A: This profile is optimized for conversational payload cycles. It sets a tight budget of 4,000 input tokens and 500 output tokens per inbound ticket instance, using an engineered 8% manual fallback escalation factor to handle edge cases or sensitive user text variables.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q: What is included in the upfront implementation cost?</div>
+                    <div class="faq-answer">A: The upfront capital represents the initial flat engineering delivery fee (ranging from $25K to $50K depending on selected task architectural complexity) plus a variable ingestion setup factor linked directly to your active volume configuration scale.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q: What are the core assumptions for the Knowledge Search (RAG) Task?</div>
+                    <div class="faq-answer">A: Engineered for vector search retrievals, it assigns a baseline payload of 15,000 input tokens (the collected reference text blocks) and 800 output tokens per user prompt, running a highly efficient 5% grounding verification audit threshold.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q: Is panel 03 showing recovery for total costs or only upfront costs?</div>
+                    <div class="faq-answer">A: Panel 03 displays a true break-even calculation. It shows exactly how many months of "Net Monthly Value Captured" (which already factors in recurring token utility bills and human audit overhead) are needed to completely pay off the upfront implementation investment.</div>
+                </div>
+
+            </div>
         </div>
 
     </div>
 
+    <script>
+        const USE_CASE_CONFIGS = {
+            "document-extraction": {
+                volumeLabel: "Monthly number of documents",
+                volumeUnit: "documents",
+                minutesLabel: "Minutes Spent Per Document",
+                minVol: 500, maxVol: 25000, stepVol: 500, defaultVol: 5000,
+                minMin: 5, maxMin: 120, stepMin: 5, defaultMin: 45
+            },
+            "support-routing": {
+                volumeLabel: "Monthly inbound tickets",
+                volumeUnit: "tickets",
+                minutesLabel: "Minutes Spent Per Ticket",
+                minVol: 5000, maxVol: 200000, stepVol: 5000, defaultVol: 50000,
+                minMin: 1, maxMin: 30, stepMin: 1, defaultMin: 8
+            },
+            "knowledge-search": {
+                volumeLabel: "Monthly internal queries",
+                volumeUnit: "queries",
+                minutesLabel: "Minutes Spent Per Query",
+                minVol: 1000, maxVol: 50000, stepVol: 1000, defaultVol: 15000,
+                minMin: 2, maxMin: 45, stepMin: 1, defaultMin: 12
+            }
+        };
+
+        function handleUseCaseChange() {
+            const use_case = document.getElementById('use_case').value;
+            const config = USE_CASE_CONFIGS[use_case];
+
+            document.getElementById('volume_label').innerText = config.volumeLabel;
+            document.getElementById('minutes_label').innerText = config.minutesLabel;
+
+            const volSlider = document.getElementById('volume');
+            volSlider.min = config.minVol;
+            volSlider.max = config.maxVol;
+            volSlider.step = config.stepVol;
+            volSlider.value = config.defaultVol;
+
+            const minSlider = document.getElementById('minutes');
+            minSlider.min = config.minMin;
+            minSlider.max = config.maxMin;
+            minSlider.step = config.stepMin;
+            minSlider.value = config.defaultMin;
+
+            updateSimulation();
+        }
+
+        function updateSimulation() {
+            const use_case = document.getElementById('use_case').value;
+            const volume = document.getElementById('volume').value;
+            const minutes = document.getElementById('minutes').value;
+            const wage = document.getElementById('wage').value;
+            
+            const config = USE_CASE_CONFIGS[use_case];
+
+            document.getElementById('volume_val').innerText = Number(volume).toLocaleString() + " " + config.volumeUnit;
+            document.getElementById('minutes_val').innerText = minutes + " minutes";
+            document.getElementById('wage_val').innerText = "$" + wage + "/hour";
+
+            fetch('/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    use_case: use_case, 
+                    volume: parseInt(volume), 
+                    minutes: parseInt(minutes), 
+                    wage: parseInt(wage) 
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('legacy_baseline').innerText = data.legacy_baseline;
+                document.getElementById('ai_tco').innerText = data.ai_tco;
+                document.getElementById('monthly_savings').innerText = data.monthly_savings;
+                document.getElementById('upfront_cost').innerText = data.upfront_cost;
+                document.getElementById('payback_period').innerText = data.payback_period;
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(handleUseCaseChange, 200);
+        });
+    </script>
 </body>
 </html>
