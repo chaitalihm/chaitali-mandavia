@@ -3,8 +3,16 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 @app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/simulator')
 def index():
     return render_template('index.html')
+
+@app.route('/project2')
+def project2():
+    return render_template('project2.html')
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
@@ -25,7 +33,6 @@ def calculate():
         input_tokens, output_tokens = 15000, 800
         human_fallback_rate, upfront_base = 0.05, 40000
 
-    # Base Point Calculations
     legacy_monthly = (volume * (minutes / 60.0)) * wage
     token_cost = ((volume * input_tokens * 0.005) + (volume * output_tokens * 0.015)) / 1000.0
     human_audit_cost = (volume * human_fallback_rate * (minutes / 60.0)) * wage
@@ -36,12 +43,10 @@ def calculate():
     
     payback_period = f"{max(0.1, upfront_cost / monthly_savings):.1f}" if monthly_savings > 0 else "Infinite"
 
-    # Time-series Break-Even lines
     months = list(range(0, 13))
     human_line = [round(legacy_monthly * m, 2) for m in months]
     ai_line = [round(upfront_cost + (ai_tco_monthly * m), 2) for m in months]
 
-    # Calculate True Annualized ROI Percentages across Scale Curves
     sens_10, sens_15, sens_20 = [], [], []
     for scale in [0.5, 1.0, 1.5, 2.0]:
         s_vol = volume * scale
@@ -49,17 +54,14 @@ def calculate():
         s_token = ((s_vol * input_tokens * 0.005) + (s_vol * output_tokens * 0.015)) / 1000.0
         s_upfront = upfront_base + (s_vol * 0.50)
         
-        # 10% Fallback Scenario
         s_tco_10 = s_token + ((s_vol * 0.10 * (minutes / 60.0)) * wage)
         roi_10 = ((s_legacy - s_tco_10) * 12) / s_upfront * 100 if s_upfront > 0 else 0
         sens_10.append(round(roi_10, 1))
         
-        # 15% Fallback Scenario
         s_tco_15 = s_token + ((s_vol * 0.15 * (minutes / 60.0)) * wage)
         roi_15 = ((s_legacy - s_tco_15) * 12) / s_upfront * 100 if s_upfront > 0 else 0
         sens_15.append(round(roi_15, 1))
         
-        # 20% Fallback Scenario
         s_tco_20 = s_token + ((s_vol * 0.20 * (minutes / 60.0)) * wage)
         roi_20 = ((s_legacy - s_tco_20) * 12) / s_upfront * 100 if s_upfront > 0 else 0
         sens_20.append(round(roi_20, 1))
