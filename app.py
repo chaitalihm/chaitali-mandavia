@@ -70,5 +70,10 @@ def calculate():
         "payback_period": payback_str
     })
 
+# Add this exact endpoint block to your app.py file
+@app.route('/analysis')
+def analysis():
+    return render_template('analysis.html')
+
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
