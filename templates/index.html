@@ -7,232 +7,52 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Anonymous Pro', monospace;
+            margin: 0; padding: 0; background-color: #000000;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; font-family: 'Anonymous Pro', monospace;
         }
-        
-        .master-canvas {
-            width: 1280px;
-            position: relative;
-            background: black;
-            box-sizing: border-box;
-            padding: 40px 54px;
-        }
-
-        .header-block {
-            margin-bottom: 25px;
-        }
-        .main-title { 
-            color: white; 
-            font-size: 32px; 
-            font-weight: 400; 
-            margin: 0 0 10px 0;
-        }
-        .sub-abstract { 
-            color: #D9D9D9; 
-            font-size: 15px; 
-            font-style: italic; 
-            font-weight: 400; 
-            line-height: 1.4;
-            margin: 0;
-        }
-        
-        .main-row-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 5px;
-            width: 1172px;
-        }
-        
-        .left-panel { 
-            width: 450px; 
-            height: 620px; 
-            background: white; 
-            border-radius: 12px; 
-            box-sizing: border-box; 
-            padding: 35px; 
-            position: relative;
-        }
-        
-        .right-column-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .right-panel { 
-            width: 602px; 
-            height: 340px; 
-            background: white; 
-            border-radius: 12px; 
-            box-sizing: border-box; 
-            padding: 35px; 
-            position: relative;
-        }
-        
-        .step-badge {
-            position: absolute;
-            top: 15px; 
-            left: 20px; 
-            font-size: 16px;
-            font-weight: 700;
-            color: #475569; 
-        }
-        
+        .master-canvas { width: 1280px; position: relative; background: black; box-sizing: border-box; padding: 40px 54px; }
+        .header-block { margin-bottom: 25px; }
+        .main-title { color: white; font-size: 32px; font-weight: 400; margin: 0 0 10px 0; }
+        .sub-abstract { color: #D9D9D9; font-size: 15px; font-style: italic; font-weight: 400; line-height: 1.4; margin: 0; }
+        .main-row-container { display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; margin-top: 5px; width: 1172px; }
+        .left-panel { width: 450px; height: 620px; background: white; border-radius: 12px; box-sizing: border-box; padding: 35px; position: relative; }
+        .right-column-stack { display: flex; flex-direction: column; gap: 16px; }
+        .right-panel { width: 602px; height: 340px; background: white; border-radius: 12px; box-sizing: border-box; padding: 35px; position: relative; }
+        .step-badge { position: absolute; top: 15px; left: 20px; font-size: 16px; font-weight: 700; color: #475569; }
         .section-title { font-size: 16px; font-weight: 700; color: black; margin-bottom: 12px; margin-left: 15px; }
         .input-label { font-size: 14px; font-weight: 700; color: black; margin-bottom: 8px; }
-        
-        .dropdown-container {
-            width: 380px;
-            height: 40px;
-            margin-bottom: 30px;
-            margin-left: 15px;
-        }
+        .dropdown-container { width: 380px; height: 40px; margin-bottom: 30px; margin-left: 15px; }
         select {
-            width: 100%;
-            height: 100%;
-            background: #D9D9D9;
-            border: none;
-            padding-left: 12px;
-            padding-right: 40px;
-            font-family: 'Anonymous Pro', monospace;
-            font-size: 13px;
-            font-weight: 700;
-            color: #1E1E1E;
-            appearance: none;
-            cursor: pointer;
-            border-radius: 4px;
+            width: 100%; height: 100%; background: #D9D9D9; border: none; padding-left: 12px; padding-right: 40px;
+            font-family: 'Anonymous Pro', monospace; font-size: 13px; font-weight: 700; color: #1E1E1E; appearance: none; cursor: pointer; border-radius: 4px;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
+            background-repeat: no-repeat; background-position: right 15px center;
         }
-
         .slider-wrapper { margin-top: 32px; position: relative; width: 380px; margin-left: 15px; }
         .wave-container { position: relative; width: 380px; height: 32px; }
-        
-        .wave-container input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: transparent;
-            position: absolute;
-            z-index: 10;
-            margin: 0;
-            height: 100%;
-            cursor: pointer;
-        }
-        .wave-container input[type=range]:focus { outline: none; }
+        .wave-container input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; position: absolute; z-index: 10; margin: 0; height: 100%; cursor: pointer; }
         .wave-svg-track { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 1; }
-
-        .wave-container input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            position: relative;
-            z-index: 12;
-            box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
-        }
+        .wave-container input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; position: relative; z-index: 12; box-shadow: 0px 1px 3px rgba(0,0,0,0.3); }
         #volume::-webkit-slider-thumb { background: #7B9BDE; }
         #minutes::-webkit-slider-thumb { background: #DE7B7D; }
         #wage::-webkit-slider-thumb { background: #369148; border: 1px solid #2B8C3E; }
-
         .readout-text { font-size: 12px; font-weight: 700; color: black; margin-top: 6px; display: block; text-align: center; }
-
-        .metrics-inner-layout {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: stretch;
-            margin-top: 25px;
-            gap: 20px;
-            width: 100%;
-        }
-        .left-substack {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex: 1;
-        }
-        .sub-card { 
-            background: #D9D9D9; 
-            border-radius: 10px; 
-            box-sizing: border-box; 
-            padding: 18px; 
-            width: 100%;
-            height: 104px;
-        }
-        .sub-card.highlight { 
-            background: #88D397; 
-            padding: 22px; 
-            flex: 1;
-            height: 228px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        .metrics-inner-layout { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; margin-top: 25px; gap: 20px; width: 100%; }
+        .left-substack { display: flex; flex-direction: column; gap: 20px; flex: 1; }
+        .sub-card { background: #D9D9D9; border-radius: 10px; box-sizing: border-box; padding: 18px; width: 100%; height: 104px; }
+        .sub-card.highlight { background: #88D397; padding: 22px; flex: 1; height: 228px; display: flex; flex-direction: column; justify-content: center; }
         .card-label { font-size: 15px; font-weight: 700; color: black; line-height: 1.3; }
         .card-value { font-size: 20px; font-weight: 700; color: black; margin-top: 12px; }
-        
-        .bottom-card { 
-            width: 602px; 
-            height: 96px; 
-            background: white; 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px 35px 20px 45px; 
-            box-sizing: border-box; 
-            position: relative;
-        }
+        .bottom-card { width: 602px; height: 96px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 20px 35px 20px 45px; box-sizing: border-box; position: relative; }
         .bottom-text { width: 540px; text-align: center; color: black; font-size: 17px; font-weight: 400; line-height: 1.4; }
+        .instruction-box { width: 602px; box-sizing: border-box; padding: 0 10px; display: flex; flex-direction: column; gap: 8px; }
+        .instruction-line { color: #FAFE00; font-size: 14px; font-weight: 700; line-height: 1.3; }
 
-        .instruction-box {
-            width: 602px;
-            box-sizing: border-box;
-            padding: 0 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 40px;
-        }
-        .instruction-line {
-            color: #FAFE00;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        /* --- PHASE 2 CORE CHARTING STYLING MATRIX --- */
-        .advanced-metrics-canvas {
-            width: 1172px;
-            margin-top: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .chart-row-split {
-            display: grid;
-            grid-template-columns: 756px 400px;
-            gap: 16px;
-        }
-
-        .white-card-frame {
-            background: #FFFFFF;
-            border-radius: 20px;
-            padding: 25px;
-            box-sizing: border-box;
-            color: #000000;
-        }
+        /* Chart Frame Matrix */
+        .chart-section { width: 1172px; margin-top: 40px; display: flex; flex-direction: column; gap: 25px; }
+        .chart-row { display: flex; gap: 20px; }
+        .chart-box { background: white; border-radius: 20px; padding: 25px; box-sizing: border-box; color: black; }
     </style>
 </head>
 <body>
@@ -244,7 +64,6 @@
         </div>
 
         <div class="main-row-container">
-            
             <div class="left-panel">
                 <div class="step-badge">01.</div>
                 <div class="section-title">Select Enterprise Operational Task</div>
@@ -255,37 +74,27 @@
                         <option value="knowledge-search">Enterprise Knowledge Management & Search (RAG)</option>
                     </select>
                 </div>
-
                 <div class="section-title" style="margin-top: 45px;">Select Inputs</div>
-
                 <div class="slider-wrapper">
                     <div id="volume_label" class="input-label">Monthly number of documents</div>
                     <div class="wave-container">
-                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none">
-                            <path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#56A0DC" stroke-width="4" stroke-linecap="round"/>
-                        </svg>
+                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none"><path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#56A0DC" stroke-width="4" stroke-linecap="round"/></svg>
                         <input type="range" id="volume" min="500" max="25000" step="500" value="5000" oninput="updateSimulation()">
                     </div>
                     <span id="volume_val" class="readout-text">5,000 documents</span>
                 </div>
-
                 <div class="slider-wrapper">
                     <div id="minutes_label" class="input-label">Minutes Spent Per Task</div>
                     <div class="wave-container">
-                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none">
-                            <path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#DE7B7D" stroke-width="4" stroke-linecap="round"/>
-                        </svg>
+                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none"><path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#DE7B7D" stroke-width="4" stroke-linecap="round"/></svg>
                         <input type="range" id="minutes" min="5" max="120" step="5" value="45" oninput="updateSimulation()">
                     </div>
                     <span id="minutes_val" class="readout-text">45 minutes</span>
                 </div>
-
                 <div class="slider-wrapper">
                     <div class="input-label">Employee Hourly Wage ($)</div>
                     <div class="wave-container">
-                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none">
-                            <path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#2B8C3E" stroke-width="4" stroke-linecap="round"/>
-                        </svg>
+                        <svg class="wave-svg-track" viewBox="0 0 380 32" preserveAspectRatio="none"><path d="M0,16 C30,0 60,32 90,16 C120,0 150,32 180,16 C210,0 240,32 270,16 C300,0 330,32 380,16" fill="none" stroke="#2B8C3E" stroke-width="4" stroke-linecap="round"/></svg>
                         <input type="range" id="wage" min="15" max="200" step="5" value="60" oninput="updateSimulation()">
                     </div>
                     <span id="wage_val" class="readout-text">$60</span>
@@ -293,196 +102,89 @@
             </div>
 
             <div class="right-column-stack">
-                
                 <div class="right-panel">
                     <div class="step-badge">02.</div>
                     <div style="font-size: 24px; font-weight: 700; color: black; margin-bottom: 5px; margin-left: 15px;">Value Realization Dashboard</div>
-                    
                     <div class="metrics-inner-layout">
                         <div class="left-substack">
-                            <div class="sub-card">
-                                <div class="card-label">Legacy Monthly Baseline</div>
-                                <div class="card-value" id="legacy_baseline">...</div>
-                            </div>
-                            <div class="sub-card">
-                                <div class="card-label">Projected AI TCO</div>
-                                <div class="card-value" id="ai_tco">...</div>
-                            </div>
+                            <div class="sub-card"><div class="card-label">Legacy Monthly Baseline</div><div class="card-value" id="legacy_baseline">...</div></div>
+                            <div class="sub-card"><div class="card-label">Projected AI TCO</div><div class="card-value" id="ai_tco">...</div></div>
                         </div>
-
-                        <div class="sub-card highlight">
-                            <div class="card-label" style="text-align: center; font-size: 18px;">Net Monthly Value Captured</div>
-                            <div class="card-value" id="monthly_savings" style="text-align: center; font-size: 24px; margin-top: 20px;">...</div>
-                        </div>
+                        <div class="sub-card highlight"><div class="card-label" style="text-align: center; font-size: 18px;">Net Monthly Value Captured</div><div class="card-value" id="monthly_savings" style="text-align: center; font-size: 24px; margin-top: 20px;">...</div></div>
                     </div>
                 </div>
-                
                 <div class="bottom-card">
                     <div class="step-badge">03.</div>
-                    <div class="bottom-text">
-                        Calculated upfront implementation costs of <span id="upfront_cost" style="font-weight: 700;">...</span> are completely recovered in <span id="payback_period" style="font-weight: 700;">...</span> months, maximizing capital efficiency.
-                    </div>
+                    <div class="bottom-text">Calculated upfront implementation costs of <span id="upfront_cost" style="font-weight: 700;">...</span> are completely recovered in <span id="payback_period" style="font-weight: 700;">...</span> months.</div>
                 </div>
-
                 <div class="instruction-box">
                     <div class="instruction-line">Step 1: Calibrate your human operational scale levers</div>
                     <div class="instruction-line">Step 2: Monitor your net value realization and operational efficiency gain here</div>
                     <div class="instruction-line">Step 3: Track your net break-even investment timeline and structural assumptions</div>
                 </div>
-
             </div>
         </div>
 
-        <div class="advanced-metrics-canvas">
+        <div class="chart-section">
+            <div style="width:100%; background:#9CACC3; color:black; font-size:22px; font-weight:bold; padding:15px; border-radius:6px; box-sizing:border-box;">Enterprise AI Break-even Analysis</div>
+            <p style="color:white; font-size:15px; margin:0;"><strong>Business task:</strong> Monitoring semiconductor capacity, global data center expansions, and physical AI supply chain developments to compile strategic investment briefs.<br><strong>Tech Architecture:</strong> An autonomous agent running iterative reasoning loops</p>
             
-            <div style="width: 100%; background: #9CACC3; box-shadow: 0px 1px 15px 2px white; border-radius: 4px; padding: 18px 25px; box-sizing: border-box; color: #000000; font-size: 24px; font-weight: 700;">
-                Enterprise AI Break-even Analysis
+            <div class="chart-row">
+                <div class="chart-box" style="width:756px; height:430px;"><div style="font-weight:bold;margin-bottom:10px;">Dynamic Break-Even Analysis</div><div style="height:340px;"><canvas id="lineChart"></canvas></div></div>
+                <div class="chart-box" style="width:400px; height:430px;"><div style="font-weight:bold;margin-bottom:10px;">TCO Expense Allocation Breakdown</div><div style="height:340px;"><canvas id="donutChart"></canvas></div></div>
             </div>
-
-            <div style="color: #FFFFFF; font-size: 20px; line-height: 1.4;">
-                <span style="color: #9CACC3; font-weight: 700;">Business task:</span> Monitoring semiconductor capacity, global data center expansions, and physical AI supply chain developments to compile strategic investment briefs.
-            </div>
-            <div style="color: #FFFFFF; font-size: 20px; line-height: 1.4; margin-bottom: 10px;">
-                <span style="color: #9CACC3; font-weight: 700;">Tech Architecture:</span> An autonomous agent running iterative reasoning loops
-            </div>
-
-            <div class="chart-row-split">
-                
-                <div class="white-card-frame" style="height: 450px;">
-                    <div style="font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px;">Dynamic Break-Even Analysis</div>
-                    <div style="position: relative; height: 350px; width: 100%;">
-                        <canvas id="liveLineChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="white-card-frame" style="height: 450px;">
-                    <div style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 20px;">TCO Expense Allocation Breakdown</div>
-                    <div style="position: relative; height: 350px; width: 100%;">
-                        <canvas id="liveDonutChart"></canvas>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="white-card-frame" style="width: 1172px; height: 420px; margin-bottom: 40px;">
-                <div style="font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px;">ROI Sensitivity to Volume and Human Fallback</div>
-                <div style="position: relative; height: 320px; width: 100%;">
-                    <canvas id="liveSensitivityChart"></canvas>
-                </div>
-            </div>
-
+            <div class="chart-box" style="width:1172px; height:380px;"><div style="font-weight:bold;margin-bottom:10px;">ROI Sensitivity to Volume and Human Fallback</div><div style="height:290px;"><canvas id="sensitivityChart"></canvas></div></div>
         </div>
-
     </div>
 
     <script>
-        const USE_CASE_CONFIGS = {
-            "document-extraction": { volumeLabel: "Monthly number of documents", volumeUnit: "documents", minutesLabel: "Minutes Spent Per Document", minVol: 500, maxVol: 25000, stepVol: 500, defaultVol: 5000, minMin: 5, maxMin: 120, stepMin: 5, defaultMin: 45 },
-            "support-routing": { volumeLabel: "Monthly inbound tickets", volumeUnit: "tickets", minutesLabel: "Minutes Spent Per Ticket", minVol: 5000, maxVol: 200000, stepVol: 5000, defaultVol: 50000, minMin: 1, maxMin: 30, stepMin: 1, defaultMin: 8 },
-            "knowledge-search": { volumeLabel: "Monthly internal queries", volumeUnit: "queries", minutesLabel: "Minutes Spent Per Query", minVol: 1000, maxVol: 50000, stepVol: 1000, defaultVol: 15000, minMin: 2, maxMin: 45, stepMin: 1, defaultMin: 12 }
+        let lineChart, donutChart, sensitivityChart;
+        const CONFIGS = {
+            "document-extraction": { label: "Monthly number of documents", unit: "documents", minVol: 500, maxVol: 25000, stepVol: 500, defVol: 5000, minM: 5, maxM: 120, defM: 45 },
+            "support-routing": { label: "Monthly inbound tickets", unit: "tickets", minVol: 5000, maxVol: 200000, stepVol: 5000, defVol: 50000, minM: 1, maxM: 30, defM: 8 },
+            "knowledge-search": { label: "Monthly internal queries", unit: "queries", minVol: 1000, maxVol: 50000, stepVol: 1000, defVol: 15000, minM: 2, maxM: 45, defM: 12 }
         };
 
-        // Initialize Global Active Canvas Chart Context Handles
-        let chartObjLine, chartObjDonut, chartObjSensitivity;
-
-        function buildDataVisual Engines() {
-            const ctxL = document.getElementById('liveLineChart').getContext('2d');
-            chartObjLine = new Chart(ctxL, {
-                type: 'line',
-                data: { labels: [], datasets: [
-                    { label: 'Cumulative Manual Labor Cost', data: [], borderColor: '#132BFD', backgroundColor: 'transparent', borderWidth: 4, pointRadius: 2 },
-                    { label: 'Cumulative AI Deployment Cost', data: [], borderColor: '#F42B2B', backgroundColor: 'rgba(165, 197, 134, 0.25)', borderWidth: 4, pointRadius: 2, fill: 'origin' }
-                ]},
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { title: { display: true, text: 'Cumulative Cost ($)' } } } }
-            });
-
-            const ctxD = document.getElementById('liveDonutChart').getContext('2d');
-            chartObjDonut = new Chart(ctxD, {
-                type: 'doughnut',
-                data: { labels: ['Model API Utility Fees', 'Data Acquisition', 'Compute Resources', 'Human-in-the-loop overhead'], datasets: [{ data: [], backgroundColor: ['#132AFD', '#FF17EC', '#FF9A36', '#F42B2B'], borderWidth: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
-            });
-
-            const ctxS = document.getElementById('liveSensitivityChart').getContext('2d');
-            chartObjSensitivity = new Chart(ctxS, {
-                type: 'line',
-                data: { labels: ['5% Ingestion', '10% Ingestion', '15% Ingestion', '20% Ingestion', '25% Ingestion'], datasets: [
-                    { label: '10% Fallback Scenario', data: [], borderColor: '#FF9901', tension: 0.3, borderWidth: 3 },
-                    { label: '15% Fallback Scenario', data: [], borderColor: '#132BFD', tension: 0.3, borderWidth: 3 },
-                    { label: '20% Fallback Scenario', data: [], borderColor: '#F42B2B', tension: 0.3, borderWidth: 3 }
-                ]},
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'Operational Scale Volumes' } }, y: { title: { display: true, text: 'Calculated Net Project ROI' } } } }
-            });
+        function initCharts() {
+            lineChart = new Chart(document.getElementById('lineChart'), { type: 'line', data: { labels: [], datasets: [{ label: 'Cumulative Manual Labor Cost', data: [], borderColor: '#132BFD', tension: 0.1 }, { label: 'Cumulative AI Deployment Cost', data: [], borderColor: '#F42B2B', backgroundColor: 'rgba(165,197,134,0.3)', fill: true, tension: 0.1 }] }, options: { responsive: true, maintainAspectRatio: false } });
+            donutChart = new Chart(document.getElementById('donutChart'), { type: 'doughnut', data: { labels: ['Model API Fees', 'Data Ingestion', 'Compute Resources', 'Human Oversight'], datasets: [{ data: [], backgroundColor: ['#132AFD', '#FF17EC', '#FF9A36', '#F42B2B'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+            sensitivityChart = new Chart(document.getElementById('sensitivityChart'), { type: 'line', data: { labels: ['0.5x Scale', '1.0x Scale', '1.5x Scale', '2.0x Scale'], datasets: [{ label: '10% Fallback', data: [], borderColor: '#FF9901', tension: 0.3 }, { label: '15% Fallback', data: [], borderColor: '#132BFD', tension: 0.3 }, { label: '20% Fallback', data: [], borderColor: '#F42B2B', tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
 
         function handleUseCaseChange() {
-            const use_case = document.getElementById('use_case').value;
-            const config = USE_CASE_CONFIGS[use_case];
-
-            document.getElementById('volume_label').innerText = config.volumeLabel;
-            document.getElementById('minutes_label').innerText = config.minutesLabel;
-
-            const volSlider = document.getElementById('volume');
-            volSlider.min = config.minVol; volSlider.max = config.maxVol; volSlider.step = config.stepVol; volSlider.value = config.defaultVol;
-
-            const minSlider = document.getElementById('minutes');
-            minSlider.min = config.minMin; minSlider.max = config.maxMin; minSlider.step = config.stepMin; minSlider.value = config.defaultMin;
-
+            const uc = document.getElementById('use_case').value; const c = CONFIGS[uc];
+            document.getElementById('volume_label').innerText = c.label;
+            const vs = document.getElementById('volume'); vs.min = c.minVol; vs.max = c.maxVol; vs.step = c.stepVol; vs.value = c.defVol;
+            const ms = document.getElementById('minutes'); ms.min = c.minM; ms.max = c.maxM; ms.value = c.defM;
             updateSimulation();
         }
 
         function updateSimulation() {
-            const use_case = document.getElementById('use_case').value;
-            const volume = document.getElementById('volume').value;
-            const minutes = document.getElementById('minutes').value;
-            const wage = document.getElementById('wage').value;
-            const config = USE_CASE_CONFIGS[use_case];
+            const uc = document.getElementById('use_case').value; const vol = document.getElementById('volume').value; const mins = document.getElementById('minutes').value; const wage = document.getElementById('wage').value;
+            document.getElementById('volume_val').innerText = Number(vol).toLocaleString() + " " + CONFIGS[uc].unit;
+            document.getElementById('minutes_val').innerText = mins + " minutes"; document.getElementById('wage_val').innerText = "$" + wage + "/hour";
 
-            document.getElementById('volume_val').innerText = Number(volume).toLocaleString() + " " + config.volumeUnit;
-            document.getElementById('minutes_val').innerText = minutes + " minutes";
-            document.getElementById('wage_val').innerText = "$" + wage + "/hour";
-
-            fetch('/calculate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ use_case: use_case, volume: parseInt(volume), minutes: parseInt(minutes), wage: parseInt(wage) })
-            })
-            .then(res => res.json())
-            .then(data => {
+            fetch('/calculate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ use_case: uc, volume: parseInt(vol), minutes: parseInt(mins), wage: parseInt(wage) }) })
+            .then(res => res.json()).then(data => {
                 document.getElementById('legacy_baseline').innerText = data.legacy_baseline;
                 document.getElementById('ai_tco').innerText = data.ai_tco;
                 document.getElementById('monthly_savings').innerText = data.monthly_savings;
                 document.getElementById('upfront_cost').innerText = data.upfront_cost;
                 document.getElementById('payback_period').innerText = data.payback_period;
 
-                // Pipe dynamic array responses into standard Chart rendering cycles
-                if (chartObjLine && data.chart_data) {
-                    chartObjLine.data.labels = data.chart_data.months.map(m => `Month ${m}`);
-                    chartObjLine.data.datasets[0].data = data.chart_data.human_line;
-                    chartObjLine.data.datasets[1].data = data.chart_data.ai_line;
-                    chartObjLine.update();
-                }
+                lineChart.data.labels = data.chart_data.months.map(m => `Month ${m}`);
+                lineChart.data.datasets[0].data = data.chart_data.human_line;
+                lineChart.data.datasets[1].data = data.chart_data.ai_line; lineChart.update();
 
-                if (chartObjDonut && data.chart_data) {
-                    chartObjDonut.data.datasets[0].data = data.chart_data.donut;
-                    chartObjDonut.update();
-                }
+                donutChart.data.datasets[0].data = data.chart_data.donut; donutChart.update();
 
-                if (chartObjSensitivity && data.chart_data) {
-                    // Extrapolate baseline coordinates multi-variate curves metrics
-                    let b = data.chart_data.sensitivity;
-                    chartObjSensitivity.data.datasets[0].data = [b.fallback_10 * 0.4, b.fallback_10 * 0.8, b.fallback_10, b.fallback_10 * 1.2, b.fallback_10 * 1.4];
-                    chartObjSensitivity.data.datasets[1].data = [b.fallback_15 * 0.4, b.fallback_15 * 0.8, b.fallback_15, b.fallback_15 * 1.2, b.fallback_15 * 1.4];
-                    chartObjSensitivity.data.datasets[2].data = [b.fallback_20 * 0.4, b.fallback_20 * 0.8, b.fallback_20, b.fallback_20 * 1.2, b.fallback_20 * 1.4];
-                    chartObjSensitivity.update();
-                }
+                sensitivityChart.data.datasets[0].data = data.chart_data.sens_10;
+                sensitivityChart.data.datasets[1].data = data.chart_data.sens_15;
+                sensitivityChart.data.datasets[2].data = data.chart_data.sens_20; sensitivityChart.update();
             });
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            buildDataVisual Engines();
-            setTimeout(handleUseCaseChange, 200);
-        });
+        document.addEventListener("DOMContentLoaded", () => { initCharts(); handleUseCaseChange(); });
     </script>
 </body>
 </html>
