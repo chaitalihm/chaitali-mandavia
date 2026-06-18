@@ -5,365 +5,374 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chaitali Mandavia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --ink:       #0a0a0f;
-            --ink-2:     #3d3d4e;
-            --ink-3:     #8888a0;
-            --rule:      #e8e8f0;
-            --surface:   #ffffff;
-            --surface-2: #f7f7fb;
-            --surface-3: #f0f0f7;
-            --accent:    #635bff;   /* Stripe purple */
-            --accent-2:  #00c48c;   /* Robinhood green */
-            --accent-3:  #ff6b35;   /* warm highlight */
-            --radius:    12px;
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg:        #0d0d0d;
+            --bg-2:      #161616;
+            --bg-3:      #1e1e1e;
+            --ink:       #f0ede8;
+            --ink-2:     #9d9a94;
+            --ink-3:     #5c5a56;
+            --lime:      #c8f135;
+            --lime-dim:  rgba(200,241,53,0.12);
+            --rule:      rgba(255,255,255,0.08);
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-serif: 'DM Serif Display', Georgia, serif;
         }
 
         body {
-            font-family: var(--font);
-            background: var(--surface);
+            font-family: var(--font-sans);
+            background: var(--bg);
             color: var(--ink);
             -webkit-font-smoothing: antialiased;
         }
 
         /* ── NAV ── */
         nav {
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--rule);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 48px; height: 60px;
+            padding: 0 52px; height: 58px;
+            border-bottom: 1px solid var(--rule);
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(10px);
         }
-        .nav-logo {
-            font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--ink);
-            text-decoration: none;
+        .nav-name {
+            font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
+            color: var(--ink); text-decoration: none;
         }
-        .nav-links { display: flex; gap: 32px; }
+        .nav-links { display: flex; gap: 36px; }
         .nav-links a {
-            font-size: 13px; font-weight: 500; color: var(--ink-3);
-            text-decoration: none; letter-spacing: 0.01em;
+            font-size: 13px; color: var(--ink-2); text-decoration: none;
             transition: color 0.15s;
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
-        .nav-cta {
-            font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-            background: var(--ink); color: #fff;
-            padding: 8px 18px; border-radius: 6px;
-            text-decoration: none; transition: opacity 0.15s;
-        }
-        .nav-cta:hover { opacity: 0.8; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-links a.active { color: var(--lime); }
 
         /* ── HERO ── */
         .hero {
-            max-width: 1120px; margin: 0 auto;
-            padding: 88px 48px 72px;
-            display: grid; grid-template-columns: 1fr 400px; gap: 64px; align-items: center;
+            max-width: 1080px; margin: 0 auto;
+            padding: 80px 52px 64px;
+            position: relative;
         }
-        .hero-eyebrow {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--accent);
-            border: 1px solid rgba(99,91,255,0.25); border-radius: 100px;
-            padding: 5px 12px; margin-bottom: 24px;
+
+        /* scribble SVG decorations — positioned absolutely */
+        .deco { position: absolute; pointer-events: none; }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+            color: var(--lime); background: var(--lime-dim);
+            border: 1px solid rgba(200,241,53,0.25);
+            border-radius: 4px; padding: 4px 10px;
+            margin-bottom: 28px;
         }
-        .hero-eyebrow::before {
-            content: ''; width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent); display: block;
+
+        .hero-h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(44px, 6vw, 72px);
+            line-height: 1.08; letter-spacing: -0.01em;
+            color: var(--ink); margin-bottom: 28px;
+            max-width: 700px;
         }
-        .hero h1 {
-            font-size: clamp(36px, 4vw, 52px); font-weight: 700;
-            line-height: 1.1; letter-spacing: -0.03em; color: var(--ink);
-            margin-bottom: 20px;
+        .hero-h1 .serif-italic { font-style: italic; color: var(--lime); }
+
+        .hero-body {
+            font-size: 16px; line-height: 1.75; color: var(--ink-2);
+            max-width: 520px; margin-bottom: 44px;
+            font-weight: 300;
         }
-        .hero h1 em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .hero-desc {
-            font-size: 16px; line-height: 1.7; color: var(--ink-2);
-            max-width: 480px; margin-bottom: 36px;
-        }
-        .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-        .btn-primary {
+        .hero-body strong { color: var(--ink); font-weight: 500; }
+
+        .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .btn-lime {
             font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-            background: var(--accent); color: #fff;
-            padding: 11px 24px; border-radius: 8px;
-            text-decoration: none; transition: opacity 0.15s, transform 0.1s;
-            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--lime); color: #0d0d0d;
+            padding: 12px 24px; border-radius: 6px;
+            text-decoration: none;
+            transition: opacity 0.15s;
         }
-        .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-lime:hover { opacity: 0.85; }
         .btn-ghost {
-            font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-            background: transparent; color: var(--ink);
-            padding: 11px 24px; border-radius: 8px; border: 1px solid var(--rule);
-            text-decoration: none; transition: border-color 0.15s, background 0.15s;
-            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 13px; font-weight: 500;
+            color: var(--ink-2); text-decoration: none;
+            border: 1px solid var(--rule); border-radius: 6px;
+            padding: 12px 24px;
+            transition: color 0.15s, border-color 0.15s;
         }
-        .btn-ghost:hover { border-color: var(--ink-3); background: var(--surface-2); }
+        .btn-ghost:hover { color: var(--ink); border-color: rgba(255,255,255,0.18); }
 
-        /* Hero stat card */
-        .hero-card {
-            background: var(--surface-2);
-            border: 1px solid var(--rule); border-radius: 16px;
-            padding: 28px; display: flex; flex-direction: column; gap: 20px;
-        }
-        .hero-card-title {
-            font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-            text-transform: uppercase; color: var(--ink-3);
-        }
-        .stat-row { display: flex; flex-direction: column; gap: 4px; }
-        .stat-val {
-            font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink);
-        }
-        .stat-val.green { color: var(--accent-2); }
-        .stat-label { font-size: 12px; color: var(--ink-3); }
-        .stat-divider { border: none; border-top: 1px solid var(--rule); margin: 4px 0; }
+        /* ── DIVIDER ── */
+        hr.rule { border: none; border-top: 1px solid var(--rule); }
 
-        /* ── SECTION SHARED ── */
-        .section { max-width: 1120px; margin: 0 auto; padding: 64px 48px; }
-        .section-label {
-            font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px;
+        /* ── PROJECTS ── */
+        .section { max-width: 1080px; margin: 0 auto; padding: 64px 52px; }
+
+        .section-header { margin-bottom: 40px; }
+        .section-eyebrow {
+            font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px;
         }
         .section-title {
-            font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
-            color: var(--ink); margin-bottom: 40px;
-        }
-        .section-divider {
-            max-width: 1120px; margin: 0 auto;
-            border: none; border-top: 1px solid var(--rule);
+            font-family: var(--font-serif); font-size: 32px;
+            color: var(--ink); letter-spacing: -0.01em; line-height: 1.15;
         }
 
-        /* ── SKILLS ── */
-        .skills-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+        /* Asymmetric project cards */
+        .project-list { display: flex; flex-direction: column; gap: 1px; }
+        .project-item {
+            display: grid; grid-template-columns: 80px 1fr auto;
+            gap: 32px; align-items: start;
+            padding: 28px 0;
+            border-top: 1px solid var(--rule);
+            text-decoration: none;
+            transition: background 0.15s;
+            border-radius: 4px;
         }
-        .skill-chip {
-            background: var(--surface-2); border: 1px solid var(--rule);
-            border-radius: 10px; padding: 18px 20px;
-            display: flex; flex-direction: column; gap: 6px;
-        }
-        .skill-chip-tag {
-            font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
-            text-transform: uppercase; color: var(--accent);
-        }
-        .skill-chip-name { font-size: 14px; font-weight: 600; color: var(--ink); }
-        .skill-chip-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+        .project-item:hover .project-name { color: var(--lime); }
+        .project-item:last-child { border-bottom: 1px solid var(--rule); }
 
-        /* ── PROJECTS GRID ── */
-        .projects-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+        .project-num {
+            font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+            color: var(--ink-3); padding-top: 3px;
         }
-        .project-card {
-            background: var(--surface); border: 1px solid var(--rule);
-            border-radius: var(--radius); overflow: hidden;
-            display: flex; flex-direction: column;
-            transition: box-shadow 0.2s, transform 0.2s;
+        .project-name {
+            font-size: 18px; font-weight: 500; color: var(--ink);
+            margin-bottom: 8px; transition: color 0.15s;
+            letter-spacing: -0.01em;
         }
-        .project-card:hover {
-            box-shadow: 0 8px 32px rgba(10,10,15,0.08);
-            transform: translateY(-2px);
+        .project-desc {
+            font-size: 13px; color: var(--ink-2); line-height: 1.65;
+            max-width: 520px; font-weight: 300;
         }
-        .project-card-header {
-            padding: 24px 24px 0;
-            display: flex; align-items: center; justify-content: space-between;
+        .project-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+        .pill {
+            font-size: 10px; font-weight: 500; letter-spacing: 0.06em;
+            color: var(--ink-3); background: var(--bg-3);
+            border: 1px solid var(--rule);
+            border-radius: 3px; padding: 3px 8px;
         }
-        .project-tag {
-            font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
-            text-transform: uppercase; border-radius: 100px;
-            padding: 4px 10px;
+        .project-status {
+            font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+            padding-top: 3px; white-space: nowrap;
         }
-        .tag-live { background: rgba(0,196,140,0.12); color: var(--accent-2); }
-        .tag-wip { background: rgba(255,107,53,0.12); color: var(--accent-3); }
-        .tag-coming { background: rgba(136,136,160,0.12); color: var(--ink-3); }
-        .project-icon {
-            width: 36px; height: 36px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
+        .status-live { color: var(--lime); }
+        .status-wip { color: #f5a623; }
+
+        /* ── ABOUT STRIP ── */
+        .about-strip {
+            max-width: 1080px; margin: 0 auto;
+            padding: 0 52px 80px;
         }
-        .project-card-body { padding: 16px 24px 24px; flex: 1; display: flex; flex-direction: column; }
-        .project-card-name {
-            font-size: 17px; font-weight: 700; color: var(--ink);
-            letter-spacing: -0.01em; margin-bottom: 8px;
+        .about-inner {
+            background: var(--bg-2); border: 1px solid var(--rule);
+            border-radius: 12px; padding: 40px 48px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+            align-items: center;
         }
-        .project-card-desc {
-            font-size: 13px; color: var(--ink-2); line-height: 1.6;
-            flex: 1; margin-bottom: 20px;
+        .about-left p {
+            font-size: 14px; line-height: 1.8; color: var(--ink-2);
+            font-weight: 300;
         }
-        .project-card-meta {
-            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+        .about-left p + p { margin-top: 14px; }
+        .about-left strong { color: var(--ink); font-weight: 500; }
+        .about-stats { display: flex; flex-direction: column; gap: 24px; }
+        .about-stat-row {
+            display: flex; align-items: baseline; gap: 14px;
+            padding-bottom: 24px; border-bottom: 1px solid var(--rule);
         }
-        .tech-pill {
-            font-size: 11px; font-weight: 500; color: var(--ink-3);
-            background: var(--surface-3); border-radius: 4px;
-            padding: 3px 8px;
+        .about-stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .about-stat-num {
+            font-family: var(--font-serif); font-size: 36px;
+            color: var(--lime); letter-spacing: -0.02em; line-height: 1;
         }
-        .project-card-link {
-            font-size: 12px; font-weight: 600; color: var(--accent);
-            text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
-            letter-spacing: 0.02em;
+        .about-stat-label {
+            font-size: 13px; color: var(--ink-2); line-height: 1.5; font-weight: 300;
         }
-        .project-card-link:hover { opacity: 0.75; }
 
         /* ── FOOTER ── */
         footer {
             border-top: 1px solid var(--rule);
-            padding: 32px 48px;
+            padding: 24px 52px;
             display: flex; align-items: center; justify-content: space-between;
-            max-width: 1120px; margin: 0 auto;
+            max-width: 1080px; margin: 0 auto;
         }
-        .footer-copy { font-size: 12px; color: var(--ink-3); }
+        footer p { font-size: 12px; color: var(--ink-3); }
         .footer-links { display: flex; gap: 24px; }
         .footer-links a { font-size: 12px; color: var(--ink-3); text-decoration: none; }
-        .footer-links a:hover { color: var(--ink); }
+        .footer-links a:hover { color: var(--ink-2); }
+
+        /* ── SVG SCRIBBLES ── */
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+        .scribble-path {
+            stroke-dasharray: 400;
+            stroke-dashoffset: 400;
+            animation: draw 1.2s ease forwards;
+        }
+        .scribble-path-2 {
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: draw 1s 0.3s ease forwards;
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="/" class="nav-logo">Chaitali Mandavia</a>
+    <a href="/" class="nav-name">Chaitali Mandavia</a>
     <div class="nav-links">
         <a href="/" class="active">Home</a>
         <a href="/simulator">TCO Simulator</a>
-        <a href="/project2">AI Deployment Playbook</a>
+        <a href="/project2">Deployment Playbook</a>
     </div>
-    <a href="mailto:hello@example.com" class="nav-cta">Get in touch →</a>
 </nav>
 
-<section class="hero">
-    <div>
-        <div class="hero-eyebrow">AI Deployment Strategist</div>
-        <h1>Where <em>economic rigor</em> meets AI in the enterprise</h1>
-        <p class="hero-desc">
-            I model AI deployment economics, architect agentic workflows, and translate technical capabilities into investment theses — built on a foundation of quantitative research at Analysis Group and Berkeley Economics.
-        </p>
-        <div class="hero-actions">
-            <a href="/simulator" class="btn-primary">Launch TCO Simulator →</a>
-            <a href="/project2" class="btn-ghost">View Deployment Playbook</a>
-        </div>
+<div class="hero">
+    <!-- scribble star top right -->
+    <svg class="deco" style="top:20px;right:80px;width:48px;height:48px;" viewBox="0 0 48 48" fill="none">
+        <path class="scribble-path" d="M24 4 L26 20 L40 14 L29 25 L44 28 L29 31 L36 44 L24 34 L12 44 L19 31 L4 28 L19 25 L8 14 L22 20 Z" stroke="#c8f135" stroke-width="1.5" fill="none" opacity="0.7"/>
+    </svg>
+    <!-- scribble circle around a word -->
+    <svg class="deco" style="top:180px;left:8px;width:90px;height:36px;" viewBox="0 0 90 36" fill="none">
+        <ellipse class="scribble-path-2" cx="45" cy="18" rx="42" ry="15" stroke="#c8f135" stroke-width="1.5" fill="none" opacity="0.4"/>
+    </svg>
+    <!-- small dots cluster -->
+    <svg class="deco" style="bottom:30px;right:120px;width:60px;height:60px;" viewBox="0 0 60 60" fill="none">
+        <circle cx="10" cy="10" r="2" fill="#c8f135" opacity="0.4"/>
+        <circle cx="30" cy="6" r="1.5" fill="#c8f135" opacity="0.3"/>
+        <circle cx="50" cy="14" r="2.5" fill="#c8f135" opacity="0.2"/>
+        <circle cx="20" cy="30" r="1.5" fill="#c8f135" opacity="0.3"/>
+        <circle cx="44" cy="36" r="2" fill="#c8f135" opacity="0.4"/>
+        <circle cx="8" cy="48" r="1" fill="#c8f135" opacity="0.2"/>
+        <circle cx="54" cy="50" r="1.5" fill="#c8f135" opacity="0.3"/>
+    </svg>
+
+    <div class="hero-tag">currently building</div>
+    <h1 class="hero-h1">
+        I spent three years watching<br>
+        analysts do by hand what<br>
+        <span class="serif-italic">AI could do in seconds.</span>
+    </h1>
+    <p class="hero-body">
+        Hi, I'm Chaitali. I graduated from <strong>UC Berkeley</strong> in December 2021 with a double major in Economics and Data Science, and I've been at <strong>Analysis Group</strong> for the past 4.5 years. Over the last year I got to work on <strong>ALMA</strong>, an internal tool built on LLMs that our teams use for document review. That got me really interested in this space. This is my portfolio of things I've built and learned along the way.
+    </p>
+    <div class="hero-actions">
+        <a href="/simulator" class="btn-lime">Try the TCO calculator</a>
+        <a href="/project2" class="btn-ghost">Read the deployment case study →</a>
+    </div>
+</div>
+
+<hr class="rule" style="max-width:1080px;margin:0 auto;">
+
+<div class="section">
+    <div class="section-header">
+        <div class="section-eyebrow">work</div>
+        <div class="section-title">Things I've built (and am still building)</div>
     </div>
 
-    <div class="hero-card">
-        <div class="hero-card-title">Sample Output · Document Extraction Use Case</div>
-        <div class="stat-row">
-            <div class="stat-val green">$190,012</div>
-            <div class="stat-label">Monthly value captured vs. manual baseline</div>
-        </div>
-        <hr class="stat-divider">
-        <div class="stat-row">
-            <div class="stat-val">0.2 mo</div>
-            <div class="stat-label">Implementation cost payback period</div>
-        </div>
-        <hr class="stat-divider">
-        <div class="stat-row">
-            <div class="stat-val">11,200%</div>
-            <div class="stat-label">Net annualized ROI at 1.0× scale</div>
-        </div>
-    </div>
-</section>
+    <div class="project-list">
 
-<hr class="section-divider">
-
-<section class="section">
-    <div class="section-label">Capabilities</div>
-    <div class="section-title">End-to-end deployment, from pitch to production</div>
-    <div class="skills-grid">
-        <div class="skill-chip">
-            <div class="skill-chip-tag">Stage 1</div>
-            <div class="skill-chip-name">Business Case Modeling</div>
-            <div class="skill-chip-desc">TCO analysis, break-even curves, ROI sensitivity by volume and fallback rate — built to convince a CFO.</div>
-        </div>
-        <div class="skill-chip">
-            <div class="skill-chip-tag">Stage 2</div>
-            <div class="skill-chip-name">Discovery & Scoping</div>
-            <div class="skill-chip-desc">Structured interview frameworks, current-state process maps, and architecture selection across RAG, agentic, and voice/vision stacks.</div>
-        </div>
-        <div class="skill-chip">
-            <div class="skill-chip-tag">Stage 3</div>
-            <div class="skill-chip-name">Prototype & KPI Design</div>
-            <div class="skill-chip-desc">UI/UX mockups, pilot design with pre-committed success metrics, and iterative feedback loops before full rollout.</div>
-        </div>
-        <div class="skill-chip">
-            <div class="skill-chip-tag">Stage 4</div>
-            <div class="skill-chip-name">Deployment & Change Mgmt</div>
-            <div class="skill-chip-desc">Adoption playbooks, internal champion programs, rollback plans, and staff retraining frameworks.</div>
-        </div>
-        <div class="skill-chip">
-            <div class="skill-chip-tag">Stage 5</div>
-            <div class="skill-chip-name">Monitoring & Iteration</div>
-            <div class="skill-chip-desc">Model drift detection, feedback loop architecture, retraining schedules, and ongoing ROI reporting to executive sponsors.</div>
-        </div>
-        <div class="skill-chip">
-            <div class="skill-chip-tag">Domain</div>
-            <div class="skill-chip-name">GCC & Emerging Markets</div>
-            <div class="skill-chip-desc">Government-facing AI in the UAE/Saudi context; enterprise adoption dynamics in high-growth, regulation-light markets.</div>
-        </div>
-    </div>
-</section>
-
-<hr class="section-divider">
-
-<section class="section">
-    <div class="section-label">Projects</div>
-    <div class="section-title">Applied AI deployment work</div>
-    <div class="projects-grid">
-
-        <div class="project-card">
-            <div class="project-card-header">
-                <div class="project-tag tag-live">Live</div>
-                <div class="project-icon" style="background:#f0effe;">📊</div>
-            </div>
-            <div class="project-card-body">
-                <div class="project-card-name">Enterprise AI TCO Simulator</div>
-                <div class="project-card-desc">
-                    An interactive tool that models the true cost of deploying enterprise AI — balancing API token costs, human oversight overhead, and upfront implementation against the manual labor baseline. Supports document extraction, support routing, and RAG use cases.
+        <a href="/simulator" class="project-item" style="text-decoration:none;">
+            <div class="project-num">01</div>
+            <div>
+                <div class="project-name">How much does AI actually cost to deploy?</div>
+                <div class="project-desc">
+                    I kept hearing wildly different numbers thrown around at work — no one seemed to agree on what enterprise AI actually costs once you factor in oversight, compute, and setup. So I built a calculator that lets you put in your own numbers and see where the break-even is. Turns out the answer is: faster than most people think.
                 </div>
-                <div class="project-card-meta">
-                    <span class="tech-pill">Python / Flask</span>
-                    <span class="tech-pill">Chart.js</span>
-                    <span class="tech-pill">Economic modeling</span>
-                    <span class="tech-pill">Render</span>
+                <div class="project-pills">
+                    <span class="pill">Python</span>
+                    <span class="pill">Flask</span>
+                    <span class="pill">Chart.js</span>
+                    <span class="pill">TCO modeling</span>
                 </div>
-                <a href="/simulator" class="project-card-link">Launch simulator →</a>
             </div>
+            <div class="project-status status-live">Live ↗</div>
+        </a>
+
+        <a href="/project2" class="project-item" style="text-decoration:none;">
+            <div class="project-num">02</div>
+            <div>
+                <div class="project-name">What would it actually look like to deploy agentic AI at an investment firm?</div>
+                <div class="project-desc">
+                    I picked a concrete use case — a Dubai-based firm tracking global semiconductor markets — and tried to work through the whole thing: how you'd pitch it, what you'd ask the client before building anything, what the system actually looks like, and how you'd know six months later if it worked. This is the kind of work I want to do.
+                </div>
+                <div class="project-pills">
+                    <span class="pill">Agentic AI</span>
+                    <span class="pill">Semiconductors</span>
+                    <span class="pill">GCC markets</span>
+                    <span class="pill">Investment research</span>
+                </div>
+            </div>
+            <div class="project-status status-wip">In progress</div>
+        </a>
+
+        <div class="project-item" style="cursor:default;">
+            <div class="project-num">03</div>
+            <div>
+                <div class="project-name">A blog where I try to explain AI without the jargon</div>
+                <div class="project-desc">
+                    There are a lot of terms thrown around in this space that sound intimidating but aren't, and a lot of things that are genuinely confusing that no one admits. I'm writing short posts that break both down — aimed at smart people who just haven't been steeped in it. Coming soon.
+                </div>
+                <div class="project-pills">
+                    <span class="pill">Writing</span>
+                    <span class="pill">AI explainers</span>
+                </div>
+            </div>
+            <div class="project-status" style="color:var(--ink-3);">Coming soon</div>
         </div>
 
-        <div class="project-card">
-            <div class="project-card-header">
-                <div class="project-tag tag-wip">In progress</div>
-                <div class="project-icon" style="background:#fff4f0;">🤖</div>
-            </div>
-            <div class="project-card-body">
-                <div class="project-card-name">Agentic AI Deployment Playbook</div>
-                <div class="project-card-desc">
-                    Full five-stage deployment case study: agentic AI for a Dubai-based semiconductor investment firm. Covers the business case, discovery questionnaire, architecture design, KPI framework, and change management playbook.
+        <div class="project-item" style="cursor:default;">
+            <div class="project-num">04</div>
+            <div>
+                <div class="project-name">An iMessage bot that actually does things for you</div>
+                <div class="project-desc">
+                    I wanted to see how far you could push a text-based AI assistant — not a new app, just iMessage. You text it and it does things: blocks time on your calendar, rewrites a message you want to send more diplomatically, gives you a restaurant rec based on what you're in the mood for. Still building this out.
                 </div>
-                <div class="project-card-meta">
-                    <span class="tech-pill">Agentic AI</span>
-                    <span class="tech-pill">Investment research</span>
-                    <span class="tech-pill">GCC markets</span>
-                    <span class="tech-pill">Semiconductors</span>
+                <div class="project-pills">
+                    <span class="pill">Twilio</span>
+                    <span class="pill">LLM agents</span>
+                    <span class="pill">Calendar API</span>
                 </div>
-                <a href="/project2" class="project-card-link">View playbook →</a>
             </div>
+            <div class="project-status" style="color:var(--ink-3);">Coming soon</div>
         </div>
 
     </div>
-</section>
+</div>
+
+<div class="about-strip">
+    <div class="about-inner">
+        <div class="about-left">
+            <p>
+                I graduated from <strong>UC Berkeley</strong> in December 2021 with a double major in Economics and Data Science. I joined <strong>Analysis Group</strong> right after and have been there for 4.5 years doing quantitative research.
+            </p>
+            <p>
+                Over the last year I got to work on ALMA, a firmwide tool built on LLMs that helps teams work through large document sets. That work is what got me seriously interested in the AI space.
+            </p>
+        </div>
+        <div class="about-stats">
+            <div class="about-stat-row">
+                <div class="about-stat-num">Berkeley</div>
+                <div class="about-stat-label">Economics and Data Science, class of 2021</div>
+            </div>
+            <div class="about-stat-row">
+                <div class="about-stat-num">Mumbai</div>
+                <div class="about-stat-label">originally from here</div>
+            </div>
+            <div class="about-stat-row">
+                <div class="about-stat-num">0.2 mo</div>
+                <div class="about-stat-label">payback period on the deployment I modeled</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer>
-    <div class="footer-copy">© 2025 Chaitali Mandavia</div>
+    <p>Chaitali Mandavia · 2025</p>
     <div class="footer-links">
         <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-        <a href="mailto:hello@example.com">Contact</a>
+        <a href="mailto:hello@example.com">Email</a>
     </div>
 </footer>
 

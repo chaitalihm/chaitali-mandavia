@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI TCO Simulator — Chaitali Mandavia</title>
+    <title>AI TCO Calculator — Chaitali Mandavia</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --ink:       #0a0a0f;
-            --ink-2:     #3d3d4e;
-            --ink-3:     #8888a0;
-            --rule:      #e8e8f0;
-            --surface:   #ffffff;
-            --surface-2: #f7f7fb;
-            --surface-3: #f0f0f7;
-            --accent:    #635bff;
-            --accent-h:  rgba(99,91,255,0.08);
-            --green:     #00c48c;
-            --green-h:   rgba(0,196,140,0.10);
-            --red:       #f43f5e;
-            --orange:    #ff6b35;
-            --radius:    12px;
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg:        #0d0d0d;
+            --bg-2:      #161616;
+            --bg-3:      #1c1c1c;
+            --bg-4:      #222222;
+            --ink:       #f0ede8;
+            --ink-2:     #9d9a94;
+            --ink-3:     #5c5a56;
+            --lime:      #c8f135;
+            --lime-dim:  rgba(200,241,53,0.10);
+            --rule:      rgba(255,255,255,0.08);
+            --orange:    #f5a623;
+            --blue:      #7b9cff;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-serif: 'DM Serif Display', Georgia, serif;
         }
 
         body {
-            font-family: var(--font);
-            background: var(--surface-2);
+            font-family: var(--font-sans);
+            background: var(--bg);
             color: var(--ink);
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
@@ -38,283 +37,240 @@
 
         /* ── NAV ── */
         nav {
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(255,255,255,0.90);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--rule);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 48px; height: 60px;
+            padding: 0 52px; height: 58px;
+            border-bottom: 1px solid var(--rule);
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(10px);
         }
-        .nav-logo {
-            font-size: 13px; font-weight: 700; letter-spacing: 0.10em;
-            text-transform: uppercase; color: var(--ink); text-decoration: none;
-        }
-        .nav-links { display: flex; gap: 32px; }
-        .nav-links a {
-            font-size: 13px; font-weight: 500; color: var(--ink-3);
-            text-decoration: none; transition: color 0.15s;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
-        .nav-cta {
-            font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-            background: var(--ink); color: #fff;
-            padding: 8px 18px; border-radius: 6px;
-            text-decoration: none; transition: opacity 0.15s;
-        }
-        .nav-cta:hover { opacity: 0.8; }
+        .nav-name { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; gap: 36px; }
+        .nav-links a { font-size: 13px; color: var(--ink-2); text-decoration: none; transition: color 0.15s; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-links a.active { color: var(--lime); }
 
         /* ── PAGE HEADER ── */
         .page-header {
-            max-width: 1160px; margin: 0 auto;
-            padding: 40px 48px 28px;
-            border-bottom: 1px solid var(--rule);
-            background: var(--surface);
+            max-width: 1100px; margin: 0 auto;
+            padding: 44px 52px 36px;
         }
-        .page-eyebrow {
-            font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--accent);
-            margin-bottom: 10px; display: block;
+        .page-header-inner {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            border-bottom: 1px solid var(--rule); padding-bottom: 32px; gap: 40px;
         }
-        .page-title {
-            font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
-            color: var(--ink); margin-bottom: 8px;
+        .page-header h1 {
+            font-family: var(--font-serif);
+            font-size: 36px; letter-spacing: -0.01em; color: var(--ink);
+            line-height: 1.1; margin-bottom: 10px;
         }
-        .page-desc {
-            font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 640px;
+        .page-header p {
+            font-size: 14px; color: var(--ink-2); line-height: 1.7;
+            max-width: 500px; font-weight: 300;
+        }
+        .header-note {
+            font-size: 12px; color: var(--ink-3); text-align: right;
+            max-width: 220px; line-height: 1.6; flex-shrink: 0;
+        }
+        .header-note strong { color: var(--ink-2); font-weight: 500; }
+
+        /* ── LAYOUT ── */
+        .sim-wrap {
+            max-width: 1100px; margin: 0 auto;
+            padding: 32px 52px 80px;
+            display: flex; flex-direction: column; gap: 20px;
         }
 
-        /* ── MAIN LAYOUT ── */
-        .simulator-wrap {
-            max-width: 1160px; margin: 0 auto;
-            padding: 32px 48px 64px;
-            display: flex; flex-direction: column; gap: 24px;
+        /* ── PANEL ── */
+        .panel {
+            background: var(--bg-2); border: 1px solid var(--rule);
+            border-radius: 10px; padding: 28px 30px;
+        }
+        .panel-label {
+            font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--ink-3);
+            margin-bottom: 22px; display: block;
         }
 
         /* ── TOP ROW ── */
-        .top-row {
-            display: grid;
-            grid-template-columns: 420px 1fr;
-            gap: 20px;
-        }
+        .top-row { display: grid; grid-template-columns: 400px 1fr; gap: 16px; }
 
-        /* ── PANELS ── */
-        .panel {
-            background: var(--surface);
-            border: 1px solid var(--rule);
-            border-radius: var(--radius);
-            padding: 28px;
-        }
-        .panel-title {
-            font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
-            text-transform: uppercase; color: var(--ink-3);
-            margin-bottom: 20px;
-        }
+        /* ── INPUTS ── */
+        .field { margin-bottom: 22px; }
+        .field:last-child { margin-bottom: 0; }
+        .field-label { font-size: 12px; font-weight: 500; color: var(--ink-2); margin-bottom: 8px; display: block; }
 
-        /* ── DROPDOWN ── */
-        .field-group { margin-bottom: 24px; }
-        .field-label {
-            font-size: 12px; font-weight: 600; color: var(--ink-2);
-            margin-bottom: 8px; display: block; letter-spacing: 0.02em;
-        }
         select {
-            width: 100%; height: 40px;
-            background: var(--surface-2);
-            border: 1px solid var(--rule);
-            border-radius: 8px;
-            padding: 0 36px 0 12px;
-            font-family: var(--font); font-size: 13px; font-weight: 500;
+            width: 100%; height: 38px;
+            background: var(--bg-3); border: 1px solid var(--rule);
+            border-radius: 6px; padding: 0 32px 0 12px;
+            font-family: var(--font-sans); font-size: 13px; font-weight: 400;
             color: var(--ink); cursor: pointer; appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238888a0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%235c5a56' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: right 12px center;
             transition: border-color 0.15s;
         }
-        select:focus { outline: none; border-color: var(--accent); }
+        select:focus { outline: none; border-color: rgba(200,241,53,0.4); }
 
-        /* ── SLIDERS ── */
-        .slider-group { margin-bottom: 22px; }
-        .slider-header {
-            display: flex; justify-content: space-between; align-items: baseline;
-            margin-bottom: 10px;
-        }
-        .slider-label { font-size: 12px; font-weight: 600; color: var(--ink-2); letter-spacing: 0.02em; }
-        .slider-readout {
-            font-size: 13px; font-weight: 700; color: var(--ink);
-            font-variant-numeric: tabular-nums;
-        }
+        .slider-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .slider-val { font-size: 13px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+
         input[type=range] {
-            -webkit-appearance: none; width: 100%; height: 4px;
-            border-radius: 2px; background: var(--rule); cursor: pointer;
-            outline: none;
+            -webkit-appearance: none; width: 100%; height: 3px;
+            background: var(--bg-4); border-radius: 2px; cursor: pointer;
         }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 16px; height: 16px;
-            border-radius: 50%; background: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-h);
-            transition: box-shadow 0.15s;
+            -webkit-appearance: none; width: 14px; height: 14px;
+            border-radius: 50%; background: var(--lime);
+            box-shadow: 0 0 0 3px rgba(200,241,53,0.15);
         }
-        input[type=range]:focus::-webkit-slider-thumb { box-shadow: 0 0 0 5px var(--accent-h); }
-        #minutes::-webkit-slider-thumb { background: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,53,0.12); }
-        #wage::-webkit-slider-thumb { background: var(--green); box-shadow: 0 0 0 3px var(--green-h); }
+        #minutes::-webkit-slider-thumb { background: var(--orange); box-shadow: 0 0 0 3px rgba(245,166,35,0.15); }
+        #wage::-webkit-slider-thumb { background: var(--blue); box-shadow: 0 0 0 3px rgba(123,156,255,0.15); }
 
-        /* ── METRICS PANEL ── */
-        .metrics-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-            margin-bottom: 12px;
+        /* ── METRICS ── */
+        .metrics-panel {
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .metric-tile {
-            background: var(--surface-2); border: 1px solid var(--rule);
-            border-radius: 10px; padding: 16px 18px;
+        .metrics-top { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .metric-box {
+            background: var(--bg-3); border: 1px solid var(--rule);
+            border-radius: 8px; padding: 16px 18px;
         }
-        .metric-tile.accent-tile {
-            background: var(--green-h); border-color: rgba(0,196,140,0.2);
+        .metric-box.big {
             grid-column: 1 / -1;
+            background: var(--lime-dim); border-color: rgba(200,241,53,0.2);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 24px;
         }
-        .metric-tile-label {
-            font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-            text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px;
+        .metric-key { font-size: 11px; color: var(--ink-3); margin-bottom: 7px; letter-spacing: 0.04em; }
+        .metric-val {
+            font-family: var(--font-serif); font-size: 24px;
+            color: var(--ink); letter-spacing: -0.02em;
         }
-        .metric-tile-value {
-            font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
-            color: var(--ink); font-variant-numeric: tabular-nums;
-        }
-        .metric-tile.accent-tile .metric-tile-label { color: rgba(0,196,140,0.8); }
-        .metric-tile.accent-tile .metric-tile-value { color: var(--green); font-size: 28px; }
+        .metric-box.big .metric-key { margin-bottom: 0; font-size: 13px; color: rgba(200,241,53,0.7); }
+        .metric-box.big .metric-val { font-size: 32px; color: var(--lime); }
 
-        .payback-strip {
-            background: var(--surface-2); border: 1px solid var(--rule);
-            border-radius: 10px; padding: 14px 18px;
-            display: flex; align-items: center; justify-content: center;
-            gap: 6px;
+        .payback {
+            background: var(--bg-3); border: 1px solid var(--rule);
+            border-radius: 8px; padding: 14px 18px;
+            font-size: 13px; color: var(--ink-2); text-align: center;
+            line-height: 1.6; font-weight: 300;
         }
-        .payback-text {
-            font-size: 13px; color: var(--ink-2); line-height: 1.5; text-align: center;
-        }
-        .payback-text strong { color: var(--ink); font-weight: 700; }
+        .payback strong { color: var(--ink); font-weight: 500; }
 
-        /* ── CHART ROWS ── */
-        .chart-row { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
-        .chart-panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 24px; }
-        .chart-panel-title {
-            font-size: 13px; font-weight: 600; color: var(--ink);
-            margin-bottom: 16px; letter-spacing: -0.01em;
-        }
-        .chart-canvas-wrap { position: relative; height: 280px; }
-        .chart-full { grid-column: 1 / -1; }
+        /* ── CHARTS ── */
+        .chart-row { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
+        .chart-panel { background: var(--bg-2); border: 1px solid var(--rule); border-radius: 10px; padding: 24px 26px; }
+        .chart-title { font-size: 13px; font-weight: 500; color: var(--ink-2); margin-bottom: 18px; }
+        .chart-wrap { position: relative; height: 260px; }
+        .chart-full { display: block; }
 
-        /* ── ANALYSIS LABEL ── */
-        .analysis-note {
-            font-size: 11px; color: var(--ink-3); margin-top: 12px; text-align: center;
-        }
+        .chart-note { font-size: 11px; color: var(--ink-3); margin-top: 12px; text-align: center; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="/" class="nav-logo">Chaitali Mandavia</a>
+    <a href="/" class="nav-name">Chaitali Mandavia</a>
     <div class="nav-links">
         <a href="/">Home</a>
-        <a href="/simulator" class="active">TCO Simulator</a>
-        <a href="/project2">AI Deployment Playbook</a>
+        <a href="/simulator" class="active">TCO Calculator</a>
+        <a href="/project2">Deployment Playbook</a>
     </div>
-    <a href="mailto:hello@example.com" class="nav-cta">Get in touch →</a>
 </nav>
 
 <div class="page-header">
-    <span class="page-eyebrow">Interactive tool</span>
-    <h1 class="page-title">Enterprise AI TCO Simulator</h1>
-    <p class="page-desc">Model the true cost of deploying enterprise AI — API fees, human oversight, and upfront implementation — against your current manual labor spend.</p>
+    <div class="page-header-inner">
+        <div>
+            <h1>What does it actually cost<br>to deploy enterprise AI?</h1>
+            <p>I built this to answer a question I kept hearing at work. Plug in your numbers — task volume, time per task, what you're paying people — and see where AI starts making economic sense.</p>
+        </div>
+        <div class="header-note">
+            The model accounts for <strong>API fees</strong>, the humans you still need for oversight, and upfront setup costs — not just the headline token price.
+        </div>
+    </div>
 </div>
 
-<div class="simulator-wrap">
+<div class="sim-wrap">
 
-    <!-- Top row: inputs + value metrics -->
     <div class="top-row">
-
-        <!-- Inputs -->
         <div class="panel">
-            <div class="panel-title">Configuration</div>
+            <span class="panel-label">Your inputs</span>
 
-            <div class="field-group">
-                <label class="field-label" for="use_case">Enterprise operational task</label>
+            <div class="field">
+                <label class="field-label" for="use_case">What kind of task are we replacing?</label>
                 <select id="use_case" onchange="handleUseCaseChange()">
-                    <option value="document-extraction" selected>Document Auditing &amp; Structured Extraction</option>
-                    <option value="support-routing">High-Volume Customer Support Routing</option>
-                    <option value="knowledge-search">Enterprise Knowledge Management (RAG)</option>
+                    <option value="document-extraction" selected>Document auditing &amp; data extraction</option>
+                    <option value="support-routing">Customer support routing &amp; resolution</option>
+                    <option value="knowledge-search">Internal knowledge search (RAG)</option>
                 </select>
             </div>
 
-            <div class="slider-group">
-                <div class="slider-header">
-                    <span class="slider-label" id="volume_label">Monthly documents</span>
-                    <span class="slider-readout" id="volume_val">5,000</span>
+            <div class="field">
+                <div class="slider-row">
+                    <label class="field-label" id="volume_label" for="volume">Monthly volume</label>
+                    <span class="slider-val" id="volume_val">5,000</span>
                 </div>
                 <input type="range" id="volume" min="500" max="25000" step="500" value="5000" oninput="updateSimulation()">
             </div>
 
-            <div class="slider-group">
-                <div class="slider-header">
-                    <span class="slider-label" id="minutes_label">Minutes per task</span>
-                    <span class="slider-readout" id="minutes_val">45 min</span>
+            <div class="field">
+                <div class="slider-row">
+                    <label class="field-label" for="minutes">Minutes per task (human)</label>
+                    <span class="slider-val" id="minutes_val">45 min</span>
                 </div>
                 <input type="range" id="minutes" min="5" max="120" step="5" value="45" oninput="updateSimulation()">
             </div>
 
-            <div class="slider-group">
-                <div class="slider-header">
-                    <span class="slider-label">Employee hourly wage</span>
-                    <span class="slider-readout" id="wage_val">$60</span>
+            <div class="field">
+                <div class="slider-row">
+                    <label class="field-label" for="wage">Hourly wage of the person doing it</label>
+                    <span class="slider-val" id="wage_val">$60</span>
                 </div>
                 <input type="range" id="wage" min="15" max="200" step="5" value="60" oninput="updateSimulation()">
             </div>
         </div>
 
-        <!-- Value metrics -->
-        <div class="panel" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <div class="panel-title">Value Realization</div>
-                <div class="metrics-grid">
-                    <div class="metric-tile">
-                        <div class="metric-tile-label">Manual baseline</div>
-                        <div class="metric-tile-value" id="legacy_baseline">—</div>
+        <div class="panel metrics-panel">
+            <span class="panel-label">What the numbers say</span>
+            <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+                <div class="metrics-top">
+                    <div class="metric-box">
+                        <div class="metric-key">You're currently spending</div>
+                        <div class="metric-val" id="legacy_baseline">—</div>
+                        <div style="font-size:11px;color:var(--ink-3);margin-top:4px;">per month</div>
                     </div>
-                    <div class="metric-tile">
-                        <div class="metric-tile-label">AI TCO</div>
-                        <div class="metric-tile-value" id="ai_tco">—</div>
+                    <div class="metric-box">
+                        <div class="metric-key">AI would cost</div>
+                        <div class="metric-val" id="ai_tco">—</div>
+                        <div style="font-size:11px;color:var(--ink-3);margin-top:4px;">per month (true TCO)</div>
                     </div>
-                    <div class="metric-tile accent-tile">
-                        <div class="metric-tile-label">Monthly value captured</div>
-                        <div class="metric-tile-value" id="monthly_savings">—</div>
+                    <div class="metric-box big">
+                        <div class="metric-key">Monthly savings</div>
+                        <div class="metric-val" id="monthly_savings">—</div>
                     </div>
                 </div>
-            </div>
-            <div class="payback-strip">
-                <div class="payback-text">
-                    Upfront implementation cost of <strong id="upfront_cost">—</strong> is recovered in <strong><span id="payback_period">—</span> months</strong>
+                <div class="payback">
+                    Upfront setup of <strong id="upfront_cost">—</strong> is recovered in <strong><span id="payback_period">—</span> months</strong>
                 </div>
             </div>
-        </div>
-
-    </div>
-
-    <!-- Chart row 1: break-even + donut -->
-    <div class="chart-row">
-        <div class="chart-panel">
-            <div class="chart-panel-title">Cumulative cost: manual vs. AI deployment</div>
-            <div class="chart-canvas-wrap"><canvas id="lineChart"></canvas></div>
-        </div>
-        <div class="chart-panel">
-            <div class="chart-panel-title">TCO expense allocation</div>
-            <div class="chart-canvas-wrap"><canvas id="donutChart"></canvas></div>
         </div>
     </div>
 
-    <!-- Chart row 2: sensitivity -->
     <div class="chart-row">
-        <div class="chart-panel chart-full">
-            <div class="chart-panel-title">ROI sensitivity — volume scale vs. human fallback rate</div>
-            <div class="chart-canvas-wrap" style="height:240px;"><canvas id="sensitivityChart"></canvas></div>
-            <div class="analysis-note">Fallback rate = % of tasks requiring human review. Lower fallback → higher net ROI.</div>
+        <div class="chart-panel">
+            <div class="chart-title">Cumulative cost over 12 months — manual vs. AI</div>
+            <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
         </div>
+        <div class="chart-panel">
+            <div class="chart-title">Where the AI cost actually goes</div>
+            <div class="chart-wrap"><canvas id="donutChart"></canvas></div>
+        </div>
+    </div>
+
+    <div class="chart-panel chart-full">
+        <div class="chart-title">ROI at different volumes — and what happens if AI gets it wrong more often</div>
+        <div class="chart-wrap" style="height:220px;"><canvas id="sensitivityChart"></canvas></div>
+        <div class="chart-note">Human fallback rate = % of tasks that still need a human to review. The lines are tight, which means volume matters more than accuracy at the margin.</div>
     </div>
 
 </div>
@@ -323,53 +279,30 @@
     let lineChart, donutChart, sensitivityChart;
 
     const CONFIGS = {
-        "document-extraction": { label: "Monthly documents", unit: "documents", minVol: 500, maxVol: 25000, stepVol: 500, defVol: 5000, minM: 5, maxM: 120, defM: 45 },
-        "support-routing":     { label: "Monthly inbound tickets", unit: "tickets", minVol: 5000, maxVol: 200000, stepVol: 5000, defVol: 50000, minM: 1, maxM: 30, defM: 8 },
-        "knowledge-search":    { label: "Monthly internal queries", unit: "queries", minVol: 1000, maxVol: 50000, stepVol: 1000, defVol: 15000, minM: 2, maxM: 45, defM: 12 }
-    };
-
-    const CHART_DEFAULTS = {
-        font: { family: "'Inter', -apple-system, sans-serif" },
-        color: '#8888a0'
+        "document-extraction": { label: "Documents per month", unit: "docs", minVol:500, maxVol:25000, stepVol:500, defVol:5000, minM:5, maxM:120, defM:45 },
+        "support-routing":     { label: "Tickets per month",   unit: "tickets", minVol:5000, maxVol:200000, stepVol:5000, defVol:50000, minM:1, maxM:30, defM:8 },
+        "knowledge-search":    { label: "Queries per month",   unit: "queries", minVol:1000, maxVol:50000, stepVol:1000, defVol:15000, minM:2, maxM:45, defM:12 }
     };
 
     function initCharts() {
-        Chart.defaults.font.family = CHART_DEFAULTS.font.family;
+        Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
         Chart.defaults.font.size = 11;
-        Chart.defaults.color = CHART_DEFAULTS.color;
+        Chart.defaults.color = '#5c5a56';
 
-        const gridColor = 'rgba(232,232,240,0.8)';
+        const gridColor = 'rgba(255,255,255,0.05)';
 
         lineChart = new Chart(document.getElementById('lineChart'), {
             type: 'line',
-            data: {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'Manual Labor Cost',
-                        data: [], borderColor: '#635bff',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2, tension: 0.1, pointRadius: 3,
-                        pointBackgroundColor: '#635bff'
-                    },
-                    {
-                        label: 'AI Deployment Cost',
-                        data: [], borderColor: '#00c48c',
-                        backgroundColor: 'rgba(0,196,140,0.08)',
-                        fill: '-1', borderWidth: 2, tension: 0.1,
-                        pointRadius: 3, pointBackgroundColor: '#00c48c'
-                    }
-                ]
-            },
+            data: { labels: [], datasets: [
+                { label: 'Manual labor', data: [], borderColor: '#7b9cff', backgroundColor: 'transparent', borderWidth: 2, tension: 0.1, pointRadius: 2, pointBackgroundColor: '#7b9cff' },
+                { label: 'AI deployment', data: [], borderColor: '#c8f135', backgroundColor: 'rgba(200,241,53,0.07)', fill: '-1', borderWidth: 2, tension: 0.1, pointRadius: 2, pointBackgroundColor: '#c8f135' }
+            ]},
             options: {
                 responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top', align: 'end', labels: { usePointStyle: true, pointStyle: 'circle', padding: 16, boxWidth: 8, boxHeight: 8 } },
-                    tooltip: { mode: 'index', intersect: false }
-                },
+                plugins: { legend: { position:'top', align:'end', labels: { usePointStyle:true, pointStyle:'circle', boxWidth:7, boxHeight:7, padding:16, color:'#9d9a94' } }, tooltip: { mode:'index', intersect:false } },
                 scales: {
-                    x: { grid: { color: gridColor }, ticks: { font: { size: 11 } } },
-                    y: { grid: { color: gridColor }, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k', font: { size: 11 } } }
+                    x: { grid: { color: gridColor }, ticks: { color: '#5c5a56' } },
+                    y: { grid: { color: gridColor }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k', color:'#5c5a56' } }
                 }
             }
         });
@@ -377,82 +310,65 @@
         donutChart = new Chart(document.getElementById('donutChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Model API Fees', 'Data Ingestion', 'Compute Resources', 'Human Oversight'],
-                datasets: [{ data: [], backgroundColor: ['#635bff', '#a78bfa', '#ff6b35', '#00c48c'], borderWidth: 0 }]
+                labels: ['Model API fees', 'Data ingestion', 'Compute', 'Human oversight'],
+                datasets: [{ data: [], backgroundColor: ['#c8f135','#7b9cff','#f5a623','#3d3d4e'], borderWidth: 0 }]
             },
             options: {
-                responsive: true, maintainAspectRatio: false,
-                cutout: '68%',
-                plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 12, boxWidth: 8, boxHeight: 8 } }
-                }
+                responsive:true, maintainAspectRatio:false, cutout:'70%',
+                plugins: { legend: { position:'bottom', labels: { usePointStyle:true, pointStyle:'circle', boxWidth:7, padding:12, color:'#9d9a94' } } }
             }
         });
 
         sensitivityChart = new Chart(document.getElementById('sensitivityChart'), {
             type: 'line',
             data: {
-                labels: ['0.5× Scale', '1.0× Scale', '1.5× Scale', '2.0× Scale'],
+                labels: ['0.5× volume','1.0× volume','1.5× volume','2.0× volume'],
                 datasets: [
-                    { label: '10% Fallback', data: [], borderColor: '#00c48c', backgroundColor: 'transparent', borderWidth: 2, tension: 0.35, pointRadius: 4, pointBackgroundColor: '#00c48c' },
-                    { label: '15% Fallback', data: [], borderColor: '#635bff', backgroundColor: 'transparent', borderWidth: 2, tension: 0.35, pointRadius: 4, pointBackgroundColor: '#635bff' },
-                    { label: '20% Fallback', data: [], borderColor: '#ff6b35', backgroundColor: 'transparent', borderWidth: 2, tension: 0.35, pointRadius: 4, pointBackgroundColor: '#ff6b35' }
+                    { label: '10% fallback', data:[], borderColor:'#c8f135', backgroundColor:'transparent', borderWidth:2, tension:0.35, pointRadius:3, pointBackgroundColor:'#c8f135' },
+                    { label: '15% fallback', data:[], borderColor:'#7b9cff', backgroundColor:'transparent', borderWidth:2, tension:0.35, pointRadius:3, pointBackgroundColor:'#7b9cff' },
+                    { label: '20% fallback', data:[], borderColor:'#f5a623', backgroundColor:'transparent', borderWidth:2, tension:0.35, pointRadius:3, pointBackgroundColor:'#f5a623' }
                 ]
             },
             options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top', align: 'end', labels: { usePointStyle: true, pointStyle: 'circle', padding: 16, boxWidth: 8 } },
-                    tooltip: { mode: 'index', intersect: false }
-                },
+                responsive:true, maintainAspectRatio:false,
+                plugins: { legend: { position:'top', align:'end', labels: { usePointStyle:true, pointStyle:'circle', boxWidth:7, padding:16, color:'#9d9a94' } }, tooltip: { mode:'index', intersect:false } },
                 scales: {
-                    x: { grid: { color: gridColor }, ticks: { font: { size: 11 } } },
-                    y: {
-                        grid: { color: gridColor },
-                        title: { display: true, text: 'Net Annualized ROI (%)', font: { size: 11 }, color: '#8888a0' },
-                        ticks: { callback: v => v.toLocaleString() + '%', font: { size: 11 } }
-                    }
+                    x: { grid: { color: gridColor }, ticks: { color:'#5c5a56' } },
+                    y: { grid: { color: gridColor }, title: { display:true, text:'Net annualized ROI (%)', color:'#5c5a56', font:{size:11} }, ticks: { callback: v => v.toLocaleString()+'%', color:'#5c5a56' } }
                 }
             }
         });
     }
 
     function handleUseCaseChange() {
-        const uc = document.getElementById('use_case').value;
-        const c = CONFIGS[uc];
+        const uc = document.getElementById('use_case').value, c = CONFIGS[uc];
         document.getElementById('volume_label').innerText = c.label;
         const vs = document.getElementById('volume');
-        vs.min = c.minVol; vs.max = c.maxVol; vs.step = c.stepVol; vs.value = c.defVol;
+        vs.min=c.minVol; vs.max=c.maxVol; vs.step=c.stepVol; vs.value=c.defVol;
         const ms = document.getElementById('minutes');
-        ms.min = c.minM; ms.max = c.maxM; ms.value = c.defM;
+        ms.min=c.minM; ms.max=c.maxM; ms.value=c.defM;
         updateSimulation();
     }
 
     function updateSimulation() {
-        const uc   = document.getElementById('use_case').value;
-        const vol  = document.getElementById('volume').value;
-        const mins = document.getElementById('minutes').value;
-        const wage = document.getElementById('wage').value;
+        const uc=document.getElementById('use_case').value,
+              vol=document.getElementById('volume').value,
+              mins=document.getElementById('minutes').value,
+              wage=document.getElementById('wage').value;
+        document.getElementById('volume_val').innerText  = Number(vol).toLocaleString()+' '+CONFIGS[uc].unit;
+        document.getElementById('minutes_val').innerText = mins+' min';
+        document.getElementById('wage_val').innerText    = '$'+wage;
 
-        const unit = CONFIGS[uc].unit;
-        document.getElementById('volume_val').innerText  = Number(vol).toLocaleString() + ' ' + unit;
-        document.getElementById('minutes_val').innerText = mins + ' min';
-        document.getElementById('wage_val').innerText    = '$' + wage;
-
-        fetch('/calculate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ use_case: uc, volume: parseInt(vol), minutes: parseInt(mins), wage: parseInt(wage) })
-        })
-        .then(r => r.json())
-        .then(data => {
+        fetch('/calculate',{method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({use_case:uc,volume:parseInt(vol),minutes:parseInt(mins),wage:parseInt(wage)})
+        }).then(r=>r.json()).then(data=>{
             document.getElementById('legacy_baseline').innerText = data.legacy_baseline;
             document.getElementById('ai_tco').innerText          = data.ai_tco;
             document.getElementById('monthly_savings').innerText = data.monthly_savings;
             document.getElementById('upfront_cost').innerText    = data.upfront_cost;
             document.getElementById('payback_period').innerText  = data.payback_period;
 
-            lineChart.data.labels = data.chart_data.months.map(m => `Month ${m}`);
+            lineChart.data.labels = data.chart_data.months.map(m=>`Month ${m}`);
             lineChart.data.datasets[0].data = data.chart_data.human_line;
             lineChart.data.datasets[1].data = data.chart_data.ai_line;
             lineChart.update();
@@ -467,7 +383,7 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => { initCharts(); handleUseCaseChange(); });
+    document.addEventListener('DOMContentLoaded', ()=>{ initCharts(); handleUseCaseChange(); });
 </script>
 </body>
 </html>
