@@ -10,24 +10,22 @@ def index():
 def calculate():
     data = request.get_json() or {}
     
-    # Extract keys sent directly by your JavaScript sliders
     use_case = data.get('use_case', 'document-extraction')
     volume = float(data.get('volume', 5000))
     minutes = float(data.get('minutes', 45))
     wage = float(data.get('wage', 60))
     
-    # Establish task-specific baseline assumptions
     if use_case == "document-extraction":
         input_tokens, output_tokens = 45000, 1500
         human_fallback_rate, upfront_base = 0.15, 35000
     elif use_case == "support-routing":
         input_tokens, output_tokens = 4000, 500
         human_fallback_rate, upfront_base = 0.08, 25000
-    else: # knowledge-search
+    else: 
         input_tokens, output_tokens = 15000, 800
         human_fallback_rate, upfront_base = 0.05, 40000
 
-    # Main Row Card Math
+    # Base Point Calculations
     legacy_monthly = (volume * (minutes / 60.0)) * wage
     token_cost = ((volume * input_tokens * 0.005) + (volume * output_tokens * 0.015)) / 1000.0
     human_audit_cost = (volume * human_fallback_rate * (minutes / 60.0)) * wage
@@ -38,15 +36,33 @@ def calculate():
     
     payback_period = f"{max(0.1, upfront_cost / monthly_savings):.1f}" if monthly_savings > 0 else "Infinite"
 
-    # Generate 12-Month Projections for the Break-Even line chart
+    # Time-series Break-Even lines
     months = list(range(0, 13))
     human_line = [round(legacy_monthly * m, 2) for m in months]
     ai_line = [round(upfront_cost + (ai_tco_monthly * m), 2) for m in months]
 
-    # Generate multi-scenario lines for the Sensitivity Line Chart
-    sens_10 = [round((legacy_monthly * scale) - (token_cost * scale + (volume * scale * 0.10 * (minutes / 60.0)) * wage), 2) for scale in [0.5, 1.0, 1.5, 2.0]]
-    sens_15 = [round((legacy_monthly * scale) - (token_cost * scale + (volume * scale * 0.15 * (minutes / 60.0)) * wage), 2) for scale in [0.5, 1.0, 1.5, 2.0]]
-    sens_20 = [round((legacy_monthly * scale) - (token_cost * scale + (volume * scale * 0.20 * (minutes / 60.0)) * wage), 2) for scale in [0.5, 1.0, 1.5, 2.0]]
+    # Calculate True Annualized ROI Percentages across Scale Curves
+    sens_10, sens_15, sens_20 = [], [], []
+    for scale in [0.5, 1.0, 1.5, 2.0]:
+        s_vol = volume * scale
+        s_legacy = (s_vol * (minutes / 60.0)) * wage
+        s_token = ((s_vol * input_tokens * 0.005) + (s_vol * output_tokens * 0.015)) / 1000.0
+        s_upfront = upfront_base + (s_vol * 0.50)
+        
+        # 10% Fallback Scenario
+        s_tco_10 = s_token + ((s_vol * 0.10 * (minutes / 60.0)) * wage)
+        roi_10 = ((s_legacy - s_tco_10) * 12) / s_upfront * 100 if s_upfront > 0 else 0
+        sens_10.append(round(roi_10, 1))
+        
+        # 15% Fallback Scenario
+        s_tco_15 = s_token + ((s_vol * 0.15 * (minutes / 60.0)) * wage)
+        roi_15 = ((s_legacy - s_tco_15) * 12) / s_upfront * 100 if s_upfront > 0 else 0
+        sens_15.append(round(roi_15, 1))
+        
+        # 20% Fallback Scenario
+        s_tco_20 = s_token + ((s_vol * 0.20 * (minutes / 60.0)) * wage)
+        roi_20 = ((s_legacy - s_tco_20) * 12) / s_upfront * 100 if s_upfront > 0 else 0
+        sens_20.append(round(roi_20, 1))
 
     return jsonify({
         "legacy_baseline": f"${legacy_monthly:,.0f}",
