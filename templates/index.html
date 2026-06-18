@@ -49,7 +49,7 @@
         .instruction-box { width: 602px; box-sizing: border-box; padding: 0 10px; display: flex; flex-direction: column; gap: 8px; }
         .instruction-line { color: #FAFE00; font-size: 14px; font-weight: 700; line-height: 1.3; }
 
-        /* Chart Frame Matrix */
+        /* Chart Section Elements */
         .chart-section { width: 1172px; margin-top: 40px; display: flex; flex-direction: column; gap: 25px; }
         .chart-row { display: flex; gap: 20px; }
         .chart-box { background: white; border-radius: 20px; padding: 25px; box-sizing: border-box; color: black; }
@@ -146,9 +146,33 @@
         };
 
         function initCharts() {
-            lineChart = new Chart(document.getElementById('lineChart'), { type: 'line', data: { labels: [], datasets: [{ label: 'Cumulative Manual Labor Cost', data: [], borderColor: '#132BFD', tension: 0.1 }, { label: 'Cumulative AI Deployment Cost', data: [], borderColor: '#F42B2B', backgroundColor: 'rgba(165,197,134,0.3)', fill: true, tension: 0.1 }] }, options: { responsive: true, maintainAspectRatio: false } });
+            lineChart = new Chart(document.getElementById('lineChart'), {
+                type: 'line',
+                data: { labels: [], datasets: [
+                    { label: 'Cumulative Manual Labor Cost', data: [], borderColor: '#132BFD', fill: false, tension: 0.1 },
+                    { label: 'Cumulative AI Deployment Cost', data: [], borderColor: '#F42B2B', backgroundColor: 'rgba(165,197,134,0.4)', fill: '-1', tension: 0.1 } // fill: '-1' targets the area between blue and red
+                ]},
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { usePointStyle: true, pointStyle: 'line' } } } // Renders legendary indicator lines instead of boxes
+                }
+            });
+
             donutChart = new Chart(document.getElementById('donutChart'), { type: 'doughnut', data: { labels: ['Model API Fees', 'Data Ingestion', 'Compute Resources', 'Human Oversight'], datasets: [{ data: [], backgroundColor: ['#132AFD', '#FF17EC', '#FF9A36', '#F42B2B'] }] }, options: { responsive: true, maintainAspectRatio: false } });
-            sensitivityChart = new Chart(document.getElementById('sensitivityChart'), { type: 'line', data: { labels: ['0.5x Scale', '1.0x Scale', '1.5x Scale', '2.0x Scale'], datasets: [{ label: '10% Fallback', data: [], borderColor: '#FF9901', tension: 0.3 }, { label: '15% Fallback', data: [], borderColor: '#132BFD', tension: 0.3 }, { label: '20% Fallback', data: [], borderColor: '#F42B2B', tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false } });
+            
+            sensitivityChart = new Chart(document.getElementById('sensitivityChart'), {
+                type: 'line',
+                data: { labels: ['0.5x Scale', '1.0x Scale', '1.5x Scale', '2.0x Scale'], datasets: [
+                    { label: '10% Fallback', data: [], borderColor: '#FF9901', tension: 0.3 },
+                    { label: '15% Fallback', data: [], borderColor: '#132BFD', tension: 0.3 },
+                    { label: '20% Fallback', data: [], borderColor: '#F42B2B', tension: 0.3 }
+                ]},
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { usePointStyle: true, pointStyle: 'line' } } },
+                    scales: { y: { min: 0, max: 400, title: { display: true, text: 'Net ROI Percent (%)' } } } // Enforces focused increments from 0 to 400
+                }
+            });
         }
 
         function handleUseCaseChange() {
@@ -162,7 +186,7 @@
         function updateSimulation() {
             const uc = document.getElementById('use_case').value; const vol = document.getElementById('volume').value; const mins = document.getElementById('minutes').value; const wage = document.getElementById('wage').value;
             document.getElementById('volume_val').innerText = Number(vol).toLocaleString() + " " + CONFIGS[uc].unit;
-            document.getElementById('minutes_val').innerText = mins + " minutes"; document.getElementById('wage_val').innerText = "$" + wage + "/hour";
+            document.getElementById('minutes_val').innerText = mins + " minutes"; document.getElementById('wage_val').innerText = "$" + wage;
 
             fetch('/calculate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ use_case: uc, volume: parseInt(vol), minutes: parseInt(mins), wage: parseInt(wage) }) })
             .then(res => res.json()).then(data => {
@@ -178,9 +202,10 @@
 
                 donutChart.data.datasets[0].data = data.chart_data.donut; donutChart.update();
 
-                sensitivityChart.data.datasets[0].data = data.chart_data.sens_10;
-                sensitivityChart.data.datasets[1].data = data.chart_data.sens_15;
-                sensitivityChart.data.datasets[2].data = data.chart_data.sens_20; sensitivityChart.update();
+                // Convert pure values to scaling percentages to load sensitivity curves accurately
+                sensitivityChart.data.datasets[0].data = data.chart_data.sens_10.map(v => v * 100);
+                sensitivityChart.data.datasets[1].data = data.chart_data.sens_15.map(v => v * 100);
+                sensitivityChart.data.datasets[2].data = data.chart_data.sens_20.map(v => v * 100); sensitivityChart.update();
             });
         }
 
