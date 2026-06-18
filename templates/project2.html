@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Deployment Playbook — Chaitali Mandavia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0d0d0d;
+            --bg-2:      #161616;
+            --bg-3:      #1c1c1c;
+            --bg-4:      #222222;
+            --ink:       #f0ede8;
+            --ink-2:     #9d9a94;
+            --ink-3:     #5c5a56;
+            --lime:      #c8f135;
+            --lime-dim:  rgba(200,241,53,0.10);
+            --rule:      rgba(255,255,255,0.08);
+            --orange:    #f5a623;
+            --blue:      #7b9cff;
+            --red:       #ff6b6b;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-serif: 'DM Serif Display', Georgia, serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 52px; height: 58px;
+            border-bottom: 1px solid var(--rule);
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(13,13,13,0.92); backdrop-filter: blur(10px);
+        }
+        .nav-name { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; gap: 36px; }
+        .nav-links a { font-size: 13px; color: var(--ink-2); text-decoration: none; transition: color 0.15s; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-links a.active { color: var(--lime); }
+
+        /* PAGE HEADER */
+        .page-header {
+            max-width: 860px; margin: 0 auto;
+            padding: 72px 52px 56px;
+        }
+        .breadcrumb {
+            font-size: 12px; color: var(--ink-3); margin-bottom: 24px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .breadcrumb a { color: var(--ink-3); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--ink-2); }
+        .breadcrumb span { color: var(--ink-3); }
+
+        .page-tag {
+            display: inline-block; font-size: 11px; font-weight: 500;
+            letter-spacing: 0.06em; color: var(--lime);
+            background: var(--lime-dim); border: 1px solid rgba(200,241,53,0.2);
+            border-radius: 4px; padding: 4px 10px; margin-bottom: 20px;
+        }
+        .page-h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.08; letter-spacing: -0.01em;
+            color: var(--ink); margin-bottom: 20px;
+        }
+        .page-h1 em { font-style: italic; color: var(--lime); }
+        .page-intro {
+            font-size: 16px; line-height: 1.8; color: var(--ink-2);
+            font-weight: 300; max-width: 660px; margin-bottom: 40px;
+        }
+
+        /* META ROW */
+        .meta-row {
+            display: flex; gap: 32px; flex-wrap: wrap;
+            padding-top: 28px; border-top: 1px solid var(--rule);
+        }
+        .meta-item { display: flex; flex-direction: column; gap: 4px; }
+        .meta-key { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+        .meta-val { font-size: 13px; font-weight: 500; color: var(--ink-2); }
+
+        /* STAGE NAV */
+        .stage-nav {
+            position: sticky; top: 58px; z-index: 40;
+            background: rgba(13,13,13,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--rule);
+            padding: 0 52px;
+            display: flex; gap: 0; overflow-x: auto;
+        }
+        .stage-nav a {
+            font-size: 12px; font-weight: 500; color: var(--ink-3);
+            text-decoration: none; padding: 14px 20px;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+        }
+        .stage-nav a:hover { color: var(--ink-2); }
+        .stage-nav a.active { color: var(--lime); border-bottom-color: var(--lime); }
+
+        /* CONTENT */
+        .content { max-width: 860px; margin: 0 auto; padding: 0 52px 100px; }
+
+        /* STAGE BLOCK */
+        .stage-block { padding: 64px 0; border-bottom: 1px solid var(--rule); }
+        .stage-block:last-child { border-bottom: none; }
+
+        .stage-label {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+        }
+        .stage-num {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--bg-3); border: 1px solid var(--rule);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 600; color: var(--ink-3);
+            flex-shrink: 0;
+        }
+        .stage-tag-text {
+            font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--ink-3);
+        }
+        .stage-h2 {
+            font-family: var(--font-serif);
+            font-size: 30px; letter-spacing: -0.01em;
+            color: var(--ink); margin-bottom: 16px; line-height: 1.15;
+        }
+        .stage-intro {
+            font-size: 15px; line-height: 1.8; color: var(--ink-2);
+            font-weight: 300; margin-bottom: 36px; max-width: 680px;
+        }
+
+        /* CALLOUT BOX */
+        .callout {
+            background: var(--bg-2); border: 1px solid var(--rule);
+            border-radius: 10px; padding: 24px 28px; margin-bottom: 28px;
+        }
+        .callout-title {
+            font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px;
+        }
+        .callout p {
+            font-size: 14px; line-height: 1.75; color: var(--ink-2);
+            font-weight: 300;
+        }
+        .callout p + p { margin-top: 12px; }
+        .callout strong { color: var(--ink); font-weight: 500; }
+
+        /* HIGHLIGHT CALLOUT */
+        .callout.lime {
+            background: var(--lime-dim); border-color: rgba(200,241,53,0.2);
+        }
+        .callout.lime .callout-title { color: rgba(200,241,53,0.6); }
+        .callout.lime p { color: rgba(240,237,232,0.8); }
+
+        /* STAT ROW */
+        .stat-row {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 12px; margin-bottom: 28px;
+        }
+        .stat-box {
+            background: var(--bg-2); border: 1px solid var(--rule);
+            border-radius: 10px; padding: 20px 22px;
+        }
+        .stat-box-num {
+            font-family: var(--font-serif); font-size: 28px;
+            color: var(--lime); letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+        .stat-box-label {
+            font-size: 12px; color: var(--ink-3); line-height: 1.5; font-weight: 300;
+        }
+
+        /* QUESTION TREE */
+        .q-section { margin-bottom: 32px; }
+        .q-section-title {
+            font-size: 13px; font-weight: 600; color: var(--ink);
+            margin-bottom: 16px; padding-bottom: 10px;
+            border-bottom: 1px solid var(--rule);
+            letter-spacing: 0.01em;
+        }
+        .q-list { display: flex; flex-direction: column; gap: 0; }
+        .q-item {
+            display: grid; grid-template-columns: 24px 1fr;
+            gap: 14px; padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            align-items: start;
+        }
+        .q-item:last-child { border-bottom: none; }
+        .q-num {
+            font-size: 11px; font-weight: 500; color: var(--ink-3);
+            padding-top: 2px; font-variant-numeric: tabular-nums;
+        }
+        .q-text {
+            font-size: 14px; color: var(--ink-2); line-height: 1.6; font-weight: 300;
+        }
+        .q-text strong { color: var(--ink); font-weight: 500; }
+        .q-sub {
+            margin-top: 8px; padding-left: 16px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .q-sub-item {
+            font-size: 12px; color: var(--ink-3); line-height: 1.5;
+            display: flex; gap: 8px; align-items: start;
+        }
+        .q-sub-item::before { content: "→"; flex-shrink: 0; color: var(--ink-3); }
+
+        /* ARCHITECTURE DIAGRAM */
+        .arch-diagram {
+            background: var(--bg-2); border: 1px solid var(--rule);
+            border-radius: 10px; padding: 32px; margin-bottom: 28px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .arch-layer {
+            display: flex; gap: 12px; align-items: stretch;
+        }
+        .arch-layer-label {
+            font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--ink-3);
+            writing-mode: vertical-rl; transform: rotate(180deg);
+            width: 18px; flex-shrink: 0; text-align: center;
+        }
+        .arch-boxes { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
+        .arch-box {
+            background: var(--bg-3); border: 1px solid var(--rule);
+            border-radius: 8px; padding: 12px 16px; flex: 1; min-width: 140px;
+        }
+        .arch-box-title { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+        .arch-box-desc { font-size: 11px; color: var(--ink-3); line-height: 1.5; }
+        .arch-box.lime { border-color: rgba(200,241,53,0.3); background: rgba(200,241,53,0.06); }
+        .arch-box.lime .arch-box-title { color: var(--lime); }
+        .arch-arrow {
+            text-align: center; color: var(--ink-3); font-size: 16px;
+            padding: 0 0 0 18px;
+        }
+
+        /* KPI TABLE */
+        .kpi-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+        .kpi-table th {
+            font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--ink-3);
+            text-align: left; padding: 10px 16px;
+            border-bottom: 1px solid var(--rule);
+        }
+        .kpi-table td {
+            font-size: 13px; color: var(--ink-2); padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            vertical-align: top; line-height: 1.6; font-weight: 300;
+        }
+        .kpi-table tr:last-child td { border-bottom: none; }
+        .kpi-table td:first-child { color: var(--ink); font-weight: 500; font-size: 13px; }
+        .kpi-table td.green { color: var(--lime); font-weight: 500; }
+        .kpi-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* TIMELINE */
+        .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; }
+        .tl-item {
+            display: grid; grid-template-columns: 100px 1fr;
+            gap: 24px; padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .tl-item:last-child { border-bottom: none; }
+        .tl-time {
+            font-size: 12px; font-weight: 500; color: var(--lime);
+            padding-top: 2px; font-variant-numeric: tabular-nums;
+        }
+        .tl-content-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+        .tl-content-desc { font-size: 13px; color: var(--ink-2); line-height: 1.65; font-weight: 300; }
+
+        /* RISK TABLE */
+        .risk-row {
+            display: grid; grid-template-columns: 1fr 80px 1fr;
+            gap: 16px; padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            align-items: start;
+        }
+        .risk-row:first-child { border-top: 1px solid var(--rule); }
+        .risk-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+        .risk-desc { font-size: 12px; color: var(--ink-3); margin-top: 4px; font-weight: 300; line-height: 1.5; }
+        .risk-badge {
+            font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+            text-transform: uppercase; border-radius: 4px;
+            padding: 4px 8px; text-align: center; width: fit-content;
+        }
+        .risk-high { background: rgba(255,107,107,0.15); color: var(--red); }
+        .risk-med  { background: rgba(245,166,35,0.15); color: var(--orange); }
+        .risk-low  { background: rgba(200,241,53,0.12); color: var(--lime); }
+        .risk-mitigation { font-size: 13px; color: var(--ink-2); line-height: 1.65; font-weight: 300; }
+
+        /* INLINE PROSE */
+        .prose { font-size: 15px; line-height: 1.8; color: var(--ink-2); font-weight: 300; margin-bottom: 20px; max-width: 680px; }
+        .prose strong { color: var(--ink); font-weight: 500; }
+        .prose + .prose { margin-top: 0; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-name">Chaitali Mandavia</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/simulator">TCO Calculator</a>
+        <a href="/project2" class="active">Deployment Playbook</a>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span>Agentic AI Deployment Playbook</span>
+    </div>
+    <div class="page-tag">Case study · in progress</div>
+    <h1 class="page-h1">Deploying agentic AI at a<br><em>long/short semiconductor fund</em></h1>
+    <p class="page-intro">
+        I picked a specific client type and tried to map out how I would actually approach deploying agentic AI for them from start to finish. The business case, the questions I would ask before building anything, what the system looks like under the hood, and how I would know six months later whether it was worth it.
+    </p>
+    <div class="meta-row">
+        <div class="meta-item">
+            <span class="meta-key">Client type</span>
+            <span class="meta-val">Long/short hedge fund, Dubai</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-key">Market focus</span>
+            <span class="meta-val">Global semiconductors</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-key">Core problem</span>
+            <span class="meta-val">Portfolio monitoring, 50+ companies</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-key">AI architecture</span>
+            <span class="meta-val">Agentic, multi-source RAG</span>
+        </div>
+    </div>
+</div>
+
+<!-- STICKY STAGE NAV -->
+<div class="stage-nav">
+    <a href="#stage1" class="active">1. Business case</a>
+    <a href="#stage2">2. Discovery</a>
+    <a href="#stage3">3. Architecture</a>
+    <a href="#stage4">4. Pilot & KPIs</a>
+    <a href="#stage5">5. Deployment</a>
+</div>
+
+<div class="content">
+
+    <!-- STAGE 1 -->
+    <div class="stage-block" id="stage1">
+        <div class="stage-label">
+            <div class="stage-num">1</div>
+            <span class="stage-tag-text">Business case</span>
+        </div>
+        <h2 class="stage-h2">Why this makes economic sense</h2>
+        <p class="stage-intro">
+            Before writing a line of code, you need to show the fund why this is worth doing. Semiconductor markets are a good fit for this argument because the coverage universe is wide, information moves fast, and analyst time is genuinely the bottleneck. There are only so many hours in a day and too many companies to track.
+        </p>
+
+        <div class="stat-row">
+            <div class="stat-box">
+                <div class="stat-box-num">50+</div>
+                <div class="stat-box-label">companies to track across TSMC, ASML, Nvidia, SMIC, and the broader supply chain</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num">~3 hrs</div>
+                <div class="stat-box-label">analyst time per company per week just to stay current on filings, news, and supply chain signals</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num">150+ hrs</div>
+                <div class="stat-box-label">weekly research hours across the team that could be partially handed off, at roughly $150/hr that is $22,500 a week in labor</div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-title">The pitch</div>
+            <p>A long/short semiconductor fund lives on information speed. When TSMC revises its capacity guidance, when ASML gets hit by a new export restriction, when a supplier in Malaysia goes offline, the fund that knows first positions first. Right now analysts spend most of their time gathering and summarizing information rather than actually doing something with it.</p>
+            <p>The idea is to give the team a system that reads everything, flags what matters, and puts together a first draft so analysts can spend their time on the stuff that actually needs a human. Not to replace anyone, just to clear the noise so they can focus.</p>
+        </div>
+
+        <div class="callout">
+            <div class="callout-title">What others are doing</div>
+            <p>Larger funds like Millennium and Point72 have been investing in AI research infrastructure for a while now. Bloomberg and FactSet both launched LLM-based research tools in 2024. The question for a mid-size fund is whether off-the-shelf tools are enough or whether a custom build makes more sense.</p>
+            <p>My view is that generic tools cover general market news fine, but they do not understand the relationship between something like ASML shipment delays and TSMC's 3nm yield trajectory. That kind of domain-specific signal is only possible with something purpose-built for this coverage universe.</p>
+        </div>
+
+        <div class="callout lime">
+            <div class="callout-title">What I would recommend</div>
+            <p>Build a <strong>custom agentic monitoring system</strong> designed around the semiconductor supply chain specifically. Start with the top 15 holdings, prove it out, then expand. Going broad too early is how these projects fall apart.</p>
+        </div>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div class="stage-block" id="stage2">
+        <div class="stage-label">
+            <div class="stage-num">2</div>
+            <span class="stage-tag-text">Discovery</span>
+        </div>
+        <h2 class="stage-h2">Questions I'd ask before building anything</h2>
+        <p class="stage-intro">
+            The number one reason AI deployments fail is that nobody spent enough time understanding the actual workflow before building anything. I would want to sit down with the analysts and the CIO before touching any code. These are the questions I would ask.
+        </p>
+
+        <div class="q-section">
+            <div class="q-section-title">Coverage and data</div>
+            <div class="q-list">
+                <div class="q-item">
+                    <div class="q-num">01</div>
+                    <div class="q-text">
+                        <strong>What does your coverage universe actually look like?</strong> Give me the full list — names, tickers, how you'd bucket them by importance.
+                        <div class="q-sub">
+                            <div class="q-sub-item">Which 10 companies, if you missed something on them, would cost you the most?</div>
+                            <div class="q-sub-item">Are there any companies where you feel like you're consistently late?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">02</div>
+                    <div class="q-text">
+                        <strong>Where does your information come from today?</strong> Walk me through every source an analyst touches in a typical week.
+                        <div class="q-sub">
+                            <div class="q-sub-item">Bloomberg/Reuters/FactSet terminals?</div>
+                            <div class="q-sub-item">Company filings (10-K, 20-F, earnings transcripts)?</div>
+                            <div class="q-sub-item">Supply chain data providers — TrendForce, IDC, Gartner?</div>
+                            <div class="q-sub-item">Export control and regulatory filings (BIS, EU)?</div>
+                            <div class="q-sub-item">Channel checks, broker reports, expert network calls?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">03</div>
+                    <div class="q-text">
+                        <strong>What data do you have API or programmatic access to, and what requires a human to go find it?</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="q-section">
+            <div class="q-section-title">Current workflow and pain points</div>
+            <div class="q-list">
+                <div class="q-item">
+                    <div class="q-num">04</div>
+                    <div class="q-text">
+                        <strong>Walk me through what an analyst does on a typical Monday morning.</strong> Specifically: what do they read, in what order, and what do they produce by end of day?
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">05</div>
+                    <div class="q-text">
+                        <strong>What's the most time-consuming thing analysts do that they feel adds the least value?</strong>
+                        <div class="q-sub">
+                            <div class="q-sub-item">Synthesizing earnings transcripts across multiple companies?</div>
+                            <div class="q-sub-item">Tracking supply chain signals from secondary sources?</div>
+                            <div class="q-sub-item">Writing up the first draft of a research note?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">06</div>
+                    <div class="q-text">
+                        <strong>Can you tell me about a specific time you were late on something that mattered?</strong> What happened, and what would have needed to be different for you to catch it earlier?
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">07</div>
+                    <div class="q-text">
+                        <strong>What does a good research output look like for your team?</strong> Is it a one-pager? A model update? A verbal briefing to the PM?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="q-section">
+            <div class="q-section-title">Investment process and decision-making</div>
+            <div class="q-list">
+                <div class="q-item">
+                    <div class="q-num">08</div>
+                    <div class="q-text">
+                        <strong>How do new position ideas actually get generated?</strong> Is it bottom-up from analysts, top-down from the PM, or both?
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">09</div>
+                    <div class="q-text">
+                        <strong>What signals have historically driven your best trades in this sector?</strong> I'm asking because the AI should be optimized to surface those specifically.
+                        <div class="q-sub">
+                            <div class="q-sub-item">Capacity utilization shifts at foundries?</div>
+                            <div class="q-sub-item">Lead time changes for capital equipment?</div>
+                            <div class="q-sub-item">Export license approvals or denials?</div>
+                            <div class="q-sub-item">Management tone shifts across earnings calls?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">10</div>
+                    <div class="q-text">
+                        <strong>How much do you trust AI-generated outputs today?</strong> What would an AI need to get right consistently before you'd act on it?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="q-section">
+            <div class="q-section-title">Technical and compliance constraints</div>
+            <div class="q-list">
+                <div class="q-item">
+                    <div class="q-num">11</div>
+                    <div class="q-text">
+                        <strong>What are your data residency and compliance requirements?</strong> Does firm data need to stay in a specific region? Any restrictions on sending information to third-party APIs?
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">12</div>
+                    <div class="q-text">
+                        <strong>What internal tools does the team actually use day-to-day?</strong> Where would they want to see AI output — in their existing workflow, or a new interface?
+                        <div class="q-sub">
+                            <div class="q-sub-item">Bloomberg terminal integration?</div>
+                            <div class="q-sub-item">Slack or Teams notifications?</div>
+                            <div class="q-sub-item">A standalone dashboard?</div>
+                            <div class="q-sub-item">Email digest?</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="q-item">
+                    <div class="q-num">13</div>
+                    <div class="q-text">
+                        <strong>Who owns the decision to adopt this internally?</strong> Is it the CIO, Head of Research, or someone else? Who has veto power?
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 3 -->
+    <div class="stage-block" id="stage3">
+        <div class="stage-label">
+            <div class="stage-num">3</div>
+            <span class="stage-tag-text">Architecture</span>
+        </div>
+        <h2 class="stage-h2">What the system actually looks like</h2>
+        <p class="stage-intro">
+            Based on what the discovery conversations would surface, here is the architecture I would go with. The core idea is an orchestrator agent that runs on a schedule, pulls from multiple data sources, extracts structured signals, and routes them to the right analyst with context. No voice, no computer vision, this is a text-heavy information synthesis problem.
+        </p>
+
+        <div class="arch-diagram">
+            <div class="arch-layer">
+                <div class="arch-layer-label">Inputs</div>
+                <div class="arch-boxes">
+                    <div class="arch-box">
+                        <div class="arch-box-title">Filings & Transcripts</div>
+                        <div class="arch-box-desc">SEC, 20-F, earnings calls via API</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">News & Wire</div>
+                        <div class="arch-box-desc">Reuters, Bloomberg, Nikkei feeds</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">Supply Chain Data</div>
+                        <div class="arch-box-desc">TrendForce, IDC, lead time trackers</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">Regulatory</div>
+                        <div class="arch-box-desc">BIS export controls, EU/US policy filings</div>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-layer">
+                <div class="arch-layer-label">Agent</div>
+                <div class="arch-boxes">
+                    <div class="arch-box lime">
+                        <div class="arch-box-title">Orchestrator Agent</div>
+                        <div class="arch-box-desc">Runs on schedule, routes tasks to sub-agents, manages context window</div>
+                    </div>
+                    <div class="arch-box lime">
+                        <div class="arch-box-title">Signal Extractor</div>
+                        <div class="arch-box-desc">Identifies material events, scores by relevance to coverage universe</div>
+                    </div>
+                    <div class="arch-box lime">
+                        <div class="arch-box-title">RAG Layer</div>
+                        <div class="arch-box-desc">Retrieves historical context from vector store to ground summaries</div>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-layer">
+                <div class="arch-layer-label">Outputs</div>
+                <div class="arch-boxes">
+                    <div class="arch-box">
+                        <div class="arch-box-title">Daily Briefing</div>
+                        <div class="arch-box-desc">Ranked digest of material events by company and signal type</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">Alert System</div>
+                        <div class="arch-box-desc">Real-time push for high-urgency events above threshold</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">Research Draft</div>
+                        <div class="arch-box-desc">First-pass write-up with cited sources for analyst review</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-title">Key decisions</div>
+            <p><strong>Why agentic and not a simple RAG pipeline?</strong> Monitoring 50+ companies requires the system to decide what to look for, when to dig deeper on a signal, and how to prioritize across the whole coverage universe at once. A static RAG pipeline retrieves what you ask for. An agent figures out what to ask for in the first place.</p>
+            <p><strong>Human review is not optional.</strong> Any output that could influence a trade needs an analyst to sign off before it reaches the PM. The system should make it easy to approve, push back, or ask for more detail, not just passively consume whatever the AI produces.</p>
+            <p><strong>Start with 15 companies, not 50.</strong> Going broad too early is how these projects fall apart. You prove it out on the core holdings first, then expand once you trust the outputs.</p>
+        </div>
+    </div>
+
+    <!-- STAGE 4 -->
+    <div class="stage-block" id="stage4">
+        <div class="stage-label">
+            <div class="stage-num">4</div>
+            <span class="stage-tag-text">Pilot and KPIs</span>
+        </div>
+        <h2 class="stage-h2">How you'd know if it's working</h2>
+        <p class="stage-intro">
+            You need to decide what success looks like before the pilot starts, not after. If you wait to see what the data shows, it is too easy to rationalize any result. These are the metrics I would commit to measuring from day one, with targets agreed upfront.
+        </p>
+
+        <table class="kpi-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>What it measures</th>
+                    <th>Target at 90 days</th>
+                    <th>How to measure</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Signal recall rate</td>
+                    <td>% of material events the system flagged that analysts agreed were worth flagging</td>
+                    <td class="green">85%+</td>
+                    <td>Weekly analyst review log, asking whether they agreed the signal was worth surfacing</td>
+                </tr>
+                <tr>
+                    <td>False positive rate</td>
+                    <td>% of alerts that analysts dismissed as noise</td>
+                    <td class="green">Under 20%</td>
+                    <td>Same review log, one-click dismiss with optional reason</td>
+                </tr>
+                <tr>
+                    <td>Time to first briefing</td>
+                    <td>How fast after a material event the system surfaces it</td>
+                    <td class="green">Under 30 min</td>
+                    <td>Timestamp when event appeared in source vs. when alert was delivered</td>
+                </tr>
+                <tr>
+                    <td>Analyst research time</td>
+                    <td>Hours per week spent gathering information vs. actually analyzing it</td>
+                    <td class="green">40% reduction</td>
+                    <td>Self-reported weekly timesheet compared to pre-pilot baseline</td>
+                </tr>
+                <tr>
+                    <td>Briefing usage rate</td>
+                    <td>% of generated briefings that analysts actually open and read</td>
+                    <td class="green">70%+</td>
+                    <td>System logs: opened, time spent, actions taken</td>
+                </tr>
+                <tr>
+                    <td>Analyst trust score</td>
+                    <td>How confident analysts feel in the AI outputs on a 1 to 5 scale</td>
+                    <td class="green">3.5+ avg</td>
+                    <td>Short survey every two weeks, tracked over time</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout">
+            <div class="callout-title">How the pilot would run</div>
+            <p>60 days, 2 analysts, top 15 holdings. Both analysts keep doing their normal workflow alongside the AI system so you can actually compare the two. At day 30 you do a check-in. At day 60 you decide whether to expand or go back and redesign something.</p>
+            <p>One thing I would insist on before any of this starts: a baseline week where analysts track exactly how they spend their time today. Without that, the 40% reduction target is just a number nobody can verify.</p>
+        </div>
+    </div>
+
+    <!-- STAGE 5 -->
+    <div class="stage-block" id="stage5">
+        <div class="stage-label">
+            <div class="stage-num">5</div>
+            <span class="stage-tag-text">Deployment and beyond</span>
+        </div>
+        <h2 class="stage-h2">Getting it actually used</h2>
+        <p class="stage-intro">
+            In my experience with ALMA, the technical build is actually the easier part. Getting people to trust it and change how they work is where most of the effort goes. This stage is about that.
+        </p>
+
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-time">Month 1-2</div>
+                <div>
+                    <div class="tl-content-title">Pilot with 2 analysts on the top 15 holdings</div>
+                    <div class="tl-content-desc">The system runs alongside the existing workflow, not replacing it. Weekly feedback sessions to figure out what is getting dismissed as noise and tune the signal scoring accordingly.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Month 3</div>
+                <div>
+                    <div class="tl-content-title">Review what worked, fix what did not, bring in the full team</div>
+                    <div class="tl-content-desc">Go through the KPIs honestly. Fix the top issues from the pilot. Onboard the rest of the analysts with a hands-on session using their actual companies, not a slide deck.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Month 4</div>
+                <div>
+                    <div class="tl-content-title">Expand to the full 50+ company universe</div>
+                    <div class="tl-content-desc">Only happens if the pilot KPIs were actually met. Add new data sources here too, things like export control filings and deeper supply chain data from Tier 2 and Tier 3 suppliers.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Month 5-6</div>
+                <div>
+                    <div class="tl-content-title">Monitor model health on an ongoing basis</div>
+                    <div class="tl-content-desc">The semiconductor landscape shifts constantly so you need someone checking whether the system is keeping up. Assign one analyst as the internal owner whose job is to flag when things start degrading.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-time">Month 6+</div>
+                <div>
+                    <div class="tl-content-title">Report back to leadership on what the ROI actually was</div>
+                    <div class="tl-content-desc">A simple dashboard showing time saved, signal recall over time, and any cases where the system surfaced something before a market move. This is how the project gets renewed and built out further.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout-title" style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:20px;">Risks I'd flag upfront</div>
+
+        <div class="risk-row">
+            <div>
+                <div class="risk-name">Analyst resistance</div>
+                <div class="risk-desc">Senior analysts may feel the system is threatening their role or signaling future headcount cuts</div>
+            </div>
+            <div><span class="risk-badge risk-high">High</span></div>
+            <div class="risk-mitigation">Be upfront from day one that this is about saving time, not replacing anyone. Get one or two senior analysts involved in shaping the output format early so they feel ownership over it.</div>
+        </div>
+        <div class="risk-row">
+            <div>
+                <div class="risk-name">Hallucination on financial data</div>
+                <div class="risk-desc">LLMs can state incorrect numbers from earnings or filings with complete confidence</div>
+            </div>
+            <div><span class="risk-badge risk-high">High</span></div>
+            <div class="risk-mitigation">Every number in the output needs to be cited back to a source. This is actually what we learned building ALMA too. You need guardrails that force the model to verify its own claims and provide specific citations before the output goes anywhere.</div>
+        </div>
+        <div class="risk-row">
+            <div>
+                <div class="risk-name">Data licensing issues</div>
+                <div class="risk-desc">Some data providers explicitly prohibit feeding their content into AI models</div>
+            </div>
+            <div><span class="risk-badge risk-med">Medium</span></div>
+            <div class="risk-mitigation">Legal needs to review every data provider agreement before anything gets ingested. Some will need separate AI licensing and that costs money. Better to find out upfront than mid-build.</div>
+        </div>
+        <div class="risk-row">
+            <div>
+                <div class="risk-name">Model drift over time</div>
+                <div class="risk-desc">The semiconductor landscape changes constantly, new players, new supply chains, new geopolitical dynamics</div>
+            </div>
+            <div><span class="risk-badge risk-med">Medium</span></div>
+            <div class="risk-mitigation">Do a quarterly review of the prompts and signal taxonomy. Have someone whose job it is to notice when the outputs start feeling stale or off before the analysts start losing trust in it.</div>
+        </div>
+        <div class="risk-row">
+            <div>
+                <div class="risk-name">Over-reliance on outputs</div>
+                <div class="risk-desc">Analysts stop reading primary sources and just defer to whatever the AI surfaces</div>
+            </div>
+            <div><span class="risk-badge risk-low">Low/ongoing</span></div>
+            <div class="risk-mitigation">Always include source links in the output and make it easy to drill down. If analysts stop clicking through to the underlying sources, that is an early sign something is going wrong.</div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    // highlight active stage in sticky nav on scroll
+    const sections = document.querySelectorAll('.stage-block');
+    const navLinks = document.querySelectorAll('.stage-nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                });
+            }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
