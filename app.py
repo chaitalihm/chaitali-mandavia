@@ -14,7 +14,7 @@ def calculate():
     minutes = float(data.get('minutes', 45))
     wage = float(data.get('wage', 60))
     
-    # 1. Base Configuration Models
+    # 1. Base Assumptions Meta Logic Matrix
     if use_case == "document-extraction":
         input_tokens_per_unit, output_tokens_per_unit = 45000, 1500
         human_fallback_rate, upfront_base = 0.15, 35000
@@ -25,7 +25,7 @@ def calculate():
         input_tokens_per_unit, output_tokens_per_unit = 15000, 800
         human_fallback_rate, upfront_base = 0.05, 40000
 
-    # 2. Monthly Point Calculations
+    # 2. Financial Modeling Equations
     legacy_monthly = (volume * (minutes / 60.0)) * wage
     total_input = volume * input_tokens_per_unit
     total_output = volume * output_tokens_per_unit
@@ -38,24 +38,14 @@ def calculate():
     
     payback_period = f"{max(0.1, upfront_cost / monthly_savings):.1f}" if monthly_savings > 0 else "Infinite"
 
-    # 3. Time-Series Progression Array for the Dynamic Break-Even Chart
+    # 3. Generating Time-series Curves for Frontend Graph Ingestion
     months_timeline = list(range(0, 13))
-    cumulative_human = [0]
-    cumulative_ai = [upfront_cost]
+    cumulative_human = []
+    cumulative_ai = []
     
-    for m in range(1, 13):
-        cumulative_human.append(legacy_monthly * m)
-        cumulative_ai.append(upfront_cost + (ai_tco_monthly * m))
-
-    # 4. Sensitivity Multi-scenario data points
-    fallback_scenarios = [0.10, 0.15, 0.20]
-    sensitivity_data = {}
-    for f in fallback_scenarios:
-        f_audit = (volume * f * (minutes / 60.0)) * wage
-        f_tco = token_cost + f_audit
-        f_savings = legacy_monthly - f_tco
-        roi = (f_savings * 12) / upfront_cost if upfront_cost > 0 else 0
-        sensitivity_data[f"{int(f*100)}%"] = round(max(0, roi), 2)
+    for m in months_timeline:
+        cumulative_human.append(round(legacy_monthly * m, 2))
+        cumulative_ai.append(round(upfront_cost + (ai_tco_monthly * m), 2))
 
     return jsonify({
         "legacy_baseline": f"${legacy_monthly:,.0f}",
@@ -67,8 +57,10 @@ def calculate():
             "months": months_timeline,
             "human_line": cumulative_human,
             "ai_line": cumulative_ai,
-            "donut": [token_cost * 0.4, token_cost * 0.2, token_cost * 0.4, human_audit_cost],
-            "sensitivity": sensitivity_data
+            "donut": [round(token_cost * 0.35, 2), round(token_cost * 0.15, 2), round(token_cost * 0.25, 2), round(human_audit_cost, 2)],
+            "fallback_10": round((legacy_monthly - (token_cost + ((volume * 0.10 * (minutes / 60.0)) * wage))) * 12 / upfront_cost, 2) if upfront_cost > 0 else 0,
+            "fallback_15": round((legacy_monthly - (token_cost + ((volume * 0.15 * (minutes / 60.0)) * wage))) * 12 / upfront_cost, 2) if upfront_cost > 0 else 0,
+            "fallback_20": round((legacy_monthly - (token_cost + ((volume * 0.20 * (minutes / 60.0)) * wage))) * 12 / upfront_cost, 2) if upfront_cost > 0 else 0
         }
     })
 
