@@ -5,26 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agentic AI Deployment Playbook — Chaitali Mandavia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg:        #0d0d0d;
-            --bg-2:      #161616;
-            --bg-3:      #1c1c1c;
-            --bg-4:      #222222;
-            --ink:       #f0ede8;
-            --ink-2:     #9d9a94;
-            --ink-3:     #5c5a56;
-            --lime:      #c8f135;
-            --lime-dim:  rgba(200,241,53,0.10);
-            --rule:      rgba(255,255,255,0.08);
-            --orange:    #f5a623;
-            --blue:      #7b9cff;
-            --red:       #ff6b6b;
+            --bg:        #f4efe4;
+            --bg-2:      #ede6d8;
+            --bg-3:      #e2d9ca;
+            --bg-4:      #d8cfc0;
+            --ink:       #1c1410;
+            --ink-2:     #6b5f50;
+            --ink-3:     #a8998a;
+            --lime:      #8b1a1a;
+            --lime-dim:  rgba(139,26,26,0.09);
+            --rule:      rgba(28,20,16,0.13);
+            --orange:    #8b1a1a;
+            --blue:      #6b5f50;
+            --red:       #8b1a1a;
             --font-sans: 'DM Sans', system-ui, sans-serif;
-            --font-serif: 'DM Serif Display', Georgia, serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
         }
 
         body {
@@ -37,21 +37,21 @@
         /* NAV */
         nav {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 52px; height: 58px;
+            padding: 0 56px; height: 56px;
             border-bottom: 1px solid var(--rule);
             position: sticky; top: 0; z-index: 50;
-            background: rgba(13,13,13,0.92); backdrop-filter: blur(10px);
+            background: rgba(244,239,228,0.95); backdrop-filter: blur(8px);
         }
-        .nav-name { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
-        .nav-links { display: flex; gap: 36px; }
-        .nav-links a { font-size: 13px; color: var(--ink-2); text-decoration: none; transition: color 0.15s; }
+        .nav-name { font-family: var(--font-serif); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { font-size: 11px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
         .nav-links a:hover { color: var(--ink); }
-        .nav-links a.active { color: var(--lime); }
+        .nav-links a.active { color: #1c1410; }
 
         /* PAGE HEADER */
         .page-header {
             max-width: 860px; margin: 0 auto;
-            padding: 72px 52px 56px;
+            padding: 72px 56px 56px;
         }
         .breadcrumb {
             font-size: 12px; color: var(--ink-3); margin-bottom: 24px;
@@ -70,10 +70,10 @@
         .page-h1 {
             font-family: var(--font-serif);
             font-size: clamp(32px, 5vw, 52px);
-            line-height: 1.08; letter-spacing: -0.01em;
+            font-weight: 800; line-height: 1.0; letter-spacing: -0.03em;
             color: var(--ink); margin-bottom: 20px;
         }
-        .page-h1 em { font-style: italic; color: var(--lime); }
+        .page-h1 em { font-style: italic; font-weight: 300; color: var(--ink); }
         .page-intro {
             font-size: 16px; line-height: 1.8; color: var(--ink-2);
             font-weight: 300; max-width: 660px; margin-bottom: 40px;
@@ -90,23 +90,24 @@
 
         /* STAGE NAV */
         .stage-nav {
-            position: sticky; top: 58px; z-index: 40;
-            background: rgba(13,13,13,0.95); backdrop-filter: blur(10px);
+            position: sticky; top: 56px; z-index: 40;
+            background: rgba(244,239,228,0.97); backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--rule);
-            padding: 0 52px;
+            padding: 0 56px;
             display: flex; gap: 0; overflow-x: auto;
         }
         .stage-nav a {
-            font-size: 12px; font-weight: 500; color: var(--ink-3);
+            font-size: 10px; font-weight: 400; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--ink-3);
             text-decoration: none; padding: 14px 20px;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+            border-bottom: 1px solid transparent;
+            white-space: nowrap; transition: color 0.2s, border-color 0.2s;
         }
         .stage-nav a:hover { color: var(--ink-2); }
-        .stage-nav a.active { color: var(--lime); border-bottom-color: var(--lime); }
+        .stage-nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
 
         /* CONTENT */
-        .content { max-width: 860px; margin: 0 auto; padding: 0 52px 100px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 0 56px 100px; }
 
         /* STAGE BLOCK */
         .stage-block { padding: 64px 0; border-bottom: 1px solid var(--rule); }
@@ -128,8 +129,8 @@
         }
         .stage-h2 {
             font-family: var(--font-serif);
-            font-size: 30px; letter-spacing: -0.01em;
-            color: var(--ink); margin-bottom: 16px; line-height: 1.15;
+            font-size: 30px; font-weight: 900; letter-spacing: -0.02em;
+            color: var(--ink); margin-bottom: 16px; line-height: 1.1;
         }
         .stage-intro {
             font-size: 15px; line-height: 1.8; color: var(--ink-2);
@@ -169,8 +170,8 @@
             border-radius: 10px; padding: 20px 22px;
         }
         .stat-box-num {
-            font-family: var(--font-serif); font-size: 28px;
-            color: var(--lime); letter-spacing: -0.02em;
+            font-family: var(--font-serif); font-size: 32px;
+            color: var(--ink); letter-spacing: -0.02em; font-weight: 300;
             margin-bottom: 4px;
         }
         .stat-box-label {
@@ -255,7 +256,7 @@
         }
         .kpi-table tr:last-child td { border-bottom: none; }
         .kpi-table td:first-child { color: var(--ink); font-weight: 500; font-size: 13px; }
-        .kpi-table td.green { color: var(--lime); font-weight: 500; }
+        .kpi-table td.green { color: var(--ink); font-weight: 500; }
         .kpi-table tr:hover td { background: rgba(255,255,255,0.02); }
 
         /* TIMELINE */
@@ -267,7 +268,8 @@
         }
         .tl-item:last-child { border-bottom: none; }
         .tl-time {
-            font-size: 12px; font-weight: 500; color: var(--lime);
+            font-size: 11px; font-weight: 400; letter-spacing: 0.08em;
+            text-transform: uppercase; color: var(--ink-2);
             padding-top: 2px; font-variant-numeric: tabular-nums;
         }
         .tl-content-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
@@ -302,11 +304,12 @@
 <body>
 
 <nav>
-    <a href="/" class="nav-name">Chaitali Mandavia</a>
+    <a href="/" class="nav-logo">Chaitali Mandavia</a>
     <div class="nav-links">
         <a href="/">Home</a>
         <a href="/simulator">TCO Calculator</a>
         <a href="/project2" class="active">Deployment Playbook</a>
+        <a href="mailto:hello@example.com" class="nav-pill">Say hello</a>
     </div>
 </nav>
 
