@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The No-Jargon AI Blog — Chaitali Mandavia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cream:  #f4efe4; --cream-2: #ede6d8; --cream-3: #e2d9ca;
+            --red:    #8b1a1a; --ink: #1c1410; --ink-2: #6b5f50; --ink-3: #a8998a;
+            --rule:   rgba(28,20,16,0.13);
+            --f-serif: 'Playfair Display', Georgia, serif;
+            --f-sans:  'DM Sans', system-ui, sans-serif;
+            --f-hand:  'Caveat', cursive;
+        }
+        body { font-family: var(--f-sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+        nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 52px; }
+        .nav-logo { font-family: var(--f-serif); font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: 0.02em; }
+        .nav-links { display: flex; gap: 36px; align-items: center; }
+        .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+        .nav-pill { font-size: 11px; font-weight: 500; background: var(--red); color: #fff; padding: 8px 18px; border-radius: 100px; text-decoration: none; }
+
+        /* PAGE HEADER */
+        .page-header {
+            padding: 48px 52px 40px;
+            border-bottom: 1px solid var(--rule);
+            display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+        }
+        .header-left {}
+        .header-kicker { font-family: var(--f-hand); font-size: 18px; color: var(--red); margin-bottom: 8px; display: block; }
+        .header-h1 {
+            font-family: var(--f-serif); font-size: clamp(36px, 5vw, 60px);
+            font-weight: 900; color: var(--ink); letter-spacing: -0.03em;
+            line-height: 0.95; text-transform: uppercase;
+        }
+        .header-h1 .outline { color: transparent; -webkit-text-stroke: 2px var(--ink); }
+        .header-desc {
+            font-size: 13px; line-height: 1.75; color: var(--ink-2);
+            font-weight: 300; max-width: 340px; text-align: right;
+        }
+
+        /* POST GRID */
+        .posts-wrap { padding: 52px 52px 80px; }
+        .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+        .post-card {
+            border: 1px solid var(--rule); border-radius: 2px;
+            text-decoration: none; color: inherit;
+            display: flex; flex-direction: column;
+            transition: box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .post-card:hover { box-shadow: 0 4px 24px rgba(28,20,16,0.08); }
+        .post-card:hover .post-card-name { color: var(--red); }
+
+        .post-card-top {
+            background: var(--red); padding: 28px 24px 20px;
+            position: relative; min-height: 140px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+        }
+        .post-card-top.cream-bg {
+            background: var(--cream-2);
+        }
+        .post-num {
+            position: absolute; top: 16px; right: 18px;
+            font-family: var(--f-hand); font-size: 40px; font-weight: 600;
+            opacity: 0.15; line-height: 1;
+        }
+        .post-num.light { color: #fff; }
+        .post-num.dark  { color: var(--ink); }
+        .post-tag {
+            font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+            text-transform: uppercase; border-radius: 100px;
+            padding: 3px 10px; display: inline-block; width: fit-content;
+            margin-bottom: 10px;
+        }
+        .post-tag.on-red   { background: rgba(255,255,255,0.15); color: rgba(244,239,228,0.9); }
+        .post-tag.on-cream { background: var(--cream-3); color: var(--ink-3); }
+        .post-tag.coming   { background: var(--cream-3); color: var(--ink-3); }
+
+        .post-card-title-top {
+            font-family: var(--f-serif); font-size: 20px; font-weight: 700;
+            line-height: 1.2; letter-spacing: -0.01em;
+        }
+        .post-card-title-top.light { color: #f4efe4; }
+        .post-card-title-top.dark  { color: var(--ink); }
+
+        .post-card-body { padding: 20px 24px 24px; flex: 1; background: var(--cream); }
+        .post-card-name {
+            font-family: var(--f-serif); font-size: 16px; font-weight: 700;
+            color: var(--ink); margin-bottom: 10px; line-height: 1.3;
+            transition: color 0.2s; letter-spacing: -0.01em;
+        }
+        .post-card-desc {
+            font-size: 12px; line-height: 1.7; color: var(--ink-2); font-weight: 300;
+        }
+        .post-card-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 16px;
+        }
+        .post-card-date { font-size: 11px; color: var(--ink-3); }
+        .post-read-link {
+            font-family: var(--f-hand); font-size: 15px; color: var(--red);
+            text-decoration: none;
+        }
+        .post-coming {
+            font-family: var(--f-hand); font-size: 15px; color: var(--ink-3);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">Chaitali Mandavia</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/simulator">TCO Simulator</a>
+        <a href="/project2">Deployment Playbook</a>
+        <a href="/blog" class="active">Blog</a>
+        <a href="mailto:hello@example.com" class="nav-pill">Say hello</a>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="header-left">
+        <span class="header-kicker">no jargon, promise</span>
+        <h1 class="header-h1">THE <span class="outline">AI</span><br>EXPLAINED</h1>
+    </div>
+    <p class="header-desc">Short posts for people who keep hearing these words and nodding along. I work in this space and I still had to look most of this stuff up.</p>
+</div>
+
+<div class="posts-wrap">
+    <div class="posts-grid">
+
+        <!-- POST 1 — LIVE -->
+        <a href="/blog/what-is-an-llm" class="post-card">
+            <div class="post-card-top">
+                <div class="post-num light">01</div>
+                <span class="post-tag on-red">Fundamentals</span>
+                <div class="post-card-title-top light">What even is an LLM?</div>
+            </div>
+            <div class="post-card-body">
+                <div class="post-card-desc">Everyone keeps saying it. ChatGPT is one. Claude is one. Gemini is one. But what is it actually doing when you type something and it writes back?</div>
+                <div class="post-card-footer">
+                    <span class="post-card-date">June 2025</span>
+                    <a href="/blog/what-is-an-llm" class="post-read-link">Read →</a>
+                </div>
+            </div>
+        </a>
+
+        <!-- POST 2 — COMING -->
+        <div class="post-card" style="cursor:default;">
+            <div class="post-card-top cream-bg">
+                <div class="post-num dark">02</div>
+                <span class="post-tag on-cream">Fundamentals</span>
+                <div class="post-card-title-top dark">What is RAG and why does everyone keep saying it?</div>
+            </div>
+            <div class="post-card-body">
+                <div class="post-card-desc">RAG stands for Retrieval Augmented Generation. It sounds complicated. It is not. Coming soon.</div>
+                <div class="post-card-footer">
+                    <span class="post-card-date">Coming soon</span>
+                    <span class="post-coming">soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST 3 — COMING -->
+        <div class="post-card" style="cursor:default;">
+            <div class="post-card-top cream-bg">
+                <div class="post-num dark">03</div>
+                <span class="post-tag on-cream">Deployment</span>
+                <div class="post-card-title-top dark">Why do AI projects fail? (It's not the model)</div>
+            </div>
+            <div class="post-card-body">
+                <div class="post-card-desc">Most AI deployments that fail do not fail because the AI was bad. They fail for much more boring reasons.</div>
+                <div class="post-card-footer">
+                    <span class="post-card-date">Coming soon</span>
+                    <span class="post-coming">soon</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
