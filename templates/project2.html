@@ -23,7 +23,7 @@
         .nav-links { display: flex; gap: 36px; align-items: center; }
         .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: var(--ink); }
-        .nav-pill { font-size: 11px; font-weight: 500; background: var(--red); color: #fff; padding: 8px 18px; border-radius: 100px; text-decoration: none; }
+        .nav-pill { font-size: 11px; font-weight: 500; background: var(--red); color: #fff !important; padding: 8px 18px; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; }
 
         /* HEADER */
         .page-header { background: var(--red); padding: 60px 56px 52px; position: relative; overflow: hidden; }
@@ -120,7 +120,7 @@
         <a href="/simulator">TCO Simulator</a>
         <a href="/deployment-playbook" class="active">Deployment Playbook</a>
         <a href="/blog">Blog</a>
-        <a href="mailto:hello@example.com" class="nav-pill">Say hello</a>
+        <a href="mailto:mandaviachaitali@gmail.com" class="nav-pill">Say hello</a>
     </div>
 </nav>
 
@@ -151,7 +151,7 @@
     <div class="stage-block" id="stage1">
         <span class="stage-eyebrow">Stage 1</span>
         <h2 class="stage-h2">Why this makes economic sense</h2>
-        <p class="stage-intro">The semiconductor team covers a lot of companies across a fast-moving market. The problem isn't that the analysts are bad at their jobs — it's that there's too much to read and not enough hours to read it. That's the pitch.</p>
+        <p class="stage-intro">The semiconductor team covers a lot of companies across a fast-moving market. The problem is not that analysts are bad at their jobs, it's that there's genuinely too much to read and not enough hours to read all of it.</p>
 
         <div class="stat-row">
             <div class="stat-box">
@@ -171,30 +171,30 @@
         <!-- GRAPHIC: time breakdown -->
         <div class="graphic">
             <span class="graphic-label">where analyst time actually goes each week</span>
-            <svg viewBox="0 0 640 200" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
-                <!-- bars -->
-                <rect x="40" y="40" width="240" height="36" rx="3" fill="#8b1a1a"/>
-                <rect x="40" y="90" width="150" height="36" rx="3" fill="#c47a7a"/>
-                <rect x="40" y="140" width="80" height="36" rx="3" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+            <svg viewBox="0 0 680 200" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
                 <!-- labels left -->
-                <text x="34" y="63" font-size="12" fill="#6b5f50" text-anchor="end">Gathering info</text>
-                <text x="34" y="113" font-size="12" fill="#6b5f50" text-anchor="end">Summarizing</text>
-                <text x="34" y="163" font-size="12" fill="#6b5f50" text-anchor="end">Actual analysis</text>
+                <text x="138" y="63" font-size="13" fill="#6b5f50" text-anchor="end">Gathering info</text>
+                <text x="138" y="113" font-size="13" fill="#6b5f50" text-anchor="end">Summarizing</text>
+                <text x="138" y="163" font-size="13" fill="#6b5f50" text-anchor="end">Actual analysis</text>
+                <!-- bars -->
+                <rect x="148" y="40" width="240" height="36" rx="3" fill="#8b1a1a"/>
+                <rect x="148" y="90" width="150" height="36" rx="3" fill="#c47a7a"/>
+                <rect x="148" y="140" width="80" height="36" rx="3" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
                 <!-- values -->
-                <text x="290" y="63" font-size="13" font-weight="600" fill="#8b1a1a">~12 hrs/week</text>
-                <text x="200" y="113" font-size="13" font-weight="600" fill="#a03030">~7 hrs/week</text>
-                <text x="130" y="163" font-size="13" font-weight="600" fill="#6b5f50">~3 hrs/week</text>
+                <text x="396" y="63" font-size="13" font-weight="600" fill="#8b1a1a">~12 hrs/week</text>
+                <text x="306" y="113" font-size="13" font-weight="600" fill="#a03030">~7 hrs/week</text>
+                <text x="236" y="163" font-size="13" font-weight="600" fill="#6b5f50">~3 hrs/week</text>
                 <!-- annotation -->
-                <text x="440" y="100" font-size="13" fill="#a8998a" font-style="italic">The goal is to flip this ratio.</text>
-                <text x="440" y="118" font-size="13" fill="#a8998a" font-style="italic">AI handles the first two,</text>
-                <text x="440" y="136" font-size="13" fill="#a8998a" font-style="italic">analysts focus on the third.</text>
+                <text x="480" y="92" font-size="13" fill="#a8998a" font-style="italic">The goal is to flip this.</text>
+                <text x="480" y="110" font-size="13" fill="#a8998a" font-style="italic">AI handles the first two,</text>
+                <text x="480" y="128" font-size="13" fill="#a8998a" font-style="italic">analysts focus on the third.</text>
             </svg>
         </div>
 
         <div class="callout">
             <span class="callout-label">the pitch</span>
-            <p>A long/short fund lives on information speed. When TSMC revises its capacity guidance, when ASML gets hit by a new export restriction, when a supplier goes offline, the team that knows first positions first. Right now analysts spend most of their time gathering and summarizing rather than deciding. The idea is to build something that handles the first part so they can focus on the second.</p>
-            <p>Larger funds like Millennium and Point72 have been building AI research infrastructure for a while. Bloomberg and FactSet both launched LLM tools in 2024. The question for a mid-size fund is whether off-the-shelf is enough. My view is no. Generic tools don't understand the relationship between something like ASML shipment delays and TSMC's 3nm yield trajectory. That specificity only comes from something built for this team specifically.</p>
+            <p>A long/short fund lives on information speed, and when TSMC revises its capacity guidance or ASML gets hit by a new export restriction, the team that knows first is the one that positions first. Right now the semiconductor analysts spend most of their time gathering and summarizing rather than actually deciding anything, and the goal is to build something that handles that first part so they can spend their time on the second.</p>
+            <p>Larger funds like Millennium and Point72 have been building AI research infrastructure for a while now, and Bloomberg and FactSet both launched LLM-based research tools in 2024. The real question for a mid-size fund is whether off-the-shelf tools are enough, and my view is that they are not. Generic tools cover general market news fine but they don't understand something like the relationship between ASML shipment delays and TSMC's 3nm yield trajectory, and that kind of specificity only comes from something built for this team and this coverage universe.</p>
         </div>
 
         <div class="callout red-bg">
@@ -211,8 +211,8 @@
 
         <div class="q-group">
             <div class="q-group-title">Coverage and data</div>
-            <div class="q-item"><span class="q-n">1</span><span class="q-text"><strong>What does your coverage universe look like?</strong> Full list, how you'd bucket them by importance, and which 10 companies — if you missed something — would hurt the most.</span></div>
-            <div class="q-item"><span class="q-n">2</span><span class="q-text"><strong>Where does your information come from today?</strong> Every source an analyst touches in a typical week — terminals, filings, supply chain data providers, broker reports, export control filings.</span></div>
+            <div class="q-item"><span class="q-n">1</span><span class="q-text"><strong>What does your coverage universe look like?</strong> Full list, how you'd bucket them by importance, and which 10 companies, if you missed something on them, would hurt the most.</span></div>
+            <div class="q-item"><span class="q-n">2</span><span class="q-text"><strong>Where does your information come from today?</strong> Every source an analyst touches in a typical week: terminals, filings, supply chain data providers, broker reports, export control filings.</span></div>
             <div class="q-item"><span class="q-n">3</span><span class="q-text"><strong>What do you have API access to, and what requires a human to go find it?</strong></span></div>
         </div>
 
@@ -236,84 +236,77 @@
     <div class="stage-block" id="stage3">
         <span class="stage-eyebrow">Stage 3</span>
         <h2 class="stage-h2">What the system actually looks like</h2>
-        <p class="stage-intro">An orchestrator agent runs on a schedule, pulls from multiple sources, extracts what matters, and routes it to the right analyst with context. No voice, no computer vision — this is a text-heavy information synthesis problem.</p>
+        <p class="stage-intro">An orchestrator agent runs on a schedule, pulls from multiple sources, extracts what matters, and routes it to the right analyst with enough context to act on it. No voice, no computer vision needed here, this is fundamentally a text-heavy information synthesis problem.</p>
 
         <!-- GRAPHIC: system architecture flow -->
         <div class="graphic">
             <span class="graphic-label">how the system is structured</span>
-            <svg viewBox="0 0 660 320" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif" font-size="12">
+            <svg viewBox="0 0 700 340" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif" font-size="13">
 
                 <!-- INPUT BOXES -->
-                <rect x="10" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="75" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">Filings &amp; Transcripts</text>
-                <text x="75" y="50" text-anchor="middle" fill="#a8998a">SEC, 20-F, earnings</text>
-
-                <rect x="155" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="220" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">News &amp; Wire</text>
-                <text x="220" y="50" text-anchor="middle" fill="#a8998a">Reuters, Bloomberg</text>
-
-                <rect x="300" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="365" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">Supply Chain Data</text>
-                <text x="365" y="50" text-anchor="middle" fill="#a8998a">TrendForce, IDC</text>
-
-                <rect x="445" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="510" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">Regulatory</text>
-                <text x="510" y="50" text-anchor="middle" fill="#a8998a">BIS, export controls</text>
-
-                <!-- arrows down to agent layer -->
-                <line x1="75" y1="62" x2="75" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-                <line x1="220" y1="62" x2="220" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-                <line x1="365" y1="62" x2="365" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-                <line x1="510" y1="62" x2="510" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-
-                <!-- converge line -->
-                <line x1="75" y1="100" x2="510" y2="100" stroke="#a8998a" stroke-width="1.5"/>
-                <line x1="292" y1="100" x2="292" y2="130" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-
-                <!-- AGENT LAYER -->
-                <rect x="120" y="130" width="346" height="64" rx="4" fill="#8b1a1a"/>
-                <text x="293" y="155" text-anchor="middle" fill="#f4efe4" font-weight="600" font-size="13">Orchestrator Agent</text>
-                <text x="293" y="174" text-anchor="middle" fill="rgba(244,239,228,0.7)" font-size="11">runs on schedule · routes tasks · manages context</text>
-
-                <!-- arrow down from agent -->
-                <line x1="292" y1="194" x2="292" y2="230" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-                <line x1="150" y1="230" x2="430" y2="230" stroke="#a8998a" stroke-width="1.5"/>
-                <line x1="150" y1="230" x2="150" y2="258" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-                <line x1="292" y1="230" x2="292" y2="258" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-                <line x1="430" y1="230" x2="430" y2="258" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
-
-                <!-- OUTPUT BOXES -->
-                <rect x="60" y="258" width="180" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="150" y="280" text-anchor="middle" fill="#1c1410" font-weight="500">Daily Briefing</text>
-                <text x="150" y="298" text-anchor="middle" fill="#a8998a">ranked digest by company</text>
-
-                <rect x="202" y="258" width="180" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="292" y="280" text-anchor="middle" fill="#1c1410" font-weight="500">Alert System</text>
-                <text x="292" y="298" text-anchor="middle" fill="#a8998a">real-time for urgent signals</text>
-
-                <rect x="342" y="258" width="180" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
-                <text x="432" y="280" text-anchor="middle" fill="#1c1410" font-weight="500">Research Draft</text>
-                <text x="432" y="298" text-anchor="middle" fill="#a8998a">first-pass with citations</text>
-
-                <!-- arrow marker -->
                 <defs>
                     <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
                         <path d="M1,1 L4,4 L1,7" stroke="#a8998a" stroke-width="1.2" fill="none"/>
                     </marker>
                 </defs>
 
-                <!-- input label -->
-                <text x="600" y="40" font-size="10" fill="#a8998a" letter-spacing="1" text-anchor="middle" transform="rotate(90,600,110)">DATA SOURCES</text>
-                <text x="600" y="162" font-size="10" fill="#a8998a" letter-spacing="1" text-anchor="middle" transform="rotate(90,640,162)">AGENT</text>
-                <text x="600" y="284" font-size="10" fill="#a8998a" letter-spacing="1" text-anchor="middle" transform="rotate(90,640,284)">OUTPUTS</text>
+                <!-- INPUT BOXES - evenly spaced with enough room for text -->
+                <rect x="20" y="14" width="148" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="94" y="37" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">Filings &amp; Transcripts</text>
+                <text x="94" y="55" text-anchor="middle" fill="#a8998a" font-size="11">SEC, 20-F, earnings calls</text>
+
+                <rect x="184" y="14" width="148" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="258" y="37" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">News &amp; Wire</text>
+                <text x="258" y="55" text-anchor="middle" fill="#a8998a" font-size="11">Reuters, Bloomberg</text>
+
+                <rect x="348" y="14" width="148" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="422" y="37" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">Supply Chain Data</text>
+                <text x="422" y="55" text-anchor="middle" fill="#a8998a" font-size="11">TrendForce, IDC</text>
+
+                <rect x="512" y="14" width="148" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="586" y="37" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">Regulatory</text>
+                <text x="586" y="55" text-anchor="middle" fill="#a8998a" font-size="11">BIS, export controls</text>
+
+                <!-- arrows down -->
+                <line x1="94" y1="68" x2="94" y2="106" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="258" y1="68" x2="258" y2="106" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="422" y1="68" x2="422" y2="106" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="586" y1="68" x2="586" y2="106" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="94" y1="106" x2="586" y2="106" stroke="#a8998a" stroke-width="1.5"/>
+                <line x1="340" y1="106" x2="340" y2="136" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                <!-- AGENT -->
+                <rect x="160" y="136" width="360" height="64" rx="4" fill="#8b1a1a"/>
+                <text x="340" y="161" text-anchor="middle" fill="#f4efe4" font-weight="600" font-size="14">Orchestrator Agent</text>
+                <text x="340" y="182" text-anchor="middle" fill="rgba(244,239,228,0.72)" font-size="12">reads all sources · decides what matters · routes to analysts</text>
+
+                <!-- arrows to outputs -->
+                <line x1="340" y1="200" x2="340" y2="236" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="170" y1="236" x2="510" y2="236" stroke="#a8998a" stroke-width="1.5"/>
+                <line x1="170" y1="236" x2="170" y2="264" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="340" y1="236" x2="340" y2="264" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="510" y1="236" x2="510" y2="264" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                <!-- OUTPUTS -->
+                <rect x="70" y="264" width="200" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="170" y="287" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">Daily Briefing</text>
+                <text x="170" y="305" text-anchor="middle" fill="#a8998a" font-size="11">ranked digest per company</text>
+
+                <rect x="240" y="264" width="200" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="340" y="287" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">Alert System</text>
+                <text x="340" y="305" text-anchor="middle" fill="#a8998a" font-size="11">real-time urgent signals</text>
+
+                <rect x="410" y="264" width="200" height="54" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="510" y="287" text-anchor="middle" fill="#1c1410" font-weight="500" font-size="13">Research Draft</text>
+                <text x="510" y="305" text-anchor="middle" fill="#a8998a" font-size="11">first-pass with citations</text>
             </svg>
         </div>
 
         <div class="callout">
-            <span class="callout-label">key decisions</span>
-            <p><strong>Why agentic and not a simple RAG pipeline?</strong> Monitoring 50+ companies means the system needs to decide what to look for, when to dig deeper, and how to prioritize — not just retrieve what you ask for. A static pipeline retrieves. An agent figures out what to look for in the first place.</p>
-            <p><strong>Human review is not optional.</strong> Anything that could influence a trade needs an analyst to sign off before it reaches the PM.</p>
-            <p><strong>Start with 15 companies, not 50.</strong> Prove it works on the core holdings first, then expand.</p>
+            <span class="callout-label">why agentic and what it actually does</span>
+            <p>The reason this needs to be agentic rather than a simpler RAG pipeline is that monitoring 50+ companies is not a retrieval problem, it's a reasoning problem. The system needs to decide what to look for across multiple sources, figure out when something warrants digging deeper, and prioritize signals across the whole coverage universe simultaneously. A static pipeline can only return what you ask for. An agent figures out what to ask for in the first place.</p>
+            <p>In practice the agent would be calling a set of tools on each run: web search and news APIs to pull the latest on each company, a document reader to process new filings, a vector store lookup to retrieve relevant historical context, a signal scoring function to rank what actually matters, and a drafting step to put together the analyst briefing. The human analyst is always the final step before anything reaches the PM.</p>
+            <p>The one thing I would insist on: start with the top 15 holdings only. Trying to cover 50+ companies from day one is how these projects fall apart before they prove anything.</p>
         </div>
     </div>
 
@@ -375,8 +368,8 @@
 
         <div class="callout">
             <span class="callout-label">how the pilot would run</span>
-            <p>60 days, 2 analysts, top 15 holdings. Both analysts keep their normal workflow running alongside the system so you can compare the two directly. Check-in at day 30, go/no-go decision at day 60.</p>
-            <p>One thing I'd insist on before anything starts: a baseline week where analysts track exactly how they spend their time. Without that, the 40% reduction target is just a number nobody can actually verify.</p>
+            <p>The pilot would run for 60 days with 2 analysts covering the top 15 holdings. Both analysts keep doing their normal workflow alongside the system the whole time so you have something to actually compare against. There's a check-in at day 30 to tune anything that needs tuning, and a go or no-go decision at day 60 based on the KPIs.</p>
+            <p>The one thing I would insist on before any of this starts is a baseline week where analysts track exactly how they spend their time. Without that number, the 40% reduction target is just a guess and nobody can actually verify whether it happened.</p>
         </div>
     </div>
 
@@ -396,9 +389,9 @@
 
         <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--red);margin-bottom:18px;">risks worth flagging upfront</div>
         <div class="callout">
-            <p>The biggest risk is analyst resistance. Senior people may feel this threatens their role, so being upfront that it's about saving time matters a lot. Getting one or two of them involved in shaping the output format early helps — they're more likely to trust something they had a hand in building.</p>
-            <p>Hallucination is the other major one. LLMs can state incorrect numbers with complete confidence, which is especially dangerous in a financial context. Every figure in the output needs to be cited back to a source. This is something we learned building ALMA — you need guardrails that force the model to verify its own claims before anything goes out.</p>
-            <p>A few smaller things worth sorting out early: data licensing (some providers prohibit their content being fed into AI models, so legal needs to review everything before ingestion), model drift (the semiconductor landscape shifts fast, so someone needs to own a quarterly review of whether the outputs still make sense), and over-reliance (always include source links — if analysts stop clicking through, that's an early warning that they're treating AI output as ground truth).</p>
+            <p>The biggest thing to get right upfront is analyst buy-in. Senior analysts may feel a tool like this threatens their role, and if that perception takes hold it doesn't matter how good the outputs are. Being explicit that this is about giving them more time for the work that actually matters, and getting one or two of them involved in shaping what the output looks like early on, goes a long way. People trust things they had a hand in building.</p>
+            <p>Hallucination is the other major risk and it's especially serious in a financial context. LLMs can state incorrect numbers with complete confidence, which is something we ran into building ALMA too. Every figure in the output needs to be traced back to a specific source, and the system needs guardrails that force it to verify its own claims before anything goes out to an analyst.</p>
+            <p>A few other things worth sorting out early: data licensing, because some providers prohibit their content from being fed into AI models and legal needs to review everything before ingestion; model drift, because the semiconductor landscape moves fast and someone needs to own a quarterly check on whether the outputs still reflect reality; and over-reliance, which you address simply by always including source links and tracking whether analysts are actually clicking through to them.</p>
         </div>
     </div>
 
