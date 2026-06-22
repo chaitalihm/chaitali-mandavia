@@ -122,7 +122,15 @@
         }
         .analogy-box p strong { color: #f4efe4; font-weight: 500; }
 
-        /* next post */
+        /* graphics */
+        .graphic {
+            background: var(--cream-2); border: 1px solid var(--rule);
+            padding: 28px 24px 20px; margin: 32px 0;
+        }
+        .graphic-label {
+            font-family: var(--f-hand); font-size: 15px; color: var(--ink-3);
+            margin-bottom: 16px; display: block; text-align: center;
+        }
         .next-post {
             border-top: 1px solid var(--rule); padding-top: 48px; margin-top: 16px;
         }
@@ -144,7 +152,7 @@
     <div class="nav-links">
         <a href="/">Home</a>
         <a href="/simulator">TCO Simulator</a>
-        <a href="/project2">Deployment Playbook</a>
+        <a href="/deployment-playbook">Deployment Playbook</a>
         <a href="/blog" class="active">Blog</a>
         <a href="mailto:hello@example.com" class="nav-pill">Say hello</a>
     </div>
@@ -202,11 +210,96 @@
             The "large" part is that the model has been trained on a huge amount of text including books, websites, articles, code, conversations. During training, it builds up a massive web of connections between words, concepts, and ideas. For example, it learns that "Paris" and "France" tend to appear together, or that "diagnosis" usually follows medical language.
         </p>
 
+        <!-- GRAPHIC 1: word by word prediction -->
+        <div class="graphic">
+            <span class="graphic-label">how a response gets built, one word at a time</span>
+            <div id="typewriter-graphic" style="font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;">
+                <div style="background:var(--cream);border:1px solid var(--rule);padding:12px 16px;margin-bottom:12px;border-radius:2px;">
+                    <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);">Your prompt</span><br>
+                    <span style="color:var(--ink);font-weight:500;">"The capital of France is"</span>
+                </div>
+                <div style="background:var(--cream);border:1px solid var(--rule);padding:12px 16px;border-radius:2px;min-height:56px;">
+                    <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);">Response building word by word</span><br>
+                    <span id="tw-output" style="color:var(--ink);font-weight:400;"></span><span id="tw-next" style="color:var(--red);font-weight:600;opacity:0;transition:opacity 0.2s;"></span><span id="tw-cursor" style="color:var(--red);">|</span>
+                </div>
+                <div id="tw-choices" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;min-height:36px;align-items:center;">
+                    <span style="font-size:11px;color:var(--ink-3);letter-spacing:0.06em;text-transform:uppercase;">Next word candidates:</span>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:16px;">
+                <button onclick="restartTypewriter()" style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:8px 20px;border-radius:100px;cursor:pointer;">Replay</button>
+            </div>
+        </div>
+
         <h2>The web of connections</h2>
 
         <p>
             The more you train it, the better these connections get. Early in training, a model might know that "dog" and "cat" are both animals, but it might not understand for example, that a question about a "bank" near a "river" probably means the riverbank and not a financial institution. The more examples it sees, the more nuanced its internal map of language becomes.
         </p>
+
+        <!-- GRAPHIC 2: web of connections -->
+        <div class="graphic">
+            <span class="graphic-label">the web of connections — hover a word to see what it's linked to</span>
+            <svg id="web-svg" viewBox="0 0 620 300" style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
+                <!-- connection lines -->
+                <g id="web-lines" stroke="rgba(28,20,16,0.12)" stroke-width="1.5" fill="none">
+                    <!-- Paris connections -->
+                    <line x1="310" y1="150" x2="180" y2="80" id="l-paris-france"/>
+                    <line x1="310" y1="150" x2="460" y2="80" id="l-paris-eiffel"/>
+                    <line x1="310" y1="150" x2="200" y2="230" id="l-paris-city"/>
+                    <line x1="310" y1="150" x2="430" y2="220" id="l-paris-europe"/>
+                    <!-- France connections -->
+                    <line x1="180" y1="80" x2="80" y2="140" id="l-france-wine"/>
+                    <line x1="180" y1="80" x2="130" y2="210" id="l-france-language"/>
+                    <!-- Eiffel connections -->
+                    <line x1="460" y1="80" x2="540" y2="160" id="l-eiffel-tower"/>
+                    <!-- Bank ambiguity -->
+                    <line x1="200" y1="230" x2="90" y2="270" id="l-city-river" stroke="rgba(139,26,26,0.2)"/>
+                    <line x1="430" y1="220" x2="550" y2="265" id="l-europe-money" stroke="rgba(139,26,26,0.2)"/>
+                </g>
+                <!-- nodes -->
+                <g font-family="DM Sans, sans-serif" text-anchor="middle">
+                    <!-- center: Paris -->
+                    <circle cx="310" cy="150" r="32" fill="#8b1a1a" id="n-paris" style="cursor:pointer;transition:r 0.2s;"/>
+                    <text x="310" y="154" font-size="13" font-weight="600" fill="#f4efe4">Paris</text>
+
+                    <!-- direct connections -->
+                    <circle cx="180" cy="80" r="26" fill="#ede6d8" stroke="rgba(28,20,16,0.15)" stroke-width="1" id="n-france" style="cursor:pointer;"/>
+                    <text x="180" y="84" font-size="12" fill="#1c1410">France</text>
+
+                    <circle cx="460" cy="80" r="26" fill="#ede6d8" stroke="rgba(28,20,16,0.15)" stroke-width="1" id="n-eiffel" style="cursor:pointer;"/>
+                    <text x="460" y="84" font-size="12" fill="#1c1410">Eiffel</text>
+
+                    <circle cx="200" cy="230" r="26" fill="#ede6d8" stroke="rgba(28,20,16,0.15)" stroke-width="1" id="n-city" style="cursor:pointer;"/>
+                    <text x="200" y="234" font-size="12" fill="#1c1410">City</text>
+
+                    <circle cx="430" cy="220" r="26" fill="#ede6d8" stroke="rgba(28,20,16,0.15)" stroke-width="1" id="n-europe" style="cursor:pointer;"/>
+                    <text x="430" y="224" font-size="12" fill="#1c1410">Europe</text>
+
+                    <!-- second ring -->
+                    <circle cx="80" cy="140" r="20" fill="#f4efe4" stroke="rgba(28,20,16,0.12)" stroke-width="1" id="n-wine" style="cursor:pointer;"/>
+                    <text x="80" y="144" font-size="11" fill="#6b5f50">Wine</text>
+
+                    <circle cx="130" cy="210" r="20" fill="#f4efe4" stroke="rgba(28,20,16,0.12)" stroke-width="1" id="n-lang" style="cursor:pointer;"/>
+                    <text x="130" y="214" font-size="11" fill="#6b5f50">French</text>
+
+                    <circle cx="540" cy="160" r="20" fill="#f4efe4" stroke="rgba(28,20,16,0.12)" stroke-width="1" id="n-tower" style="cursor:pointer;"/>
+                    <text x="540" y="164" font-size="11" fill="#6b5f50">Tower</text>
+
+                    <!-- ambiguous: bank -->
+                    <circle cx="90" cy="270" r="20" fill="#f4efe4" stroke="rgba(139,26,26,0.3)" stroke-width="1" id="n-river" style="cursor:pointer;"/>
+                    <text x="90" y="274" font-size="11" fill="#8b1a1a">River</text>
+
+                    <circle cx="550" cy="265" r="20" fill="#f4efe4" stroke="rgba(139,26,26,0.3)" stroke-width="1" id="n-money" style="cursor:pointer;"/>
+                    <text x="550" y="269" font-size="11" fill="#8b1a1a">Money</text>
+                </g>
+            </svg>
+            <div style="display:flex;gap:16px;justify-content:center;margin-top:8px;">
+                <span style="font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block;"></span>centre concept</span>
+                <span style="font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--cream-2);border:1px solid rgba(28,20,16,0.2);display:inline-block;"></span>strong association</span>
+                <span style="font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:5px;"><span style="width:10px;height:2px;background:rgba(139,26,26,0.4);display:inline-block;"></span>ambiguous link</span>
+            </div>
+        </div>
 
         <h2>Context window</h2>
 
@@ -217,6 +310,24 @@
         <p>
             This is why if you have a very long conversation with ChatGPT, the responses can start to feel a little off toward the end because it literally no longer has access to what was said earlier. This is also the reason something called RAG exists, which I'll cover in the next post.
         </p>
+
+        <!-- GRAPHIC 3: context window -->
+        <div class="graphic">
+            <span class="graphic-label">the context window — drag the slider to see what the model can and can't see</span>
+            <div style="padding:0 8px;">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="ctx-messages">
+                    <!-- filled by JS -->
+                </div>
+                <input type="range" id="ctx-slider" min="1" max="10" value="5"
+                    style="-webkit-appearance:none;width:100%;height:3px;background:var(--cream-3);border-radius:2px;cursor:pointer;margin-bottom:12px;"
+                    oninput="updateContext(this.value)">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);margin-bottom:8px;">
+                    <span>earlier in conversation</span>
+                    <span>most recent</span>
+                </div>
+                <div id="ctx-status" style="font-size:13px;color:var(--ink-2);font-weight:300;text-align:center;padding:10px;background:var(--cream);border:1px solid var(--rule);border-radius:2px;"></div>
+            </div>
+        </div>
 
         <h2>Why it sometimes makes things up</h2>
 
@@ -244,5 +355,127 @@
     </div>
 </div>
 
+<script>
+// ── GRAPHIC 1: Typewriter word-by-word ──
+const twSteps = [
+    { word: "Paris", choices: ["Paris", "London", "Rome", "Berlin"], chosen: 0 },
+    { word: " —", choices: ["—", ",", "is", "was"], chosen: 2 },
+    { word: " the", choices: ["the", "a", "France's", "one"], chosen: 0 },
+    { word: " capital", choices: ["capital", "largest", "main", "heart"], chosen: 0 },
+    { word: " city", choices: ["city", "town", "hub", "center"], chosen: 0 },
+    { word: " of", choices: ["of", "in", "for", "within"], chosen: 0 },
+    { word: " France.", choices: ["France.", "Europe.", "the world.", "Western Europe."], chosen: 0 },
+];
+let twIndex = 0, twTimer = null;
+const twOutput = document.getElementById('tw-output');
+const twNext = document.getElementById('tw-next');
+const twChoices = document.getElementById('tw-choices');
+
+function renderChoices(step) {
+    const chosen = step.choices[step.chosen];
+    twChoices.innerHTML = '<span style="font-size:11px;color:var(--ink-3);letter-spacing:0.06em;text-transform:uppercase;margin-right:4px;">Next word:</span>';
+    step.choices.forEach((c, i) => {
+        const span = document.createElement('span');
+        span.textContent = c;
+        const isChosen = i === step.chosen;
+        span.style.cssText = `font-size:12px;padding:3px 10px;border-radius:100px;border:1px solid ${isChosen ? 'var(--red)' : 'var(--rule)'};background:${isChosen ? 'var(--red)' : 'var(--cream)'};color:${isChosen ? '#fff' : 'var(--ink-2)'};font-weight:${isChosen ? '500' : '300'};transition:all 0.3s;`;
+        twChoices.appendChild(span);
+    });
+}
+
+function twStep() {
+    if (twIndex >= twSteps.length) return;
+    const step = twSteps[twIndex];
+    twNext.textContent = step.word.trim();
+    twNext.style.opacity = '1';
+    renderChoices(step);
+    setTimeout(() => {
+        twOutput.textContent += step.word;
+        twNext.style.opacity = '0';
+        twNext.textContent = '';
+        twIndex++;
+        if (twIndex < twSteps.length) {
+            twTimer = setTimeout(twStep, 900);
+        } else {
+            twChoices.innerHTML = '<span style="font-size:12px;color:var(--ink-3);">Response complete.</span>';
+        }
+    }, 700);
+}
+
+function restartTypewriter() {
+    clearTimeout(twTimer);
+    twIndex = 0;
+    twOutput.textContent = '';
+    twNext.textContent = '';
+    twNext.style.opacity = '0';
+    twChoices.innerHTML = '<span style="font-size:11px;color:var(--ink-3);letter-spacing:0.06em;text-transform:uppercase;">Next word candidates:</span>';
+    setTimeout(twStep, 400);
+}
+setTimeout(restartTypewriter, 600);
+
+// ── GRAPHIC 2: Node hover interactions ──
+const nodeMap = {
+    'n-paris':  { highlight: ['l-paris-france','l-paris-eiffel','l-paris-city','l-paris-europe'], nodes: ['n-france','n-eiffel','n-city','n-europe'] },
+    'n-france': { highlight: ['l-paris-france','l-france-wine','l-france-language'], nodes: ['n-paris','n-wine','n-lang'] },
+    'n-eiffel': { highlight: ['l-paris-eiffel','l-eiffel-tower'], nodes: ['n-paris','n-tower'] },
+    'n-city':   { highlight: ['l-paris-city','l-city-river'], nodes: ['n-paris','n-river'] },
+    'n-europe': { highlight: ['l-paris-europe','l-europe-money'], nodes: ['n-paris','n-money'] },
+};
+Object.keys(nodeMap).forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('mouseenter', () => {
+        const map = nodeMap[id];
+        document.querySelectorAll('#web-lines line').forEach(l => l.style.stroke = 'rgba(28,20,16,0.05)');
+        if (map) map.highlight.forEach(lid => { const l = document.getElementById(lid); if(l) l.style.stroke = '#8b1a1a'; l.style.strokeWidth = '2'; });
+    });
+    el.addEventListener('mouseleave', () => {
+        document.querySelectorAll('#web-lines line').forEach(l => { l.style.stroke = ''; l.style.strokeWidth = ''; });
+    });
+});
+
+// ── GRAPHIC 3: Context window slider ──
+const ctxMessages = [
+    { text: "Hi, what's your name?", role: 'user' },
+    { text: "I'm Claude.", role: 'ai' },
+    { text: "Can you help me with semiconductors?", role: 'user' },
+    { text: "Of course — what specifically?", role: 'ai' },
+    { text: "Tell me about TSMC's capacity.", role: 'user' },
+    { text: "TSMC is the world's largest foundry...", role: 'ai' },
+    { text: "How does that compare to Samsung?", role: 'user' },
+    { text: "Samsung is the second largest...", role: 'ai' },
+    { text: "What was my original question?", role: 'user' },
+    { text: "You asked about semiconductors.", role: 'ai' },
+];
+const WINDOW_SIZE = 5;
+
+function updateContext(val) {
+    const pos = parseInt(val);
+    const container = document.getElementById('ctx-messages');
+    const status = document.getElementById('ctx-status');
+    container.innerHTML = '';
+    ctxMessages.forEach((msg, i) => {
+        const inWindow = i >= pos - 1 && i < pos - 1 + WINDOW_SIZE;
+        const div = document.createElement('div');
+        div.style.cssText = `font-size:11px;padding:5px 10px;border-radius:100px;border:1px solid ${inWindow ? (msg.role==='user' ? 'var(--red)' : 'rgba(28,20,16,0.2)') : 'rgba(28,20,16,0.06)'};background:${inWindow ? (msg.role==='user' ? 'rgba(139,26,26,0.08)' : 'var(--cream-2)') : 'transparent'};color:${inWindow ? 'var(--ink)' : 'var(--ink-3)'};opacity:${inWindow ? '1' : '0.35'};transition:all 0.25s;white-space:nowrap;`;
+        div.textContent = msg.text.length > 28 ? msg.text.slice(0,26)+'…' : msg.text;
+        container.appendChild(div);
+    });
+    const visible = WINDOW_SIZE;
+    const forgotten = Math.max(0, pos - 1);
+    status.textContent = forgotten === 0
+        ? `The model can see all ${visible} messages in the current window.`
+        : `The model can see ${visible} messages. The first ${forgotten} message${forgotten>1?'s':''} ${forgotten>1?'have':'has'} scrolled out of the context window — the model has no access to them.`;
+}
+updateContext(5);
+
+// slider thumb style
+const slider = document.getElementById('ctx-slider');
+if (slider) {
+    const style = document.createElement('style');
+    style.textContent = '#ctx-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#8b1a1a;}';
+    document.head.appendChild(style);
+}
+</script>
 </body>
 </html>

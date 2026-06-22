@@ -10,7 +10,7 @@ def home():
 def index():
     return render_template('index.html')
 
-@app.route('/project2')
+@app.route('/deployment-playbook')
 def project2():
     return render_template('project2.html')
 
@@ -21,6 +21,10 @@ def blog():
 @app.route('/blog/what-is-an-llm')
 def post1():
     return render_template('post1.html')
+
+@app.route('/blog/ai-native-vs-ai-enabled')
+def post2():
+    return render_template('post2.html')
 
 @app.route('/calculate', methods=['POST'])
 def calculate():

@@ -6,7 +6,7 @@
     <title>AI TCO Calculator — Chaitali Mandavia</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -71,7 +71,7 @@
     <div class="nav-links">
         <a href="/">Home</a>
         <a href="/simulator" class="active">TCO Calculator</a>
-        <a href="/project2">Deployment Playbook</a>
+        <a href="/deployment-playbook">Deployment Playbook</a>
         <a href="mailto:hello@example.com" class="nav-pill">Say hello</a>
     </div>
 </nav>
@@ -154,6 +154,41 @@
         <div class="chart-title">ROI at different volumes and fallback rates</div>
         <div class="chart-wrap" style="height:200px;"><canvas id="sensitivityChart"></canvas></div>
         <div class="chart-note">Fallback rate = % of tasks that still need a human to review.</div>
+    </div>
+
+    <!-- ASSUMPTIONS -->
+    <div class="panel" style="margin-top:0;">
+        <span class="panel-label">Model assumptions</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div>
+                <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--red);margin-bottom:14px;">How costs are calculated</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="font-size:13px;color:var(--ink-2);line-height:1.65;font-weight:300;padding-bottom:10px;border-bottom:1px solid var(--rule);">
+                        <span style="font-weight:500;color:var(--ink);">Manual baseline</span> is calculated as volume × (minutes per task / 60) × hourly wage. This is what you're spending today with no AI.
+                    </div>
+                    <div style="font-size:13px;color:var(--ink-2);line-height:1.65;font-weight:300;padding-bottom:10px;border-bottom:1px solid var(--rule);">
+                        <span style="font-weight:500;color:var(--ink);">Model API fees</span> use current Claude/GPT-4 class pricing: $0.005 per 1K input tokens and $0.015 per 1K output tokens. Token counts vary by use case — document extraction assumes ~45K input tokens per task, support routing ~4K, and RAG ~15K.
+                    </div>
+                    <div style="font-size:13px;color:var(--ink-2);line-height:1.65;font-weight:300;">
+                        <span style="font-weight:500;color:var(--ink);">Human oversight cost</span> is calculated using the fallback rate for each use case — the percentage of tasks that still need a human to review or correct the AI output. Document extraction assumes 15%, support routing 8%, and RAG 5%.
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--red);margin-bottom:14px;">What's not included</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="font-size:13px;color:var(--ink-2);line-height:1.65;font-weight:300;padding-bottom:10px;border-bottom:1px solid var(--rule);">
+                        <span style="font-weight:500;color:var(--ink);">Upfront implementation cost</span> covers initial setup, integration work, and prompt engineering. Estimated at a fixed base ($25K-$40K depending on use case) plus $0.50 per unit of monthly volume.
+                    </div>
+                    <div style="font-size:13px;color:var(--ink-2);line-height:1.65;font-weight:300;padding-bottom:10px;border-bottom:1px solid var(--rule);">
+                        <span style="font-weight:500;color:var(--ink);">Not included:</span> data licensing fees, change management and training time, ongoing model monitoring, and infrastructure costs beyond API usage. These vary significantly by organization and can add 20-40% to the true TCO.
+                    </div>
+                    <div style="font-size:13px;color:var(--ink-2);line-height:1.65;font-weight:300;">
+                        <span style="font-weight:500;color:var(--ink);">ROI sensitivity</span> shows annualized return on the upfront investment at different volume scales and human fallback rates. The lines being close together means volume is a bigger driver of ROI than accuracy at the margin.
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
