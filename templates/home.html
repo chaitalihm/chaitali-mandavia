@@ -89,37 +89,34 @@
         }
         .annot svg { display: inline-block; vertical-align: middle; }
 
-        /* red full-width banner */
-        .hero-banner {
-            background: var(--red); color: #f4efe4;
-            padding: 18px 52px;
-            margin: 24px -52px 0;
+        /* simple desc strip replacing banner */
+        .hero-desc-strip {
+            margin: 28px 0 0;
+            padding: 28px 0;
+            border-top: 1px solid var(--rule);
+            border-bottom: 1px solid var(--rule);
             display: flex; align-items: center; justify-content: space-between;
-            gap: 24px;
+            gap: 40px;
         }
-        .banner-label {
-            font-family: var(--f-hand); font-size: 22px; color: rgba(244,239,228,0.7);
-            white-space: nowrap;
+        .hero-desc-text {
+            font-size: 15px; line-height: 1.8; color: var(--ink-2);
+            font-weight: 300; max-width: 520px;
         }
-        .banner-desc {
-            font-size: 13px; line-height: 1.7; color: rgba(244,239,228,0.85);
-            font-weight: 300; max-width: 480px;
-        }
-        .banner-desc strong { color: #f4efe4; font-weight: 500; }
-        .banner-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
-        .btn-cream {
+        .hero-desc-text strong { color: var(--ink); font-weight: 500; }
+        .hero-desc-actions { display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+        .btn-solid {
             font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
-            text-transform: uppercase; background: var(--cream);
-            color: var(--red); padding: 10px 22px; border-radius: 100px;
+            text-transform: uppercase; background: var(--ink);
+            color: var(--cream); padding: 11px 24px; border-radius: 100px;
             text-decoration: none; transition: opacity 0.2s; white-space: nowrap;
         }
-        .btn-cream:hover { opacity: 0.85; }
-        .btn-ghost-light {
-            font-size: 12px; color: rgba(244,239,228,0.7); text-decoration: none;
-            border-bottom: 1px solid rgba(244,239,228,0.3); padding-bottom: 2px;
+        .btn-solid:hover { opacity: 0.8; }
+        .btn-ghost {
+            font-size: 13px; color: var(--ink-2); text-decoration: none;
+            border-bottom: 1px solid var(--rule); padding-bottom: 2px;
             transition: color 0.2s; white-space: nowrap;
         }
-        .btn-ghost-light:hover { color: #f4efe4; }
+        .btn-ghost:hover { color: var(--ink); }
 
         /* ── WORK ── */
         .section { padding: 64px 52px 0; }
@@ -212,34 +209,27 @@
             font-size: 12px; color: var(--ink-3); line-height: 1.5; font-weight: 300;
         }
 
-        /* ── TICKER / INTERESTS ── */
-        .ticker-wrap {
-            margin-top: 40px;
-            overflow: hidden; border-top: 1px solid var(--rule);
-            border-bottom: 1px solid var(--rule);
-            background: var(--red); padding: 14px 0;
+
+
+        /* ── PHOTO ── */
+        .hero-photo {
+            width: clamp(180px, 22vw, 260px);
+            flex-shrink: 0; position: relative;
         }
-        .ticker-inner {
-            display: flex; gap: 0;
-            animation: ticker 22s linear infinite;
-            white-space: nowrap;
+        .hero-photo img {
+            width: 100%; border-radius: 12px;
+            object-fit: cover; object-position: top;
+            display: block; border: 2px solid var(--cream-3);
         }
-        .ticker-item {
-            font-family: var(--f-hand); font-size: 20px;
-            color: rgba(244,239,228,0.9); padding: 0 32px;
-            display: flex; align-items: center; gap: 16px;
-        }
-        .ticker-item::after {
-            content: '✦'; font-size: 12px; color: rgba(244,239,228,0.4);
-        }
-        @keyframes ticker {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
+        .hero-photo-note {
+            font-family: var(--f-hand); font-size: 14px;
+            color: var(--ink-3); text-align: center; margin-top: 8px;
+            transform: rotate(-1deg); display: block;
         }
 
         /* ── FOOTER ── */
         footer {
-            padding: 28px 52px; border-top: 1px solid var(--rule); margin-top: 56px;
+            padding: 28px 52px; border-top: 1px solid var(--rule); margin-top: 0;
             display: flex; align-items: center; justify-content: space-between;
         }
         footer p { font-size: 12px; color: var(--ink-3); }
@@ -262,40 +252,49 @@
 </nav>
 
 <div class="hero">
+    <div style="display:flex; gap:52px; align-items:flex-start;">
 
-    <!-- mixed-font headline -->
-    <div class="hero-intro">
-        <span class="hi-sans">Hi,</span>
-        <span class="im-serif-italic">I'm</span>
-        <span class="name-bold">Chaitali.</span>
-    </div>
+        <div style="flex:1;">
+            <!-- mixed-font headline -->
+            <div class="hero-intro">
+                <span class="hi-sans">Hi,</span>
+                <span class="im-serif-italic">I'm</span>
+                <span class="name-bold">Chaitali.</span>
+            </div>
 
-    <!-- handwritten annotations -->
-    <div class="hero-annotations">
-        <div class="annot" style="left:4px; top:10px; font-size:18px; transform:rotate(-2deg);">
-            Quant analyst turned AI builder
-            <svg width="48" height="24" viewBox="0 0 48 24" fill="none" style="margin-left:4px;">
-                <path d="M2 12 Q16 4 36 14 L30 10 M36 14 L32 20" stroke="#a8998a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            </svg>
-        </div>
-        <div class="annot" style="right:52px; top:8px; font-size:16px; text-align:right; transform:rotate(1deg);">
-            <svg width="40" height="24" viewBox="0 0 40 24" fill="none" style="margin-right:4px;">
-                <path d="M38 12 Q24 4 8 14 L14 10 M8 14 L12 20" stroke="#a8998a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            </svg>
-            Mumbai · Berkeley '21 · AG 4.5 yrs
-        </div>
-    </div>
+            <!-- handwritten annotations -->
+            <div class="hero-annotations">
+                <div class="annot" style="left:4px; top:10px; font-size:18px; transform:rotate(-2deg);">
+                    Quant analyst turned AI builder
+                    <svg width="48" height="24" viewBox="0 0 48 24" fill="none" style="margin-left:4px;">
+                        <path d="M2 12 Q16 4 36 14 L30 10 M36 14 L32 20" stroke="#a8998a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
+                <div class="annot" style="right:0px; top:8px; font-size:16px; text-align:right; transform:rotate(1deg);">
+                    <svg width="40" height="24" viewBox="0 0 40 24" fill="none" style="margin-right:4px;">
+                        <path d="M38 12 Q24 4 8 14 L14 10 M8 14 L12 20" stroke="#a8998a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    Mumbai · Berkeley '22 · AG 4.5 yrs
+                </div>
+            </div>
 
-    <!-- red full-width banner -->
-    <div class="hero-banner">
-        <span class="banner-label">currently building →</span>
-        <p class="banner-desc">
-            I graduated from <strong>UC Berkeley</strong> in December 2021 with a double major in Economics and Data Science. I've been at <strong>Analysis Group</strong> for 4.5 years, and over the last year built <strong>ALMA</strong>, an internal LLM tool our teams use for document review. This is my portfolio of what I've built and learned since.
-        </p>
-        <div class="banner-actions">
-            <a href="/simulator" class="btn-cream">Try the TCO calculator</a>
-            <a href="/deployment-playbook" class="btn-ghost-light">Case study →</a>
+            <div class="hero-desc-strip">
+                <p class="hero-desc-text">
+                    Quant analyst at <strong>Analysis Group</strong>, currently building things in AI. Berkeley Economics and Data Science, class of 2022. Based in NYC.
+                </p>
+                <div class="hero-desc-actions">
+                    <a href="/simulator" class="btn-solid">Try the TCO calculator</a>
+                    <a href="/deployment-playbook" class="btn-ghost">Case study →</a>
+                </div>
+            </div>
         </div>
+
+        <!-- photo -->
+        <div class="hero-photo" style="padding-top:8px;">
+            <img src="/static/chaitali.png" alt="Chaitali Mandavia" onerror="this.parentElement.style.display='none'">
+            <span class="hero-photo-note">that's me ↑</span>
+        </div>
+
     </div>
 </div>
 
@@ -347,7 +346,7 @@
             <div class="proj-num">03</div>
             <div>
                 <div class="proj-name">A blog where I explain AI without the jargon</div>
-                <div class="proj-desc">Short posts for people who keep hearing these words and nodding along. A lot of the terms sound intimidating but aren't — and some things that are genuinely confusing nobody admits. Writing both.</div>
+                <div class="proj-desc">Short posts for people who keep hearing these words and nodding along. A lot of the terms sound intimidating but aren't, and some things that are genuinely confusing that nobody admits. Writing both.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Writing</span>
                     <span class="proj-tag">AI explainers</span>
@@ -378,48 +377,27 @@
     <div class="about-inner">
         <div class="about-left">
             <span class="about-label">A bit about me</span>
-            <p class="about-text">I graduated from <strong>UC Berkeley</strong> in December 2021 with a double major in Economics and Data Science. Joined <strong>Analysis Group</strong> right after and have been there for 4.5 years doing quantitative research.</p>
-            <p class="about-text">Over the last year I got to work on ALMA, a firmwide tool built on LLMs that helps teams work through large document sets. That work is what got me seriously interested in the AI space.</p>
+            <p class="about-text">I've been at <strong>Analysis Group</strong> for 4.5 years doing quantitative research. Over the last year I worked on <strong>ALMA</strong>, a firmwide LLM tool that helps teams get through large document sets faster. That's what got me properly interested in this space.</p>
+            <p class="about-text">I'm originally from Mumbai, studied at Berkeley, and currently live in New York. Headed to <strong>INSEAD</strong> in January 2027.</p>
         </div>
         <div class="about-right">
             <div class="fact-row">
                 <div class="fact-val">Berkeley</div>
-                <div class="fact-label">Economics and Data Science, class of 2021</div>
+                <div class="fact-label">Economics and Data Science, class of 2022</div>
             </div>
             <div class="fact-row">
                 <div class="fact-val">Mumbai</div>
                 <div class="fact-label">originally from here</div>
             </div>
             <div class="fact-row">
-                <div class="fact-val">0.2 mo</div>
-                <div class="fact-label">payback period on the deployment I modeled</div>
+                <div class="fact-val">New York</div>
+                <div class="fact-label">where I currently live</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- TICKER -->
-<div class="ticker-wrap">
-    <div class="ticker-inner">
-        <!-- duplicated for seamless loop -->
-        <span class="ticker-item">Strength training</span>
-        <span class="ticker-item">Pilates</span>
-        <span class="ticker-item">Paneer anything</span>
-        <span class="ticker-item">Mumbai monsoons</span>
-        <span class="ticker-item">Entrepreneurship</span>
-        <span class="ticker-item">INSEAD Jan '27</span>
-        <span class="ticker-item">AI deployment</span>
-        <span class="ticker-item">Quant research</span>
-        <span class="ticker-item">Strength training</span>
-        <span class="ticker-item">Pilates</span>
-        <span class="ticker-item">Paneer anything</span>
-        <span class="ticker-item">Mumbai monsoons</span>
-        <span class="ticker-item">Entrepreneurship</span>
-        <span class="ticker-item">INSEAD Jan '27</span>
-        <span class="ticker-item">AI deployment</span>
-        <span class="ticker-item">Quant research</span>
-    </div>
-</div>
+
 
 <footer>
     <p>Chaitali Mandavia &middot; 2025</p>

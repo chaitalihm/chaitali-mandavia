@@ -9,166 +9,106 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --cream:  #f4efe4; --cream-2: #ede6d8; --cream-3: #e2d9ca;
-            --red:    #8b1a1a; --ink: #1c1410; --ink-2: #6b5f50; --ink-3: #a8998a;
-            --rule:   rgba(28,20,16,0.13);
+            --cream: #f4efe4; --cream-2: #ede6d8; --cream-3: #e2d9ca;
+            --red: #8b1a1a; --ink: #1c1410; --ink-2: #6b5f50; --ink-3: #a8998a;
+            --rule: rgba(28,20,16,0.13);
             --f-serif: 'Playfair Display', Georgia, serif;
-            --f-sans:  'DM Sans', system-ui, sans-serif;
-            --f-hand:  'Caveat', cursive;
+            --f-sans: 'DM Sans', system-ui, sans-serif;
+            --f-hand: 'Caveat', cursive;
         }
         body { font-family: var(--f-sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
 
-        /* NAV */
         nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 52px; }
-        .nav-logo { font-family: var(--f-serif); font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: 0.02em; }
+        .nav-logo { font-family: var(--f-serif); font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; }
         .nav-links { display: flex; gap: 36px; align-items: center; }
         .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: var(--ink); }
         .nav-pill { font-size: 11px; font-weight: 500; background: var(--red); color: #fff; padding: 8px 18px; border-radius: 100px; text-decoration: none; }
 
-        /* PAGE HEADER - red banner like post pages */
-        .page-header {
-            background: var(--red); padding: 56px 52px 48px;
-            position: relative; overflow: hidden;
-        }
-        .page-header-bg-text {
-            position: absolute; right: 40px; top: 16px;
-            font-family: var(--f-serif); font-size: 160px; font-weight: 900;
-            color: rgba(255,255,255,0.05); line-height: 1; user-select: none;
-            letter-spacing: -0.04em;
-        }
-        .page-tag {
-            font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
-            text-transform: uppercase; background: rgba(255,255,255,0.15);
-            color: rgba(244,239,228,0.9); border-radius: 100px;
-            padding: 4px 12px; display: inline-block; margin-bottom: 20px;
-        }
-        .page-h1 {
-            font-family: var(--f-serif); font-size: clamp(36px, 5vw, 64px);
-            font-weight: 900; color: #f4efe4; letter-spacing: -0.03em;
-            line-height: 1.0; max-width: 680px; margin-bottom: 20px;
-        }
+        /* HEADER */
+        .page-header { background: var(--red); padding: 60px 56px 52px; position: relative; overflow: hidden; }
+        .page-header-bg { position: absolute; right: 40px; top: 10px; font-family: var(--f-serif); font-size: 180px; font-weight: 900; color: rgba(255,255,255,0.04); line-height: 1; user-select: none; letter-spacing: -0.04em; }
+        .page-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(244,239,228,0.9); border-radius: 100px; padding: 4px 14px; display: inline-block; margin-bottom: 22px; }
+        .page-h1 { font-family: var(--f-serif); font-size: clamp(40px, 5.5vw, 72px); font-weight: 900; color: #f4efe4; letter-spacing: -0.03em; line-height: 1.0; max-width: 720px; margin-bottom: 20px; }
         .page-h1 em { font-style: italic; font-weight: 400; }
-        .page-intro {
-            font-size: 15px; line-height: 1.8; color: rgba(244,239,228,0.8);
-            font-weight: 300; max-width: 600px; margin-bottom: 36px;
-        }
-        .meta-row { display: flex; gap: 36px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.15); }
-        .meta-item { display: flex; flex-direction: column; gap: 5px; }
-        .meta-key { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,239,228,0.5); }
-        .meta-val { font-size: 13px; font-weight: 400; color: rgba(244,239,228,0.85); }
+        .page-intro { font-size: 16px; line-height: 1.85; color: rgba(244,239,228,0.78); font-weight: 300; max-width: 580px; margin-bottom: 40px; }
+        .meta-row { display: flex; gap: 40px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.14); }
+        .meta-item { display: flex; flex-direction: column; gap: 6px; }
+        .meta-key { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244,239,228,0.45); }
+        .meta-val { font-size: 14px; color: rgba(244,239,228,0.85); }
 
         /* STAGE NAV */
-        .stage-nav {
-            position: sticky; top: 0; z-index: 40;
-            background: rgba(244,239,228,0.97); backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--rule);
-            padding: 0 52px; display: flex; gap: 0; overflow-x: auto;
-        }
-        .stage-nav a {
-            font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-            color: var(--ink-3); text-decoration: none; padding: 14px 20px;
-            border-bottom: 2px solid transparent; white-space: nowrap;
-            transition: color 0.2s, border-color 0.2s;
-        }
+        .stage-nav { position: sticky; top: 0; z-index: 40; background: rgba(244,239,228,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); padding: 0 56px; display: flex; overflow-x: auto; }
+        .stage-nav a { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; padding: 15px 22px; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
         .stage-nav a:hover { color: var(--ink-2); }
         .stage-nav a.active { color: var(--ink); border-bottom-color: var(--red); }
 
         /* CONTENT */
-        .content { max-width: 800px; margin: 0 auto; padding: 0 52px 100px; }
+        .content { max-width: 820px; margin: 0 auto; padding: 0 56px 100px; }
 
-        /* STAGE BLOCK */
-        .stage-block { padding: 60px 0; border-bottom: 1px solid var(--rule); }
+        .stage-block { padding: 64px 0; border-bottom: 1px solid var(--rule); }
         .stage-block:last-child { border-bottom: none; }
 
-        .stage-eyebrow {
-            font-family: var(--f-hand); font-size: 18px; color: var(--red);
-            margin-bottom: 8px; display: block;
-        }
-        .stage-h2 {
-            font-family: var(--f-serif); font-size: clamp(26px, 3.5vw, 36px);
-            font-weight: 900; letter-spacing: -0.02em;
-            color: var(--ink); margin-bottom: 18px; line-height: 1.1;
-        }
-        .stage-intro {
-            font-size: 15px; line-height: 1.8; color: var(--ink-2);
-            font-weight: 300; margin-bottom: 36px; max-width: 660px;
-        }
+        .stage-eyebrow { font-family: var(--f-hand); font-size: 20px; color: var(--red); margin-bottom: 10px; display: block; }
+        .stage-h2 { font-family: var(--f-serif); font-size: clamp(30px, 4vw, 44px); font-weight: 900; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 20px; line-height: 1.1; }
+        .stage-intro { font-size: 17px; line-height: 1.85; color: var(--ink-2); font-weight: 300; margin-bottom: 40px; max-width: 680px; }
 
         /* CALLOUT */
-        .callout {
-            background: var(--cream-2); border: 1px solid var(--rule);
-            padding: 24px 28px; margin-bottom: 20px;
-        }
-        .callout-label {
-            font-family: var(--f-hand); font-size: 17px; color: var(--red);
-            margin-bottom: 10px; display: block;
-        }
-        .callout p { font-size: 14px; line-height: 1.8; color: var(--ink-2); font-weight: 300; }
-        .callout p + p { margin-top: 12px; }
+        .callout { background: var(--cream-2); border: 1px solid var(--rule); padding: 26px 30px; margin-bottom: 20px; }
+        .callout-label { font-family: var(--f-hand); font-size: 19px; color: var(--red); margin-bottom: 12px; display: block; }
+        .callout p { font-size: 15px; line-height: 1.85; color: var(--ink-2); font-weight: 300; }
+        .callout p + p { margin-top: 14px; }
         .callout strong { color: var(--ink); font-weight: 500; }
         .callout.red-bg { background: var(--red); border-color: var(--red); }
-        .callout.red-bg .callout-label { color: rgba(244,239,228,0.65); }
+        .callout.red-bg .callout-label { color: rgba(244,239,228,0.6); }
         .callout.red-bg p { color: rgba(244,239,228,0.88); }
         .callout.red-bg strong { color: #f4efe4; }
 
         /* STAT ROW */
-        .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
-        .stat-box { background: var(--cream-2); border: 1px solid var(--rule); padding: 20px 22px; }
-        .stat-num { font-family: var(--f-serif); font-size: 32px; font-weight: 900; color: var(--red); letter-spacing: -0.02em; margin-bottom: 6px; line-height: 1; }
-        .stat-label { font-size: 12px; color: var(--ink-3); line-height: 1.5; font-weight: 300; }
+        .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
+        .stat-box { background: var(--cream-2); border: 1px solid var(--rule); padding: 22px 24px; }
+        .stat-num { font-family: var(--f-serif); font-size: 38px; font-weight: 900; color: var(--red); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1; }
+        .stat-label { font-size: 13px; color: var(--ink-3); line-height: 1.55; font-weight: 300; }
+
+        /* GRAPHIC */
+        .graphic { background: var(--cream-2); border: 1px solid var(--rule); padding: 32px 28px 24px; margin: 36px 0; }
+        .graphic-label { font-family: var(--f-hand); font-size: 17px; color: var(--ink-3); margin-bottom: 20px; display: block; text-align: center; }
 
         /* QUESTION LIST */
-        .q-group { margin-bottom: 32px; }
-        .q-group-title {
-            font-family: var(--f-serif); font-size: 16px; font-weight: 700;
-            color: var(--ink); margin-bottom: 14px; padding-bottom: 10px;
-            border-bottom: 1px solid var(--rule);
-        }
-        .q-item { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(28,20,16,0.05); }
+        .q-group { margin-bottom: 36px; }
+        .q-group-title { font-family: var(--f-serif); font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+        .q-item { display: flex; gap: 18px; padding: 14px 0; border-bottom: 1px solid rgba(28,20,16,0.05); }
         .q-item:last-child { border-bottom: none; }
-        .q-n { font-family: var(--f-hand); font-size: 18px; color: var(--ink-3); flex-shrink: 0; width: 24px; }
-        .q-text { font-size: 14px; color: var(--ink-2); line-height: 1.65; font-weight: 300; }
+        .q-n { font-family: var(--f-hand); font-size: 20px; color: var(--ink-3); flex-shrink: 0; width: 26px; }
+        .q-text { font-size: 15px; color: var(--ink-2); line-height: 1.7; font-weight: 300; }
         .q-text strong { color: var(--ink); font-weight: 500; }
 
-        /* ARCH DIAGRAM */
-        .arch { background: var(--cream-2); border: 1px solid var(--rule); padding: 28px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .arch-layer { display: flex; gap: 10px; align-items: stretch; }
-        .arch-side { font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); writing-mode: vertical-rl; transform: rotate(180deg); width: 16px; flex-shrink: 0; text-align: center; }
-        .arch-boxes { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
-        .arch-box { background: var(--cream); border: 1px solid var(--rule); padding: 12px 14px; flex: 1; min-width: 130px; }
-        .arch-box.red { background: rgba(139,26,26,0.08); border-color: rgba(139,26,26,0.25); }
-        .arch-box-name { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
-        .arch-box.red .arch-box-name { color: var(--red); }
-        .arch-box-desc { font-size: 11px; color: var(--ink-3); line-height: 1.5; }
-        .arch-arrow { text-align: center; color: var(--ink-3); padding: 0 0 0 16px; font-size: 14px; }
-
         /* KPI TABLE */
-        .kpi-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .kpi-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
-        .kpi-table td { font-size: 13px; color: var(--ink-2); padding: 13px 14px; border-bottom: 1px solid rgba(28,20,16,0.05); vertical-align: top; line-height: 1.6; font-weight: 300; }
+        .kpi-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .kpi-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+        .kpi-table td { font-size: 14px; color: var(--ink-2); padding: 14px 16px; border-bottom: 1px solid rgba(28,20,16,0.05); vertical-align: top; line-height: 1.65; font-weight: 300; }
         .kpi-table tr:last-child td { border-bottom: none; }
         .kpi-table td:first-child { color: var(--ink); font-weight: 500; }
         .kpi-table td.target { color: var(--red); font-weight: 600; }
 
         /* TIMELINE */
-        .timeline { display: flex; flex-direction: column; margin-bottom: 36px; }
-        .tl-item { display: grid; grid-template-columns: 90px 1fr; gap: 24px; padding: 20px 0; border-bottom: 1px solid rgba(28,20,16,0.05); }
+        .timeline { display: flex; flex-direction: column; margin-bottom: 40px; }
+        .tl-item { display: grid; grid-template-columns: 96px 1fr; gap: 28px; padding: 22px 0; border-bottom: 1px solid rgba(28,20,16,0.05); }
         .tl-item:last-child { border-bottom: none; }
-        .tl-time { font-family: var(--f-hand); font-size: 17px; color: var(--red); padding-top: 2px; }
-        .tl-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
-        .tl-desc { font-size: 13px; color: var(--ink-2); line-height: 1.65; font-weight: 300; }
+        .tl-time { font-family: var(--f-hand); font-size: 19px; color: var(--red); padding-top: 2px; }
+        .tl-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+        .tl-desc { font-size: 14px; color: var(--ink-2); line-height: 1.7; font-weight: 300; }
 
-        /* RISK ROWS */
-        .risk-row { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgba(28,20,16,0.05); align-items: start; }
+        /* RISK */
+        .risk-row { display: grid; grid-template-columns: 1fr 90px 1fr; gap: 18px; padding: 20px 0; border-bottom: 1px solid rgba(28,20,16,0.05); align-items: start; }
         .risk-row:first-of-type { border-top: 1px solid var(--rule); }
-        .risk-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
-        .risk-desc { font-size: 12px; color: var(--ink-3); font-weight: 300; line-height: 1.5; }
-        .risk-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 100px; padding: 4px 10px; text-align: center; width: fit-content; }
+        .risk-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+        .risk-desc { font-size: 13px; color: var(--ink-3); font-weight: 300; line-height: 1.5; }
+        .risk-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 100px; padding: 4px 10px; width: fit-content; }
         .risk-high { background: rgba(139,26,26,0.12); color: var(--red); }
-        .risk-med  { background: rgba(107,95,80,0.12); color: var(--ink-2); }
-        .risk-low  { background: rgba(168,153,138,0.15); color: var(--ink-3); }
-        .risk-fix { font-size: 13px; color: var(--ink-2); line-height: 1.65; font-weight: 300; }
+        .risk-med { background: rgba(107,95,80,0.12); color: var(--ink-2); }
+        .risk-low { background: rgba(168,153,138,0.15); color: var(--ink-3); }
+        .risk-fix { font-size: 14px; color: var(--ink-2); line-height: 1.7; font-weight: 300; }
     </style>
 </head>
 <body>
@@ -185,15 +125,15 @@
 </nav>
 
 <div class="page-header">
-    <div class="page-header-bg-text">DEPLOY</div>
+    <div class="page-header-bg">DEPLOY</div>
     <span class="page-tag">Case study · in progress</span>
-    <h1 class="page-h1">Deploying agentic AI at a <em>long/short semiconductor fund</em></h1>
-    <p class="page-intro">I picked a real scenario and worked through what it would actually take to deploy agentic AI well — the business case, the client conversations, the architecture, and how you know six months later if it worked.</p>
+    <h1 class="page-h1">Deploying agentic AI for the semiconductor team at a <em>long/short hedge fund</em></h1>
+    <p class="page-intro">I picked one team at a large multi-sector fund. The analysts covering global semiconductors. Worked through what it would actually take to build something useful for them.</p>
     <div class="meta-row">
         <div class="meta-item"><span class="meta-key">Client type</span><span class="meta-val">Long/short hedge fund, Dubai</span></div>
-        <div class="meta-item"><span class="meta-key">Market focus</span><span class="meta-val">Global semiconductors</span></div>
-        <div class="meta-item"><span class="meta-key">Core problem</span><span class="meta-val">Portfolio monitoring, 50+ companies</span></div>
-        <div class="meta-item"><span class="meta-key">AI type</span><span class="meta-val">Agentic, multi-source RAG</span></div>
+        <div class="meta-item"><span class="meta-key">Team in scope</span><span class="meta-val">Semiconductor coverage team</span></div>
+        <div class="meta-item"><span class="meta-key">Problem</span><span class="meta-val">Monitoring 50+ companies manually</span></div>
+        <div class="meta-item"><span class="meta-key">AI type</span><span class="meta-val">Agentic, multi-source</span></div>
     </div>
 </div>
 
@@ -211,38 +151,55 @@
     <div class="stage-block" id="stage1">
         <span class="stage-eyebrow">Stage 1</span>
         <h2 class="stage-h2">Why this makes economic sense</h2>
-        <p class="stage-intro">Before writing a line of code, you need to show the fund why this is worth doing. Semiconductor markets are a good fit for this argument because the coverage universe is wide, information moves fast, and analyst time is genuinely the bottleneck.</p>
+        <p class="stage-intro">The semiconductor team covers a lot of companies across a fast-moving market. The problem isn't that the analysts are bad at their jobs — it's that there's too much to read and not enough hours to read it. That's the pitch.</p>
 
         <div class="stat-row">
             <div class="stat-box">
                 <div class="stat-num">50+</div>
-                <div class="stat-label">companies to track across TSMC, ASML, Nvidia, SMIC, and the broader supply chain</div>
+                <div class="stat-label">companies tracked across TSMC, ASML, Nvidia, SMIC, and the broader supply chain</div>
             </div>
             <div class="stat-box">
                 <div class="stat-num">~3 hrs</div>
-                <div class="stat-label">analyst time per company per week just to stay current on filings, news, and supply chain signals</div>
+                <div class="stat-label">per company per week just to stay current on filings, news, and supply chain signals</div>
             </div>
             <div class="stat-box">
                 <div class="stat-num">$22k</div>
-                <div class="stat-label">weekly labor cost across the team at roughly $150/hr — before any AI investment</div>
+                <div class="stat-label">estimated weekly labor cost across the team at $150/hr before any AI investment</div>
             </div>
+        </div>
+
+        <!-- GRAPHIC: time breakdown -->
+        <div class="graphic">
+            <span class="graphic-label">where analyst time actually goes each week</span>
+            <svg viewBox="0 0 640 200" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+                <!-- bars -->
+                <rect x="40" y="40" width="240" height="36" rx="3" fill="#8b1a1a"/>
+                <rect x="40" y="90" width="150" height="36" rx="3" fill="#c47a7a"/>
+                <rect x="40" y="140" width="80" height="36" rx="3" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                <!-- labels left -->
+                <text x="34" y="63" font-size="12" fill="#6b5f50" text-anchor="end">Gathering info</text>
+                <text x="34" y="113" font-size="12" fill="#6b5f50" text-anchor="end">Summarizing</text>
+                <text x="34" y="163" font-size="12" fill="#6b5f50" text-anchor="end">Actual analysis</text>
+                <!-- values -->
+                <text x="290" y="63" font-size="13" font-weight="600" fill="#8b1a1a">~12 hrs/week</text>
+                <text x="200" y="113" font-size="13" font-weight="600" fill="#a03030">~7 hrs/week</text>
+                <text x="130" y="163" font-size="13" font-weight="600" fill="#6b5f50">~3 hrs/week</text>
+                <!-- annotation -->
+                <text x="440" y="100" font-size="13" fill="#a8998a" font-style="italic">The goal is to flip this ratio.</text>
+                <text x="440" y="118" font-size="13" fill="#a8998a" font-style="italic">AI handles the first two,</text>
+                <text x="440" y="136" font-size="13" fill="#a8998a" font-style="italic">analysts focus on the third.</text>
+            </svg>
         </div>
 
         <div class="callout">
             <span class="callout-label">the pitch</span>
-            <p>A long/short semiconductor fund lives on information speed. When TSMC revises its capacity guidance, when ASML gets hit by a new export restriction, when a supplier in Malaysia goes offline — the fund that knows first positions first. Right now analysts spend most of their time gathering and summarizing information rather than actually doing something with it.</p>
-            <p>The idea is to give the team a system that reads everything, flags what matters, and puts together a first draft so analysts can focus on the stuff that actually needs a human. Not to replace anyone, just to clear the noise.</p>
-        </div>
-
-        <div class="callout">
-            <span class="callout-label">what others are doing</span>
-            <p>Larger funds like Millennium and Point72 have been investing in AI research infrastructure for a while. Bloomberg and FactSet both launched LLM-based research tools in 2024. The question for a mid-size fund is whether off-the-shelf tools are enough or whether a custom build makes more sense.</p>
-            <p>Generic tools cover general market news fine, but they don't understand the relationship between something like ASML shipment delays and TSMC's 3nm yield trajectory. That kind of domain-specific signal is only possible with something purpose-built for this coverage universe.</p>
+            <p>A long/short fund lives on information speed. When TSMC revises its capacity guidance, when ASML gets hit by a new export restriction, when a supplier goes offline, the team that knows first positions first. Right now analysts spend most of their time gathering and summarizing rather than deciding. The idea is to build something that handles the first part so they can focus on the second.</p>
+            <p>Larger funds like Millennium and Point72 have been building AI research infrastructure for a while. Bloomberg and FactSet both launched LLM tools in 2024. The question for a mid-size fund is whether off-the-shelf is enough. My view is no. Generic tools don't understand the relationship between something like ASML shipment delays and TSMC's 3nm yield trajectory. That specificity only comes from something built for this team specifically.</p>
         </div>
 
         <div class="callout red-bg">
             <span class="callout-label">what I would recommend</span>
-            <p>Build a <strong>custom agentic monitoring system</strong> designed around the semiconductor supply chain specifically. Start with the top 15 holdings, prove it out, then expand. Going broad too early is how these projects fall apart.</p>
+            <p>Build a <strong>custom agentic monitoring system</strong> for the semiconductor team specifically. Start with the top 15 holdings, get it working well there, then expand. Going broad too early is how these projects fall apart.</p>
         </div>
     </div>
 
@@ -250,28 +207,28 @@
     <div class="stage-block" id="stage2">
         <span class="stage-eyebrow">Stage 2</span>
         <h2 class="stage-h2">Questions I'd ask before building anything</h2>
-        <p class="stage-intro">The number one reason AI deployments fail is that nobody spent enough time understanding the actual workflow before building anything. I would want to sit down with the analysts and the CIO before touching any code.</p>
+        <p class="stage-intro">The number one reason AI projects fail is that nobody spent enough time with the actual users before building. I would want to sit down with the analysts and the CIO before touching any code. These are the questions I would ask.</p>
 
         <div class="q-group">
             <div class="q-group-title">Coverage and data</div>
-            <div class="q-item"><span class="q-n">1</span><span class="q-text"><strong>What does your coverage universe actually look like?</strong> Give me the full list, how you'd bucket them by importance, and which 10 companies, if you missed something on them, would cost you the most.</span></div>
-            <div class="q-item"><span class="q-n">2</span><span class="q-text"><strong>Where does your information come from today?</strong> Walk me through every source an analyst touches in a typical week — terminals, filings, supply chain data providers, export control filings, broker reports.</span></div>
-            <div class="q-item"><span class="q-n">3</span><span class="q-text"><strong>What data do you have API access to, and what requires a human to go find it?</strong></span></div>
+            <div class="q-item"><span class="q-n">1</span><span class="q-text"><strong>What does your coverage universe look like?</strong> Full list, how you'd bucket them by importance, and which 10 companies — if you missed something — would hurt the most.</span></div>
+            <div class="q-item"><span class="q-n">2</span><span class="q-text"><strong>Where does your information come from today?</strong> Every source an analyst touches in a typical week — terminals, filings, supply chain data providers, broker reports, export control filings.</span></div>
+            <div class="q-item"><span class="q-n">3</span><span class="q-text"><strong>What do you have API access to, and what requires a human to go find it?</strong></span></div>
         </div>
 
         <div class="q-group">
             <div class="q-group-title">Workflow and pain points</div>
-            <div class="q-item"><span class="q-n">4</span><span class="q-text"><strong>Walk me through what an analyst does on a typical Monday morning.</strong> What do they read, in what order, and what do they produce by end of day?</span></div>
-            <div class="q-item"><span class="q-n">5</span><span class="q-text"><strong>What's the most time-consuming thing analysts do that adds the least value?</strong> Synthesizing earnings transcripts? Tracking supply chain signals? Writing first drafts?</span></div>
-            <div class="q-item"><span class="q-n">6</span><span class="q-text"><strong>Can you tell me about a specific time you were late on something that mattered?</strong> What happened, and what would have needed to be different?</span></div>
-            <div class="q-item"><span class="q-n">7</span><span class="q-text"><strong>What signals have historically driven your best trades?</strong> Capacity utilization shifts? Lead time changes? Export license approvals? Management tone on calls?</span></div>
+            <div class="q-item"><span class="q-n">4</span><span class="q-text"><strong>Walk me through a typical Monday morning.</strong> What do you read, in what order, and what do you produce by end of day?</span></div>
+            <div class="q-item"><span class="q-n">5</span><span class="q-text"><strong>What's the most time-consuming thing that adds the least value?</strong> Synthesizing earnings transcripts? Tracking supply chain signals? Writing first drafts of research notes?</span></div>
+            <div class="q-item"><span class="q-n">6</span><span class="q-text"><strong>Tell me about a specific time you were late on something that mattered.</strong> What happened, and what would have needed to be different?</span></div>
+            <div class="q-item"><span class="q-n">7</span><span class="q-text"><strong>What signals have historically driven your best trades?</strong> Capacity utilization shifts? Lead time changes? Export license approvals? Management tone on earnings calls?</span></div>
         </div>
 
         <div class="q-group">
-            <div class="q-group-title">Technical and compliance</div>
-            <div class="q-item"><span class="q-n">8</span><span class="q-text"><strong>What are your data residency and compliance requirements?</strong> Does firm data need to stay in a specific region? Any restrictions on sending information to third-party APIs?</span></div>
-            <div class="q-item"><span class="q-n">9</span><span class="q-text"><strong>Where would analysts want to see AI output?</strong> In their existing tools, a new dashboard, a Slack digest, email?</span></div>
-            <div class="q-item"><span class="q-n">10</span><span class="q-text"><strong>Who owns the decision to adopt this internally?</strong> Who has veto power?</span></div>
+            <div class="q-group-title">Technical and org</div>
+            <div class="q-item"><span class="q-n">8</span><span class="q-text"><strong>What are your data residency and compliance requirements?</strong> Restrictions on sending information to third-party APIs?</span></div>
+            <div class="q-item"><span class="q-n">9</span><span class="q-text"><strong>Where would analysts actually want to see this?</strong> In their existing tools, a new dashboard, a Slack digest, email?</span></div>
+            <div class="q-item"><span class="q-n">10</span><span class="q-text"><strong>Who owns the decision to adopt this?</strong> Who has veto power?</span></div>
         </div>
     </div>
 
@@ -279,43 +236,84 @@
     <div class="stage-block" id="stage3">
         <span class="stage-eyebrow">Stage 3</span>
         <h2 class="stage-h2">What the system actually looks like</h2>
-        <p class="stage-intro">The core idea is an orchestrator agent that runs on a schedule, pulls from multiple data sources, extracts structured signals, and routes them to the right analyst with context. No voice, no computer vision — this is a text-heavy information synthesis problem.</p>
+        <p class="stage-intro">An orchestrator agent runs on a schedule, pulls from multiple sources, extracts what matters, and routes it to the right analyst with context. No voice, no computer vision — this is a text-heavy information synthesis problem.</p>
 
-        <div class="arch">
-            <div class="arch-layer">
-                <div class="arch-side">Inputs</div>
-                <div class="arch-boxes">
-                    <div class="arch-box"><div class="arch-box-name">Filings & Transcripts</div><div class="arch-box-desc">SEC, 20-F, earnings calls via API</div></div>
-                    <div class="arch-box"><div class="arch-box-name">News & Wire</div><div class="arch-box-desc">Reuters, Bloomberg, Nikkei feeds</div></div>
-                    <div class="arch-box"><div class="arch-box-name">Supply Chain Data</div><div class="arch-box-desc">TrendForce, IDC, lead time trackers</div></div>
-                    <div class="arch-box"><div class="arch-box-name">Regulatory</div><div class="arch-box-desc">BIS export controls, EU/US policy filings</div></div>
-                </div>
-            </div>
-            <div class="arch-arrow">↓</div>
-            <div class="arch-layer">
-                <div class="arch-side">Agent</div>
-                <div class="arch-boxes">
-                    <div class="arch-box red"><div class="arch-box-name">Orchestrator Agent</div><div class="arch-box-desc">Runs on schedule, routes tasks to sub-agents</div></div>
-                    <div class="arch-box red"><div class="arch-box-name">Signal Extractor</div><div class="arch-box-desc">Identifies material events, scores by relevance</div></div>
-                    <div class="arch-box red"><div class="arch-box-name">RAG Layer</div><div class="arch-box-desc">Retrieves historical context from vector store</div></div>
-                </div>
-            </div>
-            <div class="arch-arrow">↓</div>
-            <div class="arch-layer">
-                <div class="arch-side">Outputs</div>
-                <div class="arch-boxes">
-                    <div class="arch-box"><div class="arch-box-name">Daily Briefing</div><div class="arch-box-desc">Ranked digest of material events by company</div></div>
-                    <div class="arch-box"><div class="arch-box-name">Alert System</div><div class="arch-box-desc">Real-time push for high-urgency events</div></div>
-                    <div class="arch-box"><div class="arch-box-name">Research Draft</div><div class="arch-box-desc">First-pass write-up with cited sources</div></div>
-                </div>
-            </div>
+        <!-- GRAPHIC: system architecture flow -->
+        <div class="graphic">
+            <span class="graphic-label">how the system is structured</span>
+            <svg viewBox="0 0 660 320" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif" font-size="12">
+
+                <!-- INPUT BOXES -->
+                <rect x="10" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="75" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">Filings &amp; Transcripts</text>
+                <text x="75" y="50" text-anchor="middle" fill="#a8998a">SEC, 20-F, earnings</text>
+
+                <rect x="155" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="220" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">News &amp; Wire</text>
+                <text x="220" y="50" text-anchor="middle" fill="#a8998a">Reuters, Bloomberg</text>
+
+                <rect x="300" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="365" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">Supply Chain Data</text>
+                <text x="365" y="50" text-anchor="middle" fill="#a8998a">TrendForce, IDC</text>
+
+                <rect x="445" y="10" width="130" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="510" y="32" text-anchor="middle" fill="#1c1410" font-weight="500">Regulatory</text>
+                <text x="510" y="50" text-anchor="middle" fill="#a8998a">BIS, export controls</text>
+
+                <!-- arrows down to agent layer -->
+                <line x1="75" y1="62" x2="75" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="220" y1="62" x2="220" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="365" y1="62" x2="365" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="510" y1="62" x2="510" y2="100" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                <!-- converge line -->
+                <line x1="75" y1="100" x2="510" y2="100" stroke="#a8998a" stroke-width="1.5"/>
+                <line x1="292" y1="100" x2="292" y2="130" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                <!-- AGENT LAYER -->
+                <rect x="120" y="130" width="346" height="64" rx="4" fill="#8b1a1a"/>
+                <text x="293" y="155" text-anchor="middle" fill="#f4efe4" font-weight="600" font-size="13">Orchestrator Agent</text>
+                <text x="293" y="174" text-anchor="middle" fill="rgba(244,239,228,0.7)" font-size="11">runs on schedule · routes tasks · manages context</text>
+
+                <!-- arrow down from agent -->
+                <line x1="292" y1="194" x2="292" y2="230" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="150" y1="230" x2="430" y2="230" stroke="#a8998a" stroke-width="1.5"/>
+                <line x1="150" y1="230" x2="150" y2="258" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="292" y1="230" x2="292" y2="258" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+                <line x1="430" y1="230" x2="430" y2="258" stroke="#a8998a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                <!-- OUTPUT BOXES -->
+                <rect x="60" y="258" width="180" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="150" y="280" text-anchor="middle" fill="#1c1410" font-weight="500">Daily Briefing</text>
+                <text x="150" y="298" text-anchor="middle" fill="#a8998a">ranked digest by company</text>
+
+                <rect x="202" y="258" width="180" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="292" y="280" text-anchor="middle" fill="#1c1410" font-weight="500">Alert System</text>
+                <text x="292" y="298" text-anchor="middle" fill="#a8998a">real-time for urgent signals</text>
+
+                <rect x="342" y="258" width="180" height="52" rx="4" fill="#ede6d8" stroke="rgba(28,20,16,0.13)" stroke-width="1"/>
+                <text x="432" y="280" text-anchor="middle" fill="#1c1410" font-weight="500">Research Draft</text>
+                <text x="432" y="298" text-anchor="middle" fill="#a8998a">first-pass with citations</text>
+
+                <!-- arrow marker -->
+                <defs>
+                    <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                        <path d="M1,1 L4,4 L1,7" stroke="#a8998a" stroke-width="1.2" fill="none"/>
+                    </marker>
+                </defs>
+
+                <!-- input label -->
+                <text x="600" y="40" font-size="10" fill="#a8998a" letter-spacing="1" text-anchor="middle" transform="rotate(90,600,110)">DATA SOURCES</text>
+                <text x="600" y="162" font-size="10" fill="#a8998a" letter-spacing="1" text-anchor="middle" transform="rotate(90,640,162)">AGENT</text>
+                <text x="600" y="284" font-size="10" fill="#a8998a" letter-spacing="1" text-anchor="middle" transform="rotate(90,640,284)">OUTPUTS</text>
+            </svg>
         </div>
 
         <div class="callout">
             <span class="callout-label">key decisions</span>
-            <p><strong>Why agentic and not a simple RAG pipeline?</strong> Monitoring 50+ companies requires the system to decide what to look for, when to dig deeper on a signal, and how to prioritize across the whole coverage universe at once. A static RAG pipeline retrieves what you ask for. An agent figures out what to ask for in the first place.</p>
-            <p><strong>Human review is not optional.</strong> Any output that could influence a trade needs an analyst to sign off before it reaches the PM. The system should make it easy to approve, push back, or ask for more detail.</p>
-            <p><strong>Start with 15 companies, not 50.</strong> You prove it out on the core holdings first, then expand once you trust the outputs.</p>
+            <p><strong>Why agentic and not a simple RAG pipeline?</strong> Monitoring 50+ companies means the system needs to decide what to look for, when to dig deeper, and how to prioritize — not just retrieve what you ask for. A static pipeline retrieves. An agent figures out what to look for in the first place.</p>
+            <p><strong>Human review is not optional.</strong> Anything that could influence a trade needs an analyst to sign off before it reaches the PM.</p>
+            <p><strong>Start with 15 companies, not 50.</strong> Prove it works on the core holdings first, then expand.</p>
         </div>
     </div>
 
@@ -323,7 +321,7 @@
     <div class="stage-block" id="stage4">
         <span class="stage-eyebrow">Stage 4</span>
         <h2 class="stage-h2">How you'd know if it's working</h2>
-        <p class="stage-intro">KPIs need to be defined before the pilot starts, not after. If you wait to see what the data shows, it's too easy to rationalize any result. These are the metrics I would commit to measuring from day one, with targets agreed upfront.</p>
+        <p class="stage-intro">You need to decide what success looks like before the pilot starts. If you wait until after, it's too easy to rationalize any result. These are the metrics I'd lock in upfront with targets everyone agrees to.</p>
 
         <table class="kpi-table">
             <thead>
@@ -335,49 +333,50 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Signal recall rate</td>
-                    <td>% of material events flagged that analysts agreed were worth surfacing</td>
-                    <td class="target">85%+</td>
-                    <td>Weekly analyst review log</td>
-                </tr>
-                <tr>
-                    <td>False positive rate</td>
-                    <td>% of alerts analysts dismissed as noise</td>
-                    <td class="target">Under 20%</td>
-                    <td>One-click dismiss with optional reason</td>
-                </tr>
-                <tr>
-                    <td>Time to first briefing</td>
-                    <td>Speed from material event to alert delivered</td>
-                    <td class="target">Under 30 min</td>
-                    <td>Timestamp comparison</td>
-                </tr>
-                <tr>
-                    <td>Analyst research time</td>
-                    <td>Hours per week on information gathering vs. analysis</td>
-                    <td class="target">40% reduction</td>
-                    <td>Self-reported timesheet vs. baseline</td>
-                </tr>
-                <tr>
-                    <td>Briefing usage rate</td>
-                    <td>% of briefings analysts actually open and read</td>
-                    <td class="target">70%+</td>
-                    <td>System logs</td>
-                </tr>
-                <tr>
-                    <td>Analyst trust score</td>
-                    <td>Confidence in AI outputs, 1 to 5 scale</td>
-                    <td class="target">3.5+ avg</td>
-                    <td>Short survey every two weeks</td>
-                </tr>
+                <tr><td>Signal recall rate</td><td>% of material events flagged that analysts agreed were worth surfacing</td><td class="target">85%+</td><td>Weekly analyst review log</td></tr>
+                <tr><td>False positive rate</td><td>% of alerts dismissed as noise</td><td class="target">Under 20%</td><td>One-click dismiss with optional reason</td></tr>
+                <tr><td>Time to first briefing</td><td>Speed from event to alert delivered</td><td class="target">Under 30 min</td><td>Timestamp comparison</td></tr>
+                <tr><td>Analyst research time</td><td>Hours per week on gathering vs. analyzing</td><td class="target">40% reduction</td><td>Self-reported timesheet vs. baseline</td></tr>
+                <tr><td>Briefing usage rate</td><td>% of briefings analysts actually open</td><td class="target">70%+</td><td>System logs</td></tr>
+                <tr><td>Analyst trust score</td><td>Confidence in outputs, 1 to 5</td><td class="target">3.5+ avg</td><td>Short survey every two weeks</td></tr>
             </tbody>
         </table>
 
+        <!-- GRAPHIC: pilot timeline visual -->
+        <div class="graphic">
+            <span class="graphic-label">pilot structure</span>
+            <svg viewBox="0 0 620 90" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+                <line x1="40" y1="44" x2="580" y2="44" stroke="#e2d9ca" stroke-width="2"/>
+                <!-- dots -->
+                <circle cx="40" cy="44" r="8" fill="#8b1a1a"/>
+                <circle cx="175" cy="44" r="8" fill="#8b1a1a"/>
+                <circle cx="310" cy="44" r="6" fill="#c47a7a"/>
+                <circle cx="440" cy="44" r="6" fill="#c47a7a"/>
+                <circle cx="580" cy="44" r="6" fill="#e2d9ca" stroke="#a8998a" stroke-width="1.5"/>
+                <!-- labels above -->
+                <text x="40" y="28" text-anchor="middle" font-size="11" font-weight="600" fill="#8b1a1a">Day 0</text>
+                <text x="175" y="28" text-anchor="middle" font-size="11" font-weight="600" fill="#8b1a1a">Day 30</text>
+                <text x="310" y="28" text-anchor="middle" font-size="11" font-weight="600" fill="#6b5f50">Day 60</text>
+                <text x="440" y="28" text-anchor="middle" font-size="11" font-weight="600" fill="#6b5f50">Month 4</text>
+                <text x="580" y="28" text-anchor="middle" font-size="11" font-weight="600" fill="#a8998a">Month 6+</text>
+                <!-- labels below -->
+                <text x="40" y="65" text-anchor="middle" font-size="10" fill="#6b5f50">Pilot starts</text>
+                <text x="40" y="78" text-anchor="middle" font-size="10" fill="#6b5f50">2 analysts, 15 cos</text>
+                <text x="175" y="65" text-anchor="middle" font-size="10" fill="#6b5f50">Check-in</text>
+                <text x="175" y="78" text-anchor="middle" font-size="10" fill="#6b5f50">tune signal scoring</text>
+                <text x="310" y="65" text-anchor="middle" font-size="10" fill="#a8998a">Review KPIs</text>
+                <text x="310" y="78" text-anchor="middle" font-size="10" fill="#a8998a">expand or redesign</text>
+                <text x="440" y="65" text-anchor="middle" font-size="10" fill="#a8998a">Full team</text>
+                <text x="440" y="78" text-anchor="middle" font-size="10" fill="#a8998a">all 50+ companies</text>
+                <text x="580" y="65" text-anchor="middle" font-size="10" fill="#a8998a">Ongoing</text>
+                <text x="580" y="78" text-anchor="middle" font-size="10" fill="#a8998a">monitor + report ROI</text>
+            </svg>
+        </div>
+
         <div class="callout">
             <span class="callout-label">how the pilot would run</span>
-            <p>60 days, 2 analysts, top 15 holdings. Both analysts keep doing their normal workflow alongside the AI system so you can actually compare the two. At day 30 you do a check-in. At day 60 you decide whether to expand or go back and redesign something.</p>
-            <p>One thing I would insist on before any of this starts: a baseline week where analysts track exactly how they spend their time today. Without that, the 40% reduction target is just a number nobody can verify.</p>
+            <p>60 days, 2 analysts, top 15 holdings. Both analysts keep their normal workflow running alongside the system so you can compare the two directly. Check-in at day 30, go/no-go decision at day 60.</p>
+            <p>One thing I'd insist on before anything starts: a baseline week where analysts track exactly how they spend their time. Without that, the 40% reduction target is just a number nobody can actually verify.</p>
         </div>
     </div>
 
@@ -385,57 +384,21 @@
     <div class="stage-block" id="stage5">
         <span class="stage-eyebrow">Stage 5</span>
         <h2 class="stage-h2">Getting it actually used</h2>
-        <p class="stage-intro">In my experience with ALMA, the technical build is actually the easier part. Getting people to trust it and change how they work is where most of the effort goes.</p>
+        <p class="stage-intro">Working on ALMA taught me that the technical build is the easier part. Getting people to trust it and actually change how they work is where most of the effort goes.</p>
 
         <div class="timeline">
-            <div class="tl-item">
-                <div class="tl-time">Month 1-2</div>
-                <div><div class="tl-title">Pilot with 2 analysts on the top 15 holdings</div><div class="tl-desc">The system runs alongside the existing workflow, not replacing it. Weekly feedback sessions to tune signal scoring based on what analysts are actually dismissing.</div></div>
-            </div>
-            <div class="tl-item">
-                <div class="tl-time">Month 3</div>
-                <div><div class="tl-title">Review what worked, fix what did not, bring in the full team</div><div class="tl-desc">Go through the KPIs honestly. Fix the top issues. Onboard the rest of the analysts with a hands-on session using their actual companies, not a slide deck.</div></div>
-            </div>
-            <div class="tl-item">
-                <div class="tl-time">Month 4</div>
-                <div><div class="tl-title">Expand to the full 50+ company universe</div><div class="tl-desc">Only happens if the pilot KPIs were actually met. New data sources like export control filings and Tier 2/3 supply chain data get added here.</div></div>
-            </div>
-            <div class="tl-item">
-                <div class="tl-time">Month 5-6</div>
-                <div><div class="tl-title">Monitor model health on an ongoing basis</div><div class="tl-desc">The semiconductor landscape shifts constantly. Assign one analyst as the internal owner whose job is to flag when outputs start degrading before the rest of the team notices.</div></div>
-            </div>
-            <div class="tl-item">
-                <div class="tl-time">Month 6+</div>
-                <div><div class="tl-title">Report back to leadership on actual ROI</div><div class="tl-desc">A simple dashboard showing time saved, signal recall over time, and any cases where the system surfaced something before a market move. This is how the project gets renewed.</div></div>
-            </div>
+            <div class="tl-item"><div class="tl-time">Month 1-2</div><div><div class="tl-title">Pilot with 2 analysts on the top 15 holdings</div><div class="tl-desc">System runs alongside the existing workflow. Weekly feedback sessions to tune signal scoring based on what analysts are actually dismissing as noise.</div></div></div>
+            <div class="tl-item"><div class="tl-time">Month 3</div><div><div class="tl-title">Review what worked, fix what didn't, bring in the full team</div><div class="tl-desc">Go through the KPIs honestly. Fix the top issues. Onboard the rest of the analysts with a hands-on session using their actual companies, not a slide deck.</div></div></div>
+            <div class="tl-item"><div class="tl-time">Month 4</div><div><div class="tl-title">Expand to the full 50+ company universe</div><div class="tl-desc">Only if the pilot KPIs were actually met. New data sources like export control filings and Tier 2/3 supply chain data get added here.</div></div></div>
+            <div class="tl-item"><div class="tl-time">Month 5-6</div><div><div class="tl-title">Monitor model health</div><div class="tl-desc">The semiconductor landscape shifts constantly. Assign one analyst as the internal owner whose job is to flag when outputs start degrading before the rest of the team notices.</div></div></div>
+            <div class="tl-item"><div class="tl-time">Month 6+</div><div><div class="tl-title">Report back to leadership on actual ROI</div><div class="tl-desc">A simple dashboard showing time saved, signal recall, and any cases where the system surfaced something before a market move. This is how the project gets renewed.</div></div></div>
         </div>
 
-        <div style="font-family:'Caveat',cursive;font-size:18px;color:var(--red);margin-bottom:16px;">risks worth flagging upfront</div>
-
-        <div class="risk-row">
-            <div><div class="risk-name">Analyst resistance</div><div class="risk-desc">Senior analysts may feel the system threatens their role</div></div>
-            <div><span class="risk-badge risk-high">High</span></div>
-            <div class="risk-fix">Be upfront from day one that this is about saving time, not replacing anyone. Get one or two senior analysts involved in shaping the output format early so they feel ownership over it.</div>
-        </div>
-        <div class="risk-row">
-            <div><div class="risk-name">Hallucination on financial data</div><div class="risk-desc">LLMs can state incorrect numbers with complete confidence</div></div>
-            <div><span class="risk-badge risk-high">High</span></div>
-            <div class="risk-fix">Every number in the output needs to be cited back to a source. This is what we learned building ALMA. You need guardrails that force the model to verify its own claims before the output goes anywhere.</div>
-        </div>
-        <div class="risk-row">
-            <div><div class="risk-name">Data licensing issues</div><div class="risk-desc">Some providers prohibit feeding their content into AI models</div></div>
-            <div><span class="risk-badge risk-med">Medium</span></div>
-            <div class="risk-fix">Legal needs to review every data provider agreement before anything gets ingested. Better to find out upfront than mid-build.</div>
-        </div>
-        <div class="risk-row">
-            <div><div class="risk-name">Model drift over time</div><div class="risk-desc">The semiconductor landscape changes constantly</div></div>
-            <div><span class="risk-badge risk-med">Medium</span></div>
-            <div class="risk-fix">Do a quarterly review of the prompts and signal taxonomy. Have someone whose job it is to notice when the outputs start feeling stale before the analysts lose trust in it.</div>
-        </div>
-        <div class="risk-row">
-            <div><div class="risk-name">Over-reliance on outputs</div><div class="risk-desc">Analysts stop reading primary sources</div></div>
-            <div><span class="risk-badge risk-low">Low/ongoing</span></div>
-            <div class="risk-fix">Always include source links and make it easy to drill down. If analysts stop clicking through to underlying sources, that is an early warning sign.</div>
+        <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--red);margin-bottom:18px;">risks worth flagging upfront</div>
+        <div class="callout">
+            <p>The biggest risk is analyst resistance. Senior people may feel this threatens their role, so being upfront that it's about saving time matters a lot. Getting one or two of them involved in shaping the output format early helps — they're more likely to trust something they had a hand in building.</p>
+            <p>Hallucination is the other major one. LLMs can state incorrect numbers with complete confidence, which is especially dangerous in a financial context. Every figure in the output needs to be cited back to a source. This is something we learned building ALMA — you need guardrails that force the model to verify its own claims before anything goes out.</p>
+            <p>A few smaller things worth sorting out early: data licensing (some providers prohibit their content being fed into AI models, so legal needs to review everything before ingestion), model drift (the semiconductor landscape shifts fast, so someone needs to own a quarterly review of whether the outputs still make sense), and over-reliance (always include source links — if analysts stop clicking through, that's an early warning that they're treating AI output as ground truth).</p>
         </div>
     </div>
 
