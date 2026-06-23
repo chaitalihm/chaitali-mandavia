@@ -87,7 +87,7 @@
             align-self: end; padding-bottom: 8px;
         }
         .hero-img-wrap {
-            width: clamp(180px, 20vw, 280px);
+            width: clamp(140px, 15vw, 220px);
             position: relative; z-index: 2;
             flex-shrink: 0;
         }
@@ -164,6 +164,12 @@
             font-family: var(--f-hand); font-size: 16px;
             color: var(--ink-3); margin-top: 8px; display: flex;
             align-items: center; gap: 6px;
+        }
+
+        /* category labels */
+        .proj-category-label {
+            font-family: var(--f-hand); font-size: 17px; color: var(--red);
+            padding: 28px 0 4px; letter-spacing: 0.02em;
         }
 
         /* project rows */
@@ -308,12 +314,8 @@
 
     <div class="hero-desc-strip">
         <p class="hero-desc-text">
-            Quant analyst at <strong>Analysis Group</strong>, currently building things in AI. Berkeley Economics and Data Science, class of 2022. Based in NYC.
+            Senior Analyst at <strong>Analysis Group</strong>, currently getting into AI. Berkeley Economics and Data Science, class of 2022. Based in NYC.
         </p>
-        <div class="hero-desc-actions">
-            <a href="/simulator" class="btn-solid">Try the TCO calculator</a>
-            <a href="/deployment-playbook" class="btn-ghost">Case study →</a>
-        </div>
     </div>
 </div>
 
@@ -326,11 +328,13 @@
 
     <div class="project-list">
 
+        <div class="proj-category-label">TCO Calculator</div>
+
         <a href="/simulator" class="project-row">
             <div class="proj-num">01</div>
             <div>
                 <div class="proj-name">How much does AI actually cost to deploy?</div>
-                <div class="proj-desc">I kept hearing wildly different numbers at work on what enterprise AI actually costs. So I built a calculator to model it properly.</div>
+                <div class="proj-desc">Nobody at work could agree on what it actually costs once you factor in oversight, compute, and setup. So I built something to model it — put in your own numbers and see where the break-even lands.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Python</span>
                     <span class="proj-tag">Flask</span>
@@ -341,11 +345,13 @@
             <div class="proj-status live">Live ↗</div>
         </a>
 
+        <div class="proj-category-label">Deployment Projects</div>
+
         <a href="/deployment-playbook" class="project-row">
             <div class="proj-num">02</div>
             <div>
-                <div class="proj-name">What would it look like to deploy agentic AI at an investment firm?</div>
-                <div class="proj-desc">A Dubai-based long/short fund tracking 50+ semiconductor companies. I worked through the whole thing: pitch, client discovery questions, system architecture, KPIs, and change management. The kind of work I want to do.</div>
+                <div class="proj-name">Deploying agentic AI for the semiconductor team at a long/short hedge fund</div>
+                <div class="proj-desc">I picked one team at a large multi-sector fund covering global semiconductors and worked through what it would actually take to build something useful for them, from the pitch all the way through to deployment.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Agentic AI</span>
                     <span class="proj-tag">Semiconductors</span>
@@ -353,14 +359,16 @@
                     <span class="proj-tag">Investment research</span>
                 </div>
             </div>
-            <div class="proj-status wip">In progress</div>
+            <div class="proj-status live">Complete ↗</div>
         </a>
+
+        <div class="proj-category-label">Blog</div>
 
         <div class="project-row" style="cursor:pointer;" onclick="window.location='/blog'">
             <div class="proj-num">03</div>
             <div>
-                <div class="proj-name">A blog where I explain AI without the jargon</div>
-                <div class="proj-desc">Short posts for people who keep hearing these words and nodding along. A lot of the terms sound intimidating but aren't, and some things that are genuinely confusing that nobody admits. Writing both.</div>
+                <div class="proj-name">AI explained without the jargon</div>
+                <div class="proj-desc">I got interested in this space and kept running into terms that sounded intimidating but weren't, and things that were genuinely confusing that nobody explained well. So I started writing about them.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Writing</span>
                     <span class="proj-tag">AI explainers</span>
@@ -369,18 +377,20 @@
             <div class="proj-status live">Live ↗</div>
         </div>
 
+        <div class="proj-category-label">AI Projects</div>
+
         <div class="project-row" style="cursor:default;">
             <div class="proj-num">04</div>
             <div>
-                <div class="proj-name">An iMessage bot that actually does things for you</div>
-                <div class="proj-desc">You text it and it does things: blocks time on your calendar, rewrites a message more diplomatically, gives you a restaurant rec. Still building.</div>
+                <div class="proj-name">An iMessage assistant that actually does things for you</div>
+                <div class="proj-desc">You text it like you would a friend and it handles things: blocks time on your calendar, cleans up a message you want to send, finds you a restaurant. Still building.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Twilio</span>
                     <span class="proj-tag">LLM agents</span>
                     <span class="proj-tag">Calendar API</span>
                 </div>
             </div>
-            <div class="proj-status soon">soon</div>
+            <div class="proj-status soon">Soon</div>
         </div>
 
     </div>
@@ -391,7 +401,7 @@
     <div class="about-inner">
         <div class="about-left">
             <span class="about-label">A bit about me</span>
-            <p class="about-text">I've been at <strong>Analysis Group</strong> for 4.5 years doing quantitative research. Over the last year I worked on <strong>ALMA</strong>, a firmwide LLM tool that helps teams get through large document sets faster. That's what got me properly interested in this space.</p>
+            <p class="about-text">I've been at <strong>Analysis Group</strong> for 4.5 years as a Senior Analyst. Over the last year I worked on <strong>ALMA</strong>, a firmwide LLM tool that helps teams get through large document sets faster. That's what got me properly interested in this space.</p>
             <p class="about-text">Originally from Mumbai, currently living in New York.</p>
         </div>
         <div class="about-right">
