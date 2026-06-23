@@ -64,6 +64,91 @@
         .chart-title { font-family: var(--font-disp); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 18px; }
         .chart-wrap { position: relative; height: 240px; }
         .chart-note { font-size: 11px; color: var(--ink-3); margin-top: 10px; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            /* Nav */
+            nav { padding: 16px 20px; }
+            .nav-links { gap: 16px; }
+            .nav-links a:not(.nav-pill) { display: none; }
+            .nav-logo { font-size: 13px; }
+
+            /* Hero - home */
+            .hero { padding: 0 20px; }
+            .hero-name-top { padding-top: 16px; gap: 10px; }
+            .hero-centre {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                gap: 16px 0;
+            }
+            .hero-name-left { font-size: clamp(40px, 12vw, 64px); text-align: center; padding-bottom: 0; }
+            .hero-img-wrap { width: clamp(160px, 55vw, 260px); }
+            .hero-centre > div:last-child { display: none; }
+
+            /* Work section */
+            .work-section { padding: 40px 20px 0; }
+            .project-row { grid-template-columns: 40px 1fr; gap: 12px; padding: 20px 0; }
+            .proj-status { display: none; }
+            .proj-tags { display: none; }
+
+            /* About */
+            .about-section { margin: 40px 20px 0; padding: 28px 24px; grid-template-columns: 1fr; gap: 28px; }
+            .fact-row { padding: 12px 0; }
+
+            /* Footer */
+            footer { padding: 24px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+
+            /* Section padding */
+            .section { padding: 40px 20px 0; }
+            .section-title-block { margin-bottom: 24px; }
+
+            /* TCO simulator */
+            .page-header { padding: 28px 20px 24px; }
+            .page-header-inner { flex-direction: column; gap: 16px; }
+            .sim-wrap { padding: 20px 20px 60px; }
+            .top-row { grid-template-columns: 1fr; }
+            .chart-row { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+
+            /* Project2 */
+            .page-header { padding: 40px 20px 36px; }
+            .page-h1 { font-size: clamp(28px, 8vw, 48px); }
+            .meta-row { gap: 20px; }
+            .stage-nav { padding: 0 20px; }
+            .content { padding: 0 20px 60px; }
+            .stage-h2 { font-size: clamp(22px, 6vw, 34px); }
+            .stat-row { grid-template-columns: 1fr; }
+            .kpi-table { font-size: 12px; }
+            .kpi-table th, .kpi-table td { padding: 10px 8px; }
+            .tl-item { grid-template-columns: 72px 1fr; gap: 16px; }
+            .q-item { gap: 10px; }
+            .arch-boxes { flex-direction: column; }
+
+            /* Blog */
+            .page-header { padding: 32px 20px 28px; }
+            .posts-wrap { padding: 32px 20px 60px; }
+            .posts-grid { grid-template-columns: 1fr; gap: 16px; }
+
+            /* Post pages */
+            .post-header { padding: 36px 20px 32px; }
+            .post-title { font-size: clamp(28px, 7vw, 48px); }
+            .post-body { padding: 36px 20px 60px; }
+            .prose p { font-size: 15px; }
+            .compare-grid { grid-template-columns: 1fr; }
+            .glossary .gloss-item { padding: 14px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .hi-sans, .im-serif { font-size: clamp(28px, 9vw, 44px); }
+            .hero-name-left { font-size: clamp(32px, 10vw, 52px); }
+            .work-title { font-size: clamp(28px, 9vw, 40px); }
+            .proj-name { font-size: 15px; }
+            nav { padding: 14px 16px; }
+            .hero { padding: 0 16px; }
+            .work-section { padding: 32px 16px 0; }
+            .about-section { margin: 32px 16px 0; padding: 20px 18px; }
+            footer { padding: 20px 16px; }
+        }
     </style>
 </head>
 <body>
@@ -161,7 +246,7 @@
     <!-- ASSUMPTIONS -->
     <div class="panel" style="margin-top:0;">
         <span class="panel-label">Model assumptions</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;">
             <div style="background:var(--sand-2);border:1px solid var(--rule);padding:18px 20px;">
                 <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;">Manual baseline</div>
                 <div style="font-size:13px;color:var(--ink-2);line-height:1.7;font-weight:300;">Volume times minutes per task divided by 60, times hourly wage. What you are currently spending with people doing this work.</div>

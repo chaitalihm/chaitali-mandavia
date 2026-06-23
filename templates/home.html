@@ -271,6 +271,91 @@
         .footer-links { display: flex; gap: 24px; }
         .footer-links a { font-size: 12px; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
         .footer-links a:hover { color: var(--ink); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            /* Nav */
+            nav { padding: 16px 20px; }
+            .nav-links { gap: 16px; }
+            .nav-links a:not(.nav-pill) { display: none; }
+            .nav-logo { font-size: 13px; }
+
+            /* Hero - home */
+            .hero { padding: 0 20px; }
+            .hero-name-top { padding-top: 16px; gap: 10px; }
+            .hero-centre {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                gap: 16px 0;
+            }
+            .hero-name-left { font-size: clamp(40px, 12vw, 64px); text-align: center; padding-bottom: 0; }
+            .hero-img-wrap { width: clamp(160px, 55vw, 260px); }
+            .hero-centre > div:last-child { display: none; }
+
+            /* Work section */
+            .work-section { padding: 40px 20px 0; }
+            .project-row { grid-template-columns: 40px 1fr; gap: 12px; padding: 20px 0; }
+            .proj-status { display: none; }
+            .proj-tags { display: none; }
+
+            /* About */
+            .about-section { margin: 40px 20px 0; padding: 28px 24px; grid-template-columns: 1fr; gap: 28px; }
+            .fact-row { padding: 12px 0; }
+
+            /* Footer */
+            footer { padding: 24px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+
+            /* Section padding */
+            .section { padding: 40px 20px 0; }
+            .section-title-block { margin-bottom: 24px; }
+
+            /* TCO simulator */
+            .page-header { padding: 28px 20px 24px; }
+            .page-header-inner { flex-direction: column; gap: 16px; }
+            .sim-wrap { padding: 20px 20px 60px; }
+            .top-row { grid-template-columns: 1fr; }
+            .chart-row { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+
+            /* Project2 */
+            .page-header { padding: 40px 20px 36px; }
+            .page-h1 { font-size: clamp(28px, 8vw, 48px); }
+            .meta-row { gap: 20px; }
+            .stage-nav { padding: 0 20px; }
+            .content { padding: 0 20px 60px; }
+            .stage-h2 { font-size: clamp(22px, 6vw, 34px); }
+            .stat-row { grid-template-columns: 1fr; }
+            .kpi-table { font-size: 12px; }
+            .kpi-table th, .kpi-table td { padding: 10px 8px; }
+            .tl-item { grid-template-columns: 72px 1fr; gap: 16px; }
+            .q-item { gap: 10px; }
+            .arch-boxes { flex-direction: column; }
+
+            /* Blog */
+            .page-header { padding: 32px 20px 28px; }
+            .posts-wrap { padding: 32px 20px 60px; }
+            .posts-grid { grid-template-columns: 1fr; gap: 16px; }
+
+            /* Post pages */
+            .post-header { padding: 36px 20px 32px; }
+            .post-title { font-size: clamp(28px, 7vw, 48px); }
+            .post-body { padding: 36px 20px 60px; }
+            .prose p { font-size: 15px; }
+            .compare-grid { grid-template-columns: 1fr; }
+            .glossary .gloss-item { padding: 14px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .hi-sans, .im-serif { font-size: clamp(28px, 9vw, 44px); }
+            .hero-name-left { font-size: clamp(32px, 10vw, 52px); }
+            .work-title { font-size: clamp(28px, 9vw, 40px); }
+            .proj-name { font-size: 15px; }
+            nav { padding: 14px 16px; }
+            .hero { padding: 0 16px; }
+            .work-section { padding: 32px 16px 0; }
+            .about-section { margin: 32px 16px 0; padding: 20px 18px; }
+            footer { padding: 20px 16px; }
+        }
     </style>
 </head>
 <body>
@@ -343,7 +428,7 @@
                     <span class="proj-tag">TCO modeling</span>
                 </div>
             </div>
-            <div class="proj-status live">Live ↗</div>
+            <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </a>
 
         <div class="proj-category-label">Deployment Projects</div>
@@ -360,7 +445,7 @@
                     <span class="proj-tag">Investment research</span>
                 </div>
             </div>
-            <div class="proj-status live">Live ↗</div>
+            <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </a>
 
         <div class="proj-category-label">Blog</div>
@@ -375,7 +460,7 @@
                     <span class="proj-tag">AI explainers</span>
                 </div>
             </div>
-            <div class="proj-status live">Live ↗</div>
+            <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
 
         <div class="proj-category-label">AI Projects</div>
