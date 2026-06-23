@@ -1,11 +1,6 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
-import os
+from flask import Flask, render_template, request, jsonify
 
-app = Flask(__name__, static_folder='static')
-
-@app.route('/static/<path:filename>')
-def static_files(filename):
-    return send_from_directory(app.static_folder, filename)
+app = Flask(__name__)
 
 @app.route('/')
 def home():
@@ -50,7 +45,7 @@ def calculate():
         human_fallback_rate, upfront_base = 0.05, 40000
 
     legacy_monthly = (volume * (minutes / 60.0)) * wage
-    token_cost = ((volume * input_tokens * 0.005) + (volume * output_tokens * 0.015)) / 1000.0
+    token_cost = ((volume * input_tokens * 0.003) + (volume * output_tokens * 0.015)) / 1000.0
     human_audit_cost = (volume * human_fallback_rate * (minutes / 60.0)) * wage
     ai_tco_monthly = token_cost + human_audit_cost
     monthly_savings = legacy_monthly - ai_tco_monthly
@@ -65,7 +60,7 @@ def calculate():
     for scale in [0.5, 1.0, 1.5, 2.0]:
         s_vol = volume * scale
         s_legacy = (s_vol * (minutes / 60.0)) * wage
-        s_token = ((s_vol * input_tokens * 0.005) + (s_vol * output_tokens * 0.015)) / 1000.0
+        s_token = ((s_vol * input_tokens * 0.003) + (s_vol * output_tokens * 0.015)) / 1000.0
         s_upfront = upfront_base + (s_vol * 0.50)
         for rate, lst in [(0.10, sens_10), (0.15, sens_15), (0.20, sens_20)]:
             s_tco = s_token + ((s_vol * rate * (minutes / 60.0)) * wage)
