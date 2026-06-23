@@ -46,6 +46,7 @@
             text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s;
         }
         .nav-links a:hover { color: var(--ink); }
+        .nav-links a.nav-pill, .nav-links a.nav-pill:hover { background: #8b1a1a; color: #ffffff; }
         .nav-pill {
             font-size: 11px; font-weight: 500; background: var(--red);
             color: #fff; padding: 8px 18px; border-radius: 100px;
@@ -293,7 +294,7 @@
         <span class="im-serif">I'm</span>
     </div>
 
-    <!-- name + image stacked -->
+    <!-- name + image + desc -->
     <div class="hero-centre">
         <!-- stacked name left of image -->
         <div style="display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-end; padding-bottom:8px;">
@@ -301,22 +302,22 @@
             <div class="hero-name-left" style="color:transparent; -webkit-text-stroke:2px var(--red);">MANDAVIA</div>
         </div>
 
-        <!-- image with floating annotations -->
+        <!-- image -->
         <div class="hero-img-wrap" style="position:relative;">
             <img src="/static/chaitali.png" alt="Chaitali Mandavia"
                  onerror="this.parentElement.style.display='none'">
-
         </div>
 
-        <!-- empty right column for balance -->
-        <div></div>
+        <!-- right side desc -->
+        <div style="display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:16px; padding-left:8px;">
+            <p style="font-size:15px;line-height:1.8;color:var(--ink-2);font-weight:300;max-width:280px;">
+                Senior Analyst at <strong style="color:var(--ink);font-weight:500;">Analysis Group</strong>, currently getting into AI. Berkeley Economics and Data Science, class of 2022. Based in NYC.
+            </p>
+
+        </div>
     </div>
 
-    <div class="hero-desc-strip">
-        <p class="hero-desc-text">
-            Senior Analyst at <strong>Analysis Group</strong>, currently getting into AI. Berkeley Economics and Data Science, class of 2022. Based in NYC.
-        </p>
-    </div>
+    <div style="border-top:1px solid var(--rule);margin-top:20px;"></div>
 </div>
 
 <!-- WORK -->
@@ -334,7 +335,7 @@
             <div class="proj-num">01</div>
             <div>
                 <div class="proj-name">How much does AI actually cost to deploy?</div>
-                <div class="proj-desc">Nobody at work could agree on what it actually costs once you factor in oversight, compute, and setup. So I built something to model it — put in your own numbers and see where the break-even lands.</div>
+                <div class="proj-desc">Nobody seemed to agree on what enterprise AI actually costs once you factor in oversight, compute, and setup. So I built something to model it properly.</div>
                 <div class="proj-tags">
                     <span class="proj-tag">Python</span>
                     <span class="proj-tag">Flask</span>
@@ -359,7 +360,7 @@
                     <span class="proj-tag">Investment research</span>
                 </div>
             </div>
-            <div class="proj-status live">Complete ↗</div>
+            <div class="proj-status live">Live ↗</div>
         </a>
 
         <div class="proj-category-label">Blog</div>

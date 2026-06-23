@@ -23,6 +23,7 @@
         .nav-links { display: flex; gap: 36px; align-items: center; }
         .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+        .nav-links a.nav-pill, .nav-links a.nav-pill:hover { background: #8b1a1a; color: #ffffff; }
         .nav-pill { font-size: 11px; font-weight: 500; background: #8b1a1a !important; color: #ffffff !important; padding: 8px 18px; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; display: inline-block; }
 
         /* PAGE HEADER */
@@ -139,45 +140,39 @@
 
         <!-- POST 1 — LIVE -->
         <a href="/blog/what-is-an-llm" class="post-card">
-            <div class="post-card-top">
+            <div class="post-card-top" style="padding-bottom:20px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;">
                 <div class="post-num light">01</div>
                 <span class="post-tag on-red">Fundamentals</span>
                 <div class="post-card-title-top light">What even is an LLM?</div>
-            </div>
-            <div class="post-card-body" style="padding:14px 20px 18px;">
-                <div class="post-card-footer">
-                    <span class="post-card-date">June 2025</span>
-                    <a href="/blog/what-is-an-llm" class="post-read-link">Read →</a>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+                    <span style="font-size:11px;color:rgba(244,239,228,0.55);">June 2025</span>
+                    <span style="font-size:13px;color:rgba(244,239,228,0.85);font-family:'Caveat',cursive;">Read →</span>
                 </div>
             </div>
         </a>
 
         <!-- POST 2 — LIVE -->
         <a href="/blog/ai-native-vs-ai-enabled" class="post-card">
-            <div class="post-card-top">
+            <div class="post-card-top" style="padding-bottom:20px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;">
                 <div class="post-num light">02</div>
                 <span class="post-tag on-red">Fundamentals</span>
                 <div class="post-card-title-top light">AI-native, AI-enabled, AI-first — what do these actually mean?</div>
-            </div>
-            <div class="post-card-body" style="padding:14px 20px 18px;">
-                <div class="post-card-footer">
-                    <span class="post-card-date">August 2025</span>
-                    <a href="/blog/ai-native-vs-ai-enabled" class="post-read-link">Read →</a>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+                    <span style="font-size:11px;color:rgba(244,239,228,0.55);">August 2025</span>
+                    <span style="font-size:13px;color:rgba(244,239,228,0.85);font-family:'Caveat',cursive;">Read →</span>
                 </div>
             </div>
         </a>
 
         <!-- POST 3 — COMING -->
         <div class="post-card" style="cursor:default;">
-            <div class="post-card-top cream-bg">
+            <div class="post-card-top cream-bg" style="padding-bottom:20px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;">
                 <div class="post-num dark">03</div>
                 <span class="post-tag on-cream">Deployment</span>
                 <div class="post-card-title-top dark">Why do AI projects fail? (It's not the model)</div>
-            </div>
-            <div class="post-card-body" style="padding:14px 20px 18px;">
-                <div class="post-card-footer">
-                    <span class="post-card-date">Coming soon</span>
-                    <span class="post-coming">soon</span>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+                    <span style="font-size:11px;color:var(--ink-3);">Coming soon</span>
+                    <span style="font-size:13px;color:var(--ink-3);font-family:'Caveat',cursive;">soon</span>
                 </div>
             </div>
         </div>
