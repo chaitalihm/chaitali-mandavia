@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Keep in Touch — demo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.kt-wrap{width:100%;display:flex;justify-content:center;}
+.kt-fit{width:920px;transform-origin:top left;}
+.kt-stage{position:relative;width:920px;height:560px;overflow:hidden;border-radius:16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#3a3a38;border:1px solid rgba(0,0,0,0.1);background-color:#EDEAE3;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23EDEAE3'/%3E%3Ccircle cx='12' cy='18' r='0.8' fill='%23CFCBC1'/%3E%3Ccircle cx='46' cy='9' r='0.7' fill='%23CFCBC1'/%3E%3Ccircle cx='30' cy='42' r='0.6' fill='%23D6D2C8'/%3E%3Ccircle cx='55' cy='52' r='0.8' fill='%23CFCBC1'/%3E%3Ccircle cx='8' cy='55' r='0.6' fill='%23D6D2C8'/%3E%3C/svg%3E");}
+.kt-hand{font-family:'Gloria Hallelujah',cursive;}
+.kt-top{display:flex;align-items:center;gap:12px;height:48px;padding:0 18px;background:rgba(255,255,255,0.5);border-bottom:1px solid rgba(0,0,0,0.08);}
+.kt-brand{font-family:'Gloria Hallelujah',cursive;font-size:22px;}
+.kt-tab{font-size:13px;color:#8a8782;padding:6px 11px;border-radius:9px;border:1px solid transparent;transition:background .25s,color .25s,border-color .25s;}
+.kt-tab.on{color:#3a3a38;background:#fff;border-color:rgba(0,0,0,0.08);}
+.kt-card{position:absolute;width:128px;height:154px;perspective:760px;}
+.kt-flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s ease;}
+.kt-flip.flipped{transform:rotateY(180deg);}
+.kt-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:3px;padding:8px;box-shadow:0 6px 14px rgba(0,0,0,0.13);overflow:hidden;display:flex;flex-direction:column;}
+.kt-back{transform:rotateY(180deg);background:#FBF8F1;gap:3px;}
+.kt-front-fade{filter:sepia(.95) saturate(.4) brightness(1.03);opacity:.6;transition:filter .7s ease,opacity .7s ease;}
+.kt-front-fade.fresh{filter:none;opacity:1;}
+.kt-photo{flex:1;border-radius:2px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:32px;}
+.kt-cap{margin-top:5px;display:flex;align-items:baseline;justify-content:space-between;gap:5px;}
+.kt-nm{font-family:'Gloria Hallelujah',cursive;font-size:17px;}
+.kt-dy{font-family:'Gloria Hallelujah',cursive;font-size:13px;color:#8a8782;}
+.kt-bn{font-family:'Gloria Hallelujah',cursive;font-size:15px;}
+.kt-br{font-family:'Gloria Hallelujah',cursive;font-size:12px;}
+.kt-pin{position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;border:1px solid rgba(0,0,0,0.18);z-index:3;}
+.kt-flag{position:absolute;top:5px;right:-7px;background:#F4C0D1;color:#72243E;border-radius:8px;font-size:10px;padding:2px 6px;z-index:4;}
+.kt-ripple{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(127,119,221,0.4);opacity:0;transform:scale(.3);z-index:5;}
+.kt-ripple.go{animation:ktRip .55s ease-out;}
+@keyframes ktRip{0%{opacity:.5;transform:scale(.3);}100%{opacity:0;transform:scale(1.5);}}
+.kt-backdrop{position:absolute;inset:0;background:rgba(40,40,38,0.4);opacity:0;transition:opacity .35s;pointer-events:none;z-index:30;}
+.kt-backdrop.show{opacity:1;}
+.kt-panel{position:absolute;left:50%;top:30px;width:380px;transform:translateX(-50%) scale(.97);opacity:0;transition:opacity .35s ease,transform .35s ease;z-index:31;background:#EDEAE3;border:1px solid rgba(0,0,0,0.12);border-radius:14px;padding:16px 18px;box-shadow:0 20px 50px rgba(0,0,0,0.3);}
+.kt-panel.open{opacity:1;transform:translateX(-50%) scale(1);}
+.p-x{float:right;font-size:18px;color:#8a8782;}
+.p-photo{width:100%;height:150px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:52px;}
+.p-name{font-family:'Gloria Hallelujah',cursive;font-size:26px;margin:8px 0 6px;}
+.p-meta{font-size:12px;color:#8a8782;display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+.p-meta b{color:#3a3a38;}
+.p-box{background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:9px 12px;font-size:13px;color:#8a8782;margin-bottom:10px;}
+.p-label{font-size:12px;color:#8a8782;margin-bottom:5px;}
+.p-area{width:100%;background:#fff;border:1px solid rgba(0,0,0,0.15);border-radius:9px;padding:9px 11px;font-size:13px;color:#a8a59f;margin-bottom:12px;}
+.p-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.p-btn{font-size:13px;padding:9px 13px;border-radius:9px;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#3a3a38;}
+.p-btn.go{background:#97C459;border-color:rgba(99,153,34,0.4);color:#173404;}
+.p-btn.go.pressed{background:#8ab84f;}
+.p-btn.danger{color:#791F1F;border-color:rgba(163,45,45,0.35);}
+.p-log{font-size:12px;color:#8a8782;font-style:italic;margin-bottom:12px;}
+.p-foot{display:flex;gap:8px;}
+.kt-coming{position:absolute;right:26px;top:78px;width:340px;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,0.14);padding:16px 18px;transform:translateX(140%);transition:transform .5s ease;z-index:9;}
+.kt-coming.open{transform:translateX(0);}
+.kt-coming h4{font-family:'Gloria Hallelujah',cursive;font-weight:400;font-size:22px;margin-bottom:12px;}
+.kt-row{display:flex;align-items:center;gap:11px;border:1px solid rgba(0,0,0,0.08);border-radius:11px;padding:9px 12px;margin-bottom:9px;}
+.kt-mini{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;}
+.kt-row .what{font-size:13px;}
+.kt-row .when{font-size:12px;color:#8a8782;}
+.kt-row .cnt{margin-left:auto;font-family:'Gloria Hallelujah',cursive;font-size:16px;color:#7F77DD;white-space:nowrap;}
+.kt-cursor{position:absolute;left:0;top:0;width:26px;height:26px;z-index:40;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.3));transition:transform .85s cubic-bezier(.4,0,.2,1);}
+.kt-cap-line{position:absolute;left:24px;bottom:32px;z-index:20;}
+.kt-cap-line span{font-family:'Gloria Hallelujah',cursive;font-size:21px;color:#3a3a38;opacity:0;transition:opacity .3s ease;}
+.kt-cap-line span.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="kt-wrap"><div class="kt-fit"><div class="kt-stage" id="kt">
+  <div class="kt-top">
+    <span class="kt-brand">keep in touch</span>
+    <span class="kt-tab tab-people on">people</span>
+    <span class="kt-tab tab-coming">coming up</span>
+  </div>
+
+  <div class="kt-card kt-nina" style="left:140px;top:150px;transform:rotate(-3deg);">
+    <span class="kt-pin" style="background:#D85A30;"></span>
+    <div class="kt-flip">
+      <div class="kt-face">
+        <div class="kt-photo" style="background:#F0997B;color:#4A1B0C;">N</div>
+        <div class="kt-cap"><span class="kt-nm">Nina</span><span class="kt-dy">today</span></div>
+      </div>
+      <div class="kt-face kt-back">
+        <div class="kt-bn">Nina</div>
+        <div class="kt-br">last talked today</div>
+        <div class="kt-br">💬 texted today</div>
+        <div class="kt-br">📞 called 5 days</div>
+        <div class="kt-br kt-hand" style="color:#8a8782;">“owes me a coffee”</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kt-card" style="left:380px;top:240px;transform:rotate(3deg);">
+    <span class="kt-pin" style="background:#BA7517;"></span>
+    <span class="kt-flag">🎂 4d</span>
+    <div class="kt-flip">
+      <div class="kt-face">
+        <div class="kt-photo" style="background:#EF9F27;color:#412402;">P</div>
+        <div class="kt-cap"><span class="kt-nm">Priya</span><span class="kt-dy">5 days</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kt-card kt-dev" style="left:640px;top:150px;transform:rotate(-2deg);">
+    <span class="kt-pin" style="background:#888780;"></span>
+    <div class="kt-ripple"></div>
+    <div class="kt-flip">
+      <div class="kt-face kt-front-fade">
+        <div class="kt-photo" style="background:#AFA9EC;color:#26215C;">D</div>
+        <div class="kt-cap"><span class="kt-nm">Dev</span><span class="kt-dy dev-day">88 days</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kt-backdrop"></div>
+  <div class="kt-panel">
+    <span class="p-x">×</span>
+    <div class="p-photo" style="background:#AFA9EC;color:#26215C;">D</div>
+    <div class="p-name">Dev</div>
+    <div class="p-meta"><span>last talked <b class="m-last">88 days</b></span><span>💬 <b class="m-text">no texts yet</b></span><span>📞 <b>no calls yet</b></span></div>
+    <div class="p-box">no plans set — add one in edit</div>
+    <div class="p-label">what did you talk about?</div>
+    <div class="p-area">quick note to remember...</div>
+    <div class="p-btns">
+      <span class="p-btn go btn-texted">💬 texted today</span>
+      <span class="p-btn go">📞 called today</span>
+      <span class="p-btn">just add a note</span>
+    </div>
+    <div class="p-log">No notes yet. Add the first one above.</div>
+    <div class="p-foot">
+      <span class="p-btn">connect to…</span>
+      <span class="p-btn">edit</span>
+      <span class="p-btn danger">remove</span>
+    </div>
+  </div>
+
+  <div class="kt-coming">
+    <h4>coming up</h4>
+    <div class="kt-row">
+      <div class="kt-mini" style="background:#ED93B1;color:#4B1528;">M</div>
+      <div><div class="what">🎂 Maya's birthday</div><div class="when">May 6</div></div>
+      <div class="cnt">in 4 days</div>
+    </div>
+    <div class="kt-row">
+      <div class="kt-mini" style="background:#EF9F27;color:#412402;">P</div>
+      <div><div class="what">📅 dinner with Priya</div><div class="when">this week</div></div>
+      <div class="cnt">in 3 days</div>
+    </div>
+  </div>
+
+  <div class="kt-cap-line"><span></span></div>
+  <svg class="kt-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#222" stroke-width="1.5"><path d="M4 2 L4 18 L8 14 L11 21 L14 20 L11 13 L17 13 Z"/></svg>
+</div></div></div>
+<script>
+(function(){
+  var root=document.getElementById('kt');
+  var q=function(s){return root.querySelector(s);};
+  var cursor=q('.kt-cursor'),cap=q('.kt-cap-line span');
+  var nina=q('.kt-nina .kt-flip'),dev=q('.kt-dev'),devFront=q('.kt-dev .kt-front-fade'),devDay=q('.dev-day'),ripple=q('.kt-ripple');
+  var panel=q('.kt-panel'),backdrop=q('.kt-backdrop'),mLast=q('.m-last'),mText=q('.m-text'),texted=q('.btn-texted');
+  var coming=q('.kt-coming'),tabP=q('.tab-people'),tabC=q('.tab-coming');
+  var px=0,py=0;
+  function center(el){var x=0,y=0,n=el;while(n&&n!==root){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}return {x:x+el.offsetWidth/2,y:y+el.offsetHeight/2};}
+  function moveTo(el){var c=center(el);px=c.x-3;py=c.y-2;cursor.style.transform='translate('+px+'px,'+py+'px)';}
+  function press(){cursor.style.transform='translate('+px+'px,'+py+'px) scale(.8)';setTimeout(function(){cursor.style.transform='translate('+px+'px,'+py+'px)';},150);}
+  function setCap(t){cap.classList.remove('show');setTimeout(function(){cap.textContent=t;if(t)cap.classList.add('show');},170);}
+
+  var steps=[
+    {t:700,run:function(){setCap('every friend is a polaroid on your board');moveTo(q('.kt-nina'));}},
+    {t:2200,run:function(){setCap('hover a card to read the details');moveTo(q('.kt-nina'));nina.classList.add('flipped');}},
+    {t:1600,run:function(){nina.classList.remove('flipped');moveTo(dev);}},
+    {t:1700,run:function(){setCap('open someone you owe a hello');press();ripple.classList.add('go');setTimeout(function(){ripple.classList.remove('go');},560);backdrop.classList.add('show');panel.classList.add('open');}},
+    {t:2200,run:function(){setCap('press texted or called to catch up');setTimeout(function(){moveTo(texted);},250);}},
+    {t:1500,run:function(){press();texted.classList.add('pressed');mLast.textContent='today';mText.textContent='texted today';}},
+    {t:1900,run:function(){setCap('and they come back to colour');texted.classList.remove('pressed');panel.classList.remove('open');backdrop.classList.remove('show');devFront.classList.add('fresh');devDay.textContent='today';}},
+    {t:2500,run:function(){setCap('see whose birthday and plans are coming up');moveTo(tabC);tabC.classList.add('on');tabP.classList.remove('on');coming.classList.add('open');}},
+    {t:1500,run:function(){coming.classList.remove('open');tabC.classList.remove('on');tabP.classList.add('on');setCap('');}},
+    {t:900,run:function(){devFront.classList.remove('fresh');devDay.textContent='88 days';mLast.textContent='88 days';mText.textContent='no texts yet';moveTo(q('.kt-nina'));}}
+  ];
+  var i=0;
+  function tick(){steps[i].run();var d=steps[i].t;i=(i+1)%steps.length;setTimeout(tick,d);}
+  moveTo(q('.kt-nina'));setTimeout(tick,500);
+
+  var fit=document.querySelector('.kt-fit');
+  function scale(){var w=fit.parentElement.clientWidth;var s=Math.min(1,w/920);fit.style.transform='scale('+s+')';fit.parentElement.style.height=(560*s)+'px';}
+  window.addEventListener('resize',scale);scale();
+})();
+</script>
+</body>
+</html>

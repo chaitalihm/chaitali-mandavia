@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Chaitali Mandavia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cream: #f4efe4; --cream-2: #ede6d8; --cream-3: #e2d9ca;
+            --red: #8b1a1a; --ink: #1c1410; --ink-2: #6b5f50; --ink-3: #a8998a;
+            --rule: rgba(28,20,16,0.13);
+            --f-serif: 'Playfair Display', Georgia, serif;
+            --f-sans: 'DM Sans', system-ui, sans-serif;
+            --f-hand: 'Caveat', cursive;
+        }
+        body { font-family: var(--f-sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+        nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 52px; }
+        .nav-logo { font-family: var(--f-serif); font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; gap: 36px; align-items: center; }
+        .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+        .nav-links a.nav-pill, .nav-links a.nav-pill:hover { background: #8b1a1a; color: #ffffff; }
+        .nav-pill { font-size: 11px; font-weight: 500; background: var(--red); color: #fff; padding: 8px 18px; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; }
+
+        .page-header { padding: 56px 52px 40px; border-bottom: 1px solid var(--rule); }
+        .page-kicker { font-family: var(--f-hand); font-size: 18px; color: var(--red); margin-bottom: 10px; display: block; }
+        .page-h1 { font-family: var(--f-serif); font-size: clamp(36px, 5vw, 60px); font-weight: 900; color: var(--ink); letter-spacing: -0.03em; line-height: 1.0; margin-bottom: 14px; }
+        .page-desc { font-size: 14px; line-height: 1.8; color: var(--ink-2); font-weight: 300; max-width: 540px; }
+
+        .projects-wrap { max-width: 980px; margin: 0 auto; padding: 48px 52px 100px; }
+
+        .proj-card {
+            border: 1px solid var(--rule); border-radius: 4px;
+            padding: 36px 40px; margin-bottom: 28px;
+            background: var(--cream-2);
+        }
+        .proj-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 18px; flex-wrap: wrap; }
+        .proj-title { font-family: var(--f-serif); font-size: 26px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; max-width: 600px; }
+        .proj-status-badge { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 100px; padding: 5px 12px; white-space: nowrap; }
+        .badge-live { background: rgba(122,173,86,0.15); color: #4a7a2e; }
+        .badge-soon { background: rgba(168,153,138,0.15); color: var(--ink-3); }
+
+        .proj-desc-full { font-size: 14px; line-height: 1.8; color: var(--ink-2); font-weight: 300; margin-bottom: 24px; max-width: 700px; }
+        .proj-desc-full strong { color: var(--ink); font-weight: 500; }
+
+        .proj-tools-label { font-family: var(--f-hand); font-size: 16px; color: var(--red); margin-bottom: 10px; display: block; }
+        .proj-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+        .tool-pill { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; background: var(--cream); border: 1px solid var(--rule); color: var(--ink-2); padding: 5px 12px; border-radius: 100px; }
+
+        .proj-links { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+        .proj-link { font-size: 12px; font-weight: 500; color: var(--red); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; letter-spacing: 0.02em; }
+        .proj-link:hover { opacity: 0.75; }
+        .proj-link.secondary { color: var(--ink-2); }
+
+        footer { padding: 28px 52px; border-top: 1px solid var(--rule); margin-top: 56px; display: flex; align-items: center; justify-content: space-between; max-width: 980px; margin-left: auto; margin-right: auto; }
+        footer p { font-size: 12px; color: var(--ink-3); }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { font-size: 12px; color: var(--ink-3); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links a:not(.nav-pill) { display: none; }
+            .page-header { padding: 36px 20px 28px; }
+            .projects-wrap { padding: 32px 20px 60px; }
+            .proj-card { padding: 24px 22px; }
+            .proj-title { font-size: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">Chaitali Mandavia</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/simulator">TCO Simulator</a>
+        <a href="/deployment-playbook">Deployment Playbook</a>
+        <a href="/blog">Blog</a>
+        <a href="/projects" class="active">Projects</a>
+        <a href="mailto:mandaviachaitali@gmail.com" class="nav-pill">Say hello</a>
+    </div>
+</nav>
+
+<div class="page-header">
+    <span class="page-kicker">what I've actually built</span>
+    <h1 class="page-h1">Side projects</h1>
+    <p class="page-desc">Small things I've built outside of work to learn by doing. Each one taught me something different about working with LLMs, voice, and structured data.</p>
+</div>
+
+<div class="projects-wrap">
+
+    <div class="proj-card">
+        <div class="proj-top">
+            <div class="proj-title">Keep in Touch — a friend tracker that nudges you</div>
+            <span class="proj-status-badge badge-live">Live</span>
+        </div>
+        <p class="proj-desc-full">
+            I kept forgetting to check in with people I actually care about, so I built a small desktop app to fix that. Every friend gets a polaroid on a corkboard. Flip the card and you see when you last talked, whether it was a text or a call, and a quick note about what you talked about last. There's a "coming up" tab that surfaces birthdays and plans so nothing falls through the cracks.
+        </p>
+        <p class="proj-desc-full">
+            The whole thing runs locally as an Electron app, no server, no account, your data stays on your machine. I wanted it to feel more like a physical corkboard than a CRM, which is why everything is hand-drawn and a little imperfect on purpose.
+        </p>
+        <span class="proj-tools-label">tools I used</span>
+        <div class="proj-tools">
+            <span class="tool-pill">Electron</span>
+            <span class="tool-pill">JavaScript</span>
+            <span class="tool-pill">Local storage</span>
+            <span class="tool-pill">CSS animation</span>
+        </div>
+        <div class="proj-links">
+            <a href="https://github.com/chaitalihm/friend-tracker" target="_blank" class="proj-link">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                View on GitHub
+            </a>
+            <a href="/keep-in-touch-demo" target="_blank" class="proj-link secondary">Watch the demo →</a>
+        </div>
+    </div>
+
+    <div class="proj-card">
+        <div class="proj-top">
+            <div class="proj-title">A fitness journal that talks back</div>
+            <span class="proj-status-badge badge-live">Live</span>
+        </div>
+        <p class="proj-desc-full">
+            I wanted to log my workouts without typing anything. So I built a voice-first journal: you speak your morning routine and an LLM with guardrails extracts the structured fields it needs (what you did, how long, how you felt) and asks follow-up questions if something's missing. Once everything is captured, it confirms before saving anything.
+        </p>
+        <p class="proj-desc-full">
+            The interesting part to build was the guardrails. A raw LLM will happily make up a duration if you don't mention one. I had to force it to explicitly ask for missing fields rather than guessing, and to show a "captured" percentage so you can see what's still needed before it saves.
+        </p>
+        <span class="proj-tools-label">tools I used</span>
+        <div class="proj-tools">
+            <span class="tool-pill">Wispr Flow (voice input)</span>
+            <span class="tool-pill">LLM guardrails</span>
+            <span class="tool-pill">Structured extraction</span>
+            <span class="tool-pill">JavaScript</span>
+        </div>
+        <div class="proj-links">
+            <a href="https://github.com/chaitalihm/voice-elicitation-agent" target="_blank" class="proj-link">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                View on GitHub
+            </a>
+            <a href="/fitness-demo" target="_blank" class="proj-link secondary">Watch the demo →</a>
+        </div>
+    </div>
+
+    <div class="proj-card">
+        <div class="proj-top">
+            <div class="proj-title">An iMessage assistant that actually does things for you</div>
+            <span class="proj-status-badge badge-soon">In progress</span>
+        </div>
+        <p class="proj-desc-full">
+            You text it like you would a friend and it handles small things: blocks time on your calendar, cleans up a message before you send it, finds you a restaurant nearby. No app to open, just iMessage. Still figuring out the agent orchestration on this one.
+        </p>
+        <span class="proj-tools-label">tools I'm using</span>
+        <div class="proj-tools">
+            <span class="tool-pill">Twilio</span>
+            <span class="tool-pill">LLM agents</span>
+            <span class="tool-pill">Calendar API</span>
+        </div>
+        <div class="proj-links">
+            <span class="proj-link secondary" style="cursor:default;">GitHub link coming once it's further along</span>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Chaitali Mandavia &middot; 2025</p>
+    <div class="footer-links">
+        <a href="https://www.linkedin.com/in/chaitali-mandavia" target="_blank">LinkedIn</a>
+        <a href="mailto:mandaviachaitali@gmail.com">Email</a>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -169,14 +169,14 @@
 
         /* category labels */
         .proj-category-label {
-            font-family: var(--f-hand); font-size: 17px; color: var(--red);
-            padding: 28px 0 4px; letter-spacing: 0.02em;
+            font-family: var(--f-hand); font-size: 26px; color: var(--red);
+            padding: 32px 0 6px; letter-spacing: 0.02em;
         }
 
         /* project rows */
         .project-list { display: flex; flex-direction: column; }
         .project-row {
-            display: grid; grid-template-columns: 48px 1fr 100px;
+            display: grid; grid-template-columns: 1fr 100px;
             gap: 24px; align-items: start;
             padding: 28px 0; border-top: 1px solid var(--rule);
             text-decoration: none; color: inherit;
@@ -294,7 +294,7 @@
 
             /* Work section */
             .work-section { padding: 40px 20px 0; }
-            .project-row { grid-template-columns: 40px 1fr; gap: 12px; padding: 20px 0; }
+            .project-row { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
             .proj-status { display: none; }
             .proj-tags { display: none; }
 
@@ -367,6 +367,7 @@
         <a href="/simulator">TCO Simulator</a>
         <a href="/deployment-playbook">Deployment Playbook</a>
         <a href="/blog">Blog</a>
+        <a href="/projects">Projects</a>
         <a href="mailto:mandaviachaitali@gmail.com" class="nav-pill">Say hello</a>
     </div>
 </nav>
@@ -417,7 +418,6 @@
         <div class="proj-category-label">TCO Calculator</div>
 
         <a href="/simulator" class="project-row">
-            <div class="proj-num">01</div>
             <div>
                 <div class="proj-name">How much does AI actually cost to deploy?</div>
                 <div class="proj-desc">Nobody seemed to agree on what enterprise AI actually costs once you factor in oversight, compute, and setup. So I built something to model it properly.</div>
@@ -434,7 +434,6 @@
         <div class="proj-category-label">Deployment Projects</div>
 
         <a href="/deployment-playbook" class="project-row">
-            <div class="proj-num">02</div>
             <div>
                 <div class="proj-name">Deploying agentic AI for the semiconductor team at a long/short hedge fund</div>
                 <div class="proj-desc">I picked one team at a large multi-sector fund covering global semiconductors and worked through what it would actually take to build something useful for them, from the pitch all the way through to deployment.</div>
@@ -451,7 +450,6 @@
         <div class="proj-category-label">Blog</div>
 
         <div class="project-row" style="cursor:pointer;" onclick="window.location='/blog'">
-            <div class="proj-num">03</div>
             <div>
                 <div class="proj-name">AI explained without the jargon</div>
                 <div class="proj-desc">I got interested in this space and kept running into terms that sounded intimidating but weren't, and things that were genuinely confusing that nobody explained well. So I started writing about them.</div>
@@ -463,24 +461,22 @@
             <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
 
-        <div class="proj-category-label">AI Projects</div>
+        <div class="proj-category-label">Side Projects</div>
 
-        <div class="project-row" style="cursor:default;">
-            <div class="proj-num">04</div>
+        <a href="/keep-in-touch-demo" class="project-row">
             <div>
-                <div class="proj-name">An iMessage assistant that actually does things for you</div>
-                <div class="proj-desc">You text it like you would a friend and it handles things: blocks time on your calendar, cleans up a message you want to send, finds you a restaurant. Still building.</div>
+                <div class="proj-name">Keep in Touch — a friend tracker that nudges you</div>
+                <div class="proj-desc">A board of polaroids for the people in your life. Flip a card to see when you last talked, log a text or call in one tap, and see what's coming up so nobody falls through the cracks.</div>
                 <div class="proj-tags">
-                    <span class="proj-tag">Twilio</span>
-                    <span class="proj-tag">LLM agents</span>
-                    <span class="proj-tag">Calendar API</span>
+                    <span class="proj-tag">Electron</span>
+                    <span class="proj-tag">Local storage</span>
+                    <span class="proj-tag">Desktop app</span>
                 </div>
             </div>
-            <div class="proj-status soon">Soon</div>
-        </div>
+            <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </a>
 
         <a href="/fitness-demo" class="project-row">
-            <div class="proj-num">05</div>
             <div>
                 <div class="proj-name">A fitness journal that talks back</div>
                 <div class="proj-desc">You speak your morning routine into it, and an LLM with guardrails pulls out the structured details (what you did, how long, how you felt) and tells you when an entry is ready to log.</div>
@@ -493,11 +489,33 @@
             <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </a>
 
+        <div class="project-row" style="cursor:default;">
+            <div>
+                <div class="proj-name">An iMessage assistant that actually does things for you</div>
+                <div class="proj-desc">You text it like you would a friend and it handles things: blocks time on your calendar, cleans up a message you want to send, finds you a restaurant. Still building.</div>
+                <div class="proj-tags">
+                    <span class="proj-tag">Twilio</span>
+                    <span class="proj-tag">LLM agents</span>
+                    <span class="proj-tag">Calendar API</span>
+                </div>
+            </div>
+            <div class="proj-status soon">Soon</div>
+        </div>
+
     </div>
 
-    <!-- embedded live demo -->
+    <div style="margin:24px 0 0;text-align:center;">
+        <a href="/projects" style="font-family:var(--f-hand);font-size:18px;color:var(--red);text-decoration:none;border-bottom:1px solid rgba(139,26,26,0.3);padding-bottom:2px;">see all projects with full writeups →</a>
+    </div>
+
+    <!-- embedded live demos -->
     <div style="margin-top:36px;border:1px solid var(--rule);border-radius:16px;overflow:hidden;padding:20px;background:var(--cream-2);">
-        <div style="font-family:var(--f-hand);font-size:16px;color:var(--ink-3);margin-bottom:14px;">a quick look at how it works</div>
+        <div style="font-family:var(--f-hand);font-size:16px;color:var(--ink-3);margin-bottom:14px;">keep in touch — a quick look</div>
+        <iframe src="/keep-in-touch-demo" style="width:100%;height:560px;border:none;border-radius:12px;display:block;" loading="lazy" title="Keep in Touch demo"></iframe>
+    </div>
+
+    <div style="margin-top:24px;border:1px solid var(--rule);border-radius:16px;overflow:hidden;padding:20px;background:var(--cream-2);">
+        <div style="font-family:var(--f-hand);font-size:16px;color:var(--ink-3);margin-bottom:14px;">fitness journal — a quick look</div>
         <iframe src="/fitness-demo" style="width:100%;height:560px;border:none;border-radius:12px;display:block;" loading="lazy" title="Fitness journal demo"></iframe>
     </div>
 </div>
