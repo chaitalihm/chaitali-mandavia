@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The actual math behind why batch size matters — Chaitali Mandavia</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%238b1a1a'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='700' fill='%23f4efe4' text-anchor='middle'%3ECM%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cream:  #f4efe4; --cream-2: #ede6d8; --cream-3: #e2d9ca;
+            --red:    #8b1a1a; --ink: #1c1410; --ink-2: #6b5f50; --ink-3: #a8998a;
+            --rule:   rgba(28,20,16,0.13);
+            --f-serif: 'Playfair Display', Georgia, serif;
+            --f-sans:  'DM Sans', system-ui, sans-serif;
+            --f-hand:  'Caveat', cursive;
+        }
+        body { font-family: var(--f-sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+        nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 52px; }
+        .nav-logo { font-family: var(--f-serif); font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; gap: 36px; align-items: center; }
+        .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+        .nav-links a.nav-pill, .nav-links a.nav-pill:hover { background: #8b1a1a; color: #ffffff; }
+        .nav-pill { font-size: 11px; font-weight: 500; background: #8b1a1a !important; color: #ffffff !important; padding: 8px 18px; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; display: inline-block; transition: transform 0.25s cubic-bezier(.2,1.4,.4,1); }
+        .nav-pill:hover { transform: scale(1.08) rotate(-2deg); }
+
+        .post-header { background: var(--red); padding: 52px 52px 44px; position: relative; overflow: hidden; }
+        .post-header-num { position: absolute; right: 48px; top: 24px; font-family: var(--f-hand); font-size: 120px; font-weight: 600; color: rgba(255,255,255,0.07); line-height: 1; user-select: none; }
+        .post-breadcrumb { font-size: 11px; color: rgba(244,239,228,0.5); margin-bottom: 20px; display: flex; gap: 8px; align-items: center; }
+        .post-breadcrumb a { color: rgba(244,239,228,0.5); text-decoration: none; }
+        .post-breadcrumb a:hover { color: rgba(244,239,228,0.8); }
+        .post-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(244,239,228,0.9); border-radius: 100px; padding: 3px 10px; display: inline-block; margin-bottom: 20px; }
+        .post-title { font-family: var(--f-serif); font-size: clamp(28px, 4.2vw, 46px); font-weight: 900; color: #f4efe4; letter-spacing: -0.03em; line-height: 1.08; max-width: 760px; margin-bottom: 24px; }
+        .post-meta { display: flex; gap: 24px; align-items: center; }
+        .post-meta-item { font-size: 12px; color: rgba(244,239,228,0.6); }
+        .post-meta-item strong { color: rgba(244,239,228,0.85); font-weight: 500; }
+
+        .post-body { max-width: 680px; margin: 0 auto; padding: 56px 52px 100px; }
+
+        .prose p { font-size: 16px; line-height: 1.85; color: var(--ink-2); font-weight: 300; margin-bottom: 24px; }
+        .prose p strong { color: var(--ink); font-weight: 500; }
+        .prose h2 { font-family: var(--f-serif); font-size: 25px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.2; margin: 48px 0 16px; }
+
+        .hand-callout { background: var(--cream-2); border: 1px solid var(--rule); padding: 24px 28px; margin: 32px 0; }
+        .hand-callout-label { font-family: var(--f-hand); font-size: 18px; color: var(--red); margin-bottom: 8px; display: block; }
+        .hand-callout p { font-size: 14px; line-height: 1.75; color: var(--ink-2); font-weight: 300; margin-bottom: 0; }
+        .hand-callout p + p { margin-top: 10px; }
+        .hand-callout p strong { color: var(--ink); font-weight: 500; }
+
+        /* matrix visual */
+        .matrix-demo { background: var(--cream-2); border: 1px solid var(--rule); padding: 28px 24px; margin: 32px 0; border-radius: 4px; }
+        .matrix-demo-label { font-family: var(--f-hand); font-size: 15px; color: var(--ink-3); margin-bottom: 20px; display: block; text-align: center; }
+
+        /* flow block matching other posts */
+        .flow-block {
+            background: var(--cream-2); color: var(--ink-2);
+            border: 1px solid var(--rule);
+            border-radius: 4px; padding: 22px 26px; margin: 28px 0;
+            font-family: 'DM Sans', monospace; font-size: 13px; line-height: 1.9;
+            overflow-x: auto;
+        }
+        .flow-block .step-num { color: var(--red); font-weight: 600; }
+        .flow-block .dim { color: var(--ink-3); }
+        .flow-block .result { color: #4a7a2e; font-weight: 600; }
+
+        /* worked example box */
+        .work-box {
+            border: 1px solid var(--rule); border-radius: 4px; padding: 22px 26px;
+            margin: 24px 0; background: var(--cream);
+        }
+        .work-box-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+        .work-box-line { font-family: 'DM Sans', monospace; font-size: 13px; color: var(--ink-2); line-height: 1.9; }
+        .work-box-line .hl { color: var(--red); font-weight: 600; }
+
+        .graphic { background: var(--cream-2); border: 1px solid var(--rule); padding: 28px 24px; margin: 32px 0; border-radius: 4px; }
+        .graphic-label { font-family: var(--f-hand); font-size: 15px; color: var(--ink-3); margin-bottom: 18px; display: block; text-align: center; }
+
+        .footnote { font-size: 12px; color: var(--ink-3); line-height: 1.7; margin-top: 8px; }
+        .footnote a { color: var(--red); text-decoration: none; border-bottom: 1px solid rgba(139,26,26,0.3); }
+
+        .next-post { border-top: 1px solid var(--rule); padding-top: 48px; margin-top: 16px; }
+        .next-label { font-family: var(--f-hand); font-size: 16px; color: var(--ink-3); margin-bottom: 10px; display: block; }
+        .next-title { font-family: var(--f-serif); font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 12px; }
+        .next-link { font-size: 12px; color: var(--red); text-decoration: none; font-weight: 500; letter-spacing: 0.04em; }
+
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links a:not(.nav-pill) { display: none; }
+            .post-header { padding: 36px 20px 32px; }
+            .post-title { font-size: clamp(24px, 7vw, 34px); }
+            .post-body { padding: 36px 20px 60px; }
+            .prose p { font-size: 15px; }
+            .flow-block, .work-box { font-size: 12px; padding: 16px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">Chaitali Mandavia</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/simulator">TCO Simulator</a>
+        <a href="/deployment-playbook">Deployment Playbook</a>
+        <a href="/blog" class="active">Blog</a>
+        <a href="/projects">Projects</a>
+        <a href="mailto:mandaviachaitali@gmail.com" class="nav-pill">Say hello</a>
+    </div>
+</nav>
+
+<div class="post-header">
+    <div class="post-header-num">06</div>
+    <div class="post-breadcrumb">
+        <a href="/blog">Blog</a>
+        <span>/</span>
+        <span>Technical Deep Dive</span>
+    </div>
+    <span class="post-tag">Technical Deep Dive</span>
+    <h1 class="post-title">The actual math behind why batch size matters</h1>
+    <div class="post-meta">
+        <span class="post-meta-item">By <strong>Chaitali Mandavia</strong></span>
+        <span class="post-meta-item">2025</span>
+        <span class="post-meta-item">13 min read</span>
+    </div>
+</div>
+
+<div class="post-body">
+    <div class="prose">
+
+        <p>
+            In my last post I said more tokens means more compute, roughly proportional, and that the relationship comes from something called arithmetic intensity. This post is the follow-up for anyone who wants to actually see the math, not just take my word for it. We're going to walk through the real derivation, the same one used in production engineering to decide how big a batch needs to be before a chip is actually being used efficiently.
+        </p>
+
+        <h2>Three things that determine how fast anything runs</h2>
+
+        <p>
+            Whenever a model runs on hardware, three numbers determine how long it takes. How fast the chip can do math, measured in floating point operations per second, or FLOPs/s. How fast the chip can move data between memory and its compute cores, measured in bytes/s, called bandwidth. And how much total memory is available to store that data.
+        </p>
+
+        <p>
+            For a single matrix multiplication, this comes down to two competing timers running at once: the time spent doing the actual math, and the time spent moving data in and out. Whichever one takes longer is your real bottleneck.
+        </p>
+
+        <h2>Two different "intensities" that get compared against each other</h2>
+
+        <p>
+            Here's a distinction that's easy to blur together, and getting it clear makes everything after this much easier to follow. There are actually two separate numbers in this story, both called "intensity," but they mean different things.
+        </p>
+
+        <p>
+            The first is the <strong>hardware's intensity</strong>. This is a fixed property of a specific chip, it has nothing to do with what computation you're running. It just asks: for this chip, how many math operations can it do in the time it takes to fetch one byte from memory? You get it by dividing two numbers straight off the hardware's spec sheet.
+        </p>
+
+        <div class="flow-block">
+<span class="step-num">Hardware Intensity</span> = Peak FLOPs/s &divide; Peak Bandwidth (bytes/s)
+
+<span class="dim">For a TPU v5e:</span>
+1.97e14 FLOPs/s &divide; 8.2e11 bytes/s = <span class="result">240 FLOPs/byte</span>
+        </div>
+
+        <p>
+            That 1.97e14 and 8.2e11 are real, published numbers straight from the TPU v5e's spec sheet, but the 240 itself is something the rooflines paper's authors calculated themselves by dividing the two, not a number any hardware vendor ever published directly.
+        </p>
+
+        <p>
+            The second is the <strong>algorithm's intensity</strong>. This is a property of the specific computation you're running, not the chip. It asks: for this particular matrix multiplication, how many math operations am I actually doing per byte I actually have to load? This number changes depending on the size of the matrices you're multiplying.
+        </p>
+
+        <div class="flow-block">
+<span class="step-num">Algorithm Intensity</span> = Total FLOPs the matmul does &divide; Total bytes the matmul loads
+        </div>
+
+        <p>
+            The whole point of this post is to work out what that algorithm intensity formula actually looks like for a real matrix multiplication, and then compare it against the fixed 240 from the hardware. 240 isn't a ceiling the chip can't go past, it's the minimum you want to clear. Below 240, the chip's math units are sitting idle waiting on bytes to arrive from memory. Above 240, the math units are fully busy, memory isn't holding anything back anymore, and the chip just keeps doing more math as batch size keeps growing. You want to be above 240, the higher the better.
+        </p>
+
+        <h2>Working out the algorithm's intensity for matrix multiplication</h2>
+
+        <p>
+            Matrix multiplication, the operation that makes up the vast majority of what a transformer actually does, is the case worth working through in detail. Say we're multiplying X, shaped [B, D], by Y, shaped [D, F], to get a result Z, shaped [B, F].
+        </p>
+
+        <div class="matrix-demo">
+            <span class="matrix-demo-label">a matrix multiplication, animated</span>
+            <div id="matmul-viz" style="font-family:'DM Sans',sans-serif;">
+                <svg viewBox="0 0 600 220" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+
+                    <!-- X matrix, rows light up -->
+                    <text x="55" y="28" text-anchor="middle" font-size="12" fill="#6b5f50" font-weight="500">X [B, D]</text>
+                    <g id="mm-x-rows">
+                        <rect class="mm-x-row" data-row="0" x="20" y="38" width="70" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                        <rect class="mm-x-row" data-row="1" x="20" y="55" width="70" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                        <rect class="mm-x-row" data-row="2" x="20" y="72" width="70" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                        <rect class="mm-x-row" data-row="3" x="20" y="89" width="70" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                    </g>
+                    <text x="55" y="125" text-anchor="middle" font-size="11" fill="#a8998a">B tokens (rows)</text>
+
+                    <text x="115" y="75" font-size="20" fill="#a8998a" text-anchor="middle">&times;</text>
+
+                    <!-- Y matrix, the big fixed weight matrix -->
+                    <text x="260" y="20" text-anchor="middle" font-size="12" fill="#6b5f50" font-weight="500">Y [D, F]</text>
+                    <rect x="150" y="30" width="220" height="70" rx="3" fill="#ede6d8" stroke="rgba(28,20,16,0.18)" stroke-width="1"/>
+                    <text x="260" y="115" text-anchor="middle" font-size="11" fill="#a8998a">the weight matrix, fixed size, always loaded in full</text>
+
+                    <text x="400" y="75" font-size="20" fill="#a8998a" text-anchor="middle">=</text>
+
+                    <!-- Z result matrix, rows fill in as computed -->
+                    <text x="490" y="28" text-anchor="middle" font-size="12" fill="#6b5f50" font-weight="500">Z [B, F]</text>
+                    <g id="mm-z-rows">
+                        <rect class="mm-z-row" data-row="0" x="440" y="38" width="100" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                        <rect class="mm-z-row" data-row="1" x="440" y="55" width="100" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                        <rect class="mm-z-row" data-row="2" x="440" y="72" width="100" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                        <rect class="mm-z-row" data-row="3" x="440" y="89" width="100" height="14" rx="2" fill="#e2d9ca" stroke="rgba(28,20,16,0.15)" stroke-width="1"/>
+                    </g>
+
+                    <text x="300" y="160" text-anchor="middle" font-size="12" fill="#8b1a1a" id="mm-status">each row of X gets multiplied through all of Y</text>
+                    <text x="300" y="180" text-anchor="middle" font-size="11" fill="#a8998a">Y is loaded once from memory, but reused for every single row of X</text>
+                </svg>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const xRows = document.querySelectorAll('#mm-x-rows .mm-x-row');
+            const zRows = document.querySelectorAll('#mm-z-rows .mm-z-row');
+            const status = document.getElementById('mm-status');
+            if (!xRows.length || !zRows.length || !status) { return; }
+            let i = 0;
+            function reset(){
+                xRows.forEach(function(r){ r.setAttribute('fill', '#e2d9ca'); });
+                zRows.forEach(function(r){ r.setAttribute('fill', '#e2d9ca'); });
+            }
+            function step(){
+                reset();
+                if (i < xRows.length) {
+                    xRows[i].setAttribute('fill', '#8b1a1a');
+                    status.textContent = 'row ' + (i+1) + ' of X is multiplied through all of Y...';
+                    const currentIndex = i;
+                    setTimeout(function(){
+                        if (zRows[currentIndex]) {
+                            zRows[currentIndex].setAttribute('fill', '#c47a4a');
+                            status.textContent = 'row ' + (currentIndex+1) + ' of Z is now ready';
+                        }
+                    }, 500);
+                    i++;
+                    setTimeout(step, 1100);
+                } else {
+                    status.textContent = 'all rows done, Y was loaded once, reused B times';
+                    setTimeout(function(){ i = 0; step(); }, 1400);
+                }
+            }
+            step();
+        });
+        </script>
+
+        <p>
+            Worked through the same way we did for the dot product earlier, the FLOPs and bytes for this operation come out to:
+        </p>
+
+        <div class="work-box">
+            <div class="work-box-label">the derivation</div>
+            <div class="work-box-line">
+Bytes loaded for X: <span class="hl">2BD</span> &nbsp;<span style="color:#a8998a;">(B&times;D numbers, 2 bytes each)</span><br>
+Bytes loaded for Y: <span class="hl">2DF</span> &nbsp;<span style="color:#a8998a;">(D&times;F numbers, 2 bytes each)</span><br>
+Bytes written for Z: <span class="hl">2BF</span><br><br>
+Total FLOPs: <span class="hl">2BDF</span><br><br>
+Intensity = 2BDF / (2BD + 2DF + 2BF)
+            </div>
+        </div>
+
+        <p>
+            In a real transformer, D and F are large, often 8,000 or more, while B, the number of tokens being processed at once, is usually much smaller. When that's true, the BD and BF terms in the denominator are tiny next to DF, small enough to drop entirely without meaningfully changing the answer. That leaves:
+        </p>
+
+        <div class="flow-block">
+Intensity &asymp; 2BDF / 2DF = <span class="result">B</span>
+        </div>
+
+        <p>
+            The whole thing collapses down to just the batch size. This is the cleanest result in the entire framework: <strong>how efficiently your hardware runs is, to a first approximation, just a function of how many tokens you're processing at once.</strong>
+        </p>
+
+        <h2>Comparing the algorithm's intensity against the hardware's</h2>
+
+        <p>
+            We now have both numbers we need. The hardware's fixed intensity is 240, the algorithm's intensity (for a matmul, once you simplify it) is approximately B. The rule comes out of just comparing the two:
+        </p>
+
+        <div class="flow-block">
+<span class="step-num">B &gt; 240</span> &nbsp;<span class="dim">→ compute-bound, hardware running efficiently</span>
+<span class="step-num">B &lt; 240</span> &nbsp;<span class="dim">→ memory-bound, hardware sitting idle waiting on data</span>
+        </div>
+
+        <p>
+            This is part of why batching matters so much in production AI systems. If you process one user's request at a time (B is small), you're almost certainly memory-bound, leaving most of the chip's FLOPs capacity unused. If a serving system can batch many requests together before running them through the model (pushing B above 240), it suddenly gets much better use out of the same hardware.
+        </p>
+
+        <div class="graphic">
+            <span class="graphic-label">the crossover, visualized</span>
+            <svg viewBox="0 0 600 220" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+                <line x1="50" y1="180" x2="560" y2="180" stroke="#a8998a" stroke-width="1.5"/>
+                <line x1="50" y1="180" x2="50" y2="20" stroke="#a8998a" stroke-width="1.5"/>
+                <text x="300" y="208" text-anchor="middle" font-size="12" fill="#6b5f50">Arithmetic Intensity (batch size, roughly)</text>
+                <text x="20" y="100" text-anchor="middle" font-size="12" fill="#6b5f50" transform="rotate(-90,20,100)">Throughput (FLOPs/s)</text>
+
+                <path d="M 50 180 L 230 60 L 560 60" stroke="#8b1a1a" stroke-width="2.5" fill="none"/>
+
+                <line x1="230" y1="180" x2="230" y2="60" stroke="#a8998a" stroke-width="1" stroke-dasharray="3,3"/>
+                <text x="230" y="195" text-anchor="middle" font-size="11" fill="#a8998a">240</text>
+
+                <text x="120" y="150" font-size="11" fill="#a8998a" font-style="italic">memory-bound</text>
+                <text x="420" y="50" font-size="11" fill="#4a7a2e" font-style="italic">compute-bound, full hardware speed</text>
+            </svg>
+        </div>
+
+        <h2>The int8 version, and why the rule barely changes</h2>
+
+        <h2>What "quantizing" actually means</h2>
+
+        <p>
+            Before working through int8, it's worth defining the term plainly. Quantizing just means storing the same numbers using fewer bytes. A model's weights normally live in bfloat16, 2 bytes per number. Quantizing to int8 means rounding those same numbers down so each one fits in just 1 byte. You lose a little precision in exchange for a smaller memory footprint, and as we're about to see, that tradeoff has a direct, calculable effect on arithmetic intensity.
+        </p>
+
+        <p>
+            One more piece worth covering, since it shows up constantly in deployment decisions. If you store your weights in int8 instead of bfloat16, you cut the bytes for Y in half, but int8 hardware also runs at roughly double the FLOPs/s. Working through the same derivation with int8 numbers (3.94e14 FLOPs/s, 8.2e11 bytes/s):
+        </p>
+
+        <div class="work-box">
+            <div class="work-box-label">int8 derivation</div>
+            <div class="work-box-line">
+Algorithm Intensity &asymp; 2B &nbsp;<span style="color:#a8998a;">(doubled, since bytes were halved)</span><br>
+Hardware Intensity = 3.94e14 / 8.2e11 = <span class="hl">480</span> &nbsp;<span style="color:#a8998a;">(also doubled)</span><br><br>
+B &gt; 480 / 2 = <span class="hl">240</span>
+            </div>
+        </div>
+
+        <p>
+            The two effects exactly cancel out. Quantizing to int8 doubles your algorithm's intensity, but it also doubles the hardware's threshold, so the minimum batch size needed to be compute-bound stays exactly the same, 240.
+        </p>
+
+        <p>
+            What int8 quantization buys you isn't a lower batch-size requirement, it's more raw speed once you clear that same threshold, and this part comes from a separate fact, not from the intensity math at all. The chip's int8 FLOPs/s (3.94e14) is simply double its bfloat16 FLOPs/s (1.97e14), a published hardware fact about how int8 circuitry is built, not something derived from intensity. So once you're compute-bound in either format, holding batch size fixed, the int8 version finishes twice as much math in the same second, purely because the chip's int8 hardware can do twice the operations per second by design.
+        </p>
+
+        <h2>What "inference" means, and why it's harder to keep efficient</h2>
+
+        <p>
+            Inference is just the term for actually using a trained model to get an answer, as opposed to training, which is the process of teaching the model in the first place. When you type a prompt into ChatGPT or Claude, that's inference. Training is a separate, earlier process where the model's weights get adjusted over and over against huge amounts of data.
+        </p>
+
+        <p>
+            The reason this distinction matters for everything we've just worked through: during training, engineers deliberately choose large batch sizes, often in the thousands of tokens, specifically to stay comfortably above that 240 threshold and keep the chip compute-bound. During inference, especially when it's a single person typing a single prompt, the natural batch size can be as low as 1, far under 240. That means a huge fraction of the chip's FLOPs capacity sits idle, waiting for the next byte to arrive, every single time someone uses the model.
+        </p>
+
+        <div class="graphic">
+            <span class="graphic-label">why training and inference sit on opposite sides of the crossover</span>
+            <svg viewBox="0 0 600 160" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+                <line x1="50" y1="120" x2="560" y2="120" stroke="#a8998a" stroke-width="1.5"/>
+                <text x="300" y="145" text-anchor="middle" font-size="12" fill="#6b5f50">Batch size</text>
+
+                <line x1="230" y1="20" x2="230" y2="120" stroke="#a8998a" stroke-width="1" stroke-dasharray="3,3"/>
+                <text x="230" y="14" text-anchor="middle" font-size="11" fill="#a8998a">240, the crossover</text>
+
+                <circle cx="80" cy="100" r="8" fill="#c47a4a"/>
+                <text x="80" y="100" text-anchor="middle" font-size="9" fill="#fff" dy="3">1</text>
+                <text x="80" y="60" text-anchor="middle" font-size="11" fill="#6b5f50">single-user inference</text>
+                <text x="80" y="76" text-anchor="middle" font-size="10" fill="#a8998a">memory-bound</text>
+
+                <circle cx="470" cy="40" r="8" fill="#8b1a1a"/>
+                <text x="470" y="40" text-anchor="middle" font-size="8" fill="#fff" dy="3">4k</text>
+                <text x="470" y="65" text-anchor="middle" font-size="11" fill="#6b5f50">training</text>
+                <text x="470" y="81" text-anchor="middle" font-size="10" fill="#4a7a2e">compute-bound</text>
+            </svg>
+        </div>
+
+        <h2>What "batch size tuning" means in practice</h2>
+
+        <p>
+            Batch size tuning is the work of deciding how many requests, or tokens, to process together in a single pass through the model rather than one at a time. A bigger batch means more math per byte loaded, which pushes the algorithm's intensity closer to, or past, that 240 threshold. The tradeoff a team has to balance is that a larger batch also takes a bit longer to fill up before it can start running, so tuning means finding a batch size that keeps the hardware efficient without making any individual user wait too long for a response.
+        </p>
+
+        <h2>What "continuous batching" means</h2>
+
+        <p>
+            This is the actual technique that makes high batch sizes possible in a live, real-world serving system, where requests don't arrive neatly all at once. Instead of waiting to collect a full batch before starting, a server using continuous batching keeps slotting new incoming requests into a batch that's already running, as older requests in that same batch finish up. This keeps the effective batch size high almost all the time, without forcing any single user to sit and wait for a batch to fill up first.
+        </p>
+
+        <div class="graphic">
+            <span class="graphic-label">continuous batching, requests join and leave as they're ready</span>
+            <svg viewBox="0 0 600 140" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+                <text x="20" y="20" font-size="11" fill="#6b5f50" font-weight="500">running batch, slots fill and empty continuously</text>
+                <rect x="20" y="32" width="60" height="28" rx="3" fill="#8b1a1a"/>
+                <text x="50" y="50" text-anchor="middle" font-size="10" fill="#f4efe4">user A</text>
+                <rect x="86" y="32" width="60" height="28" rx="3" fill="#8b1a1a"/>
+                <text x="116" y="50" text-anchor="middle" font-size="10" fill="#f4efe4">user B</text>
+                <rect x="152" y="32" width="60" height="28" rx="3" fill="#e2d9ca" stroke="rgba(28,20,16,0.2)" stroke-width="1" stroke-dasharray="3,2"/>
+                <text x="182" y="50" text-anchor="middle" font-size="10" fill="#a8998a">A done, slot opens</text>
+                <rect x="218" y="32" width="60" height="28" rx="3" fill="#c47a4a"/>
+                <text x="248" y="50" text-anchor="middle" font-size="10" fill="#f4efe4">user C joins</text>
+                <rect x="284" y="32" width="60" height="28" rx="3" fill="#8b1a1a"/>
+                <text x="314" y="50" text-anchor="middle" font-size="10" fill="#f4efe4">user B</text>
+                <text x="300" y="90" text-anchor="middle" font-size="11" fill="#a8998a">batch size stays consistently high, near the 240 threshold, even though individual requests start and stop at different times</text>
+            </svg>
+        </div>
+
+        <p>
+            Every additional request a system can fit into a running batch is essentially free throughput, since it's using compute capacity that would otherwise sit idle waiting on memory. This is why continuous batching exists as its own area of engineering effort inside companies that serve LLMs at scale.
+        </p>
+
+        <h2>What's actually being done to make this more efficient, and what it means for you</h2>
+
+        <p>
+            The compute-bound versus memory-bound tradeoff we've worked through is one of the central constraints AI infrastructure teams are working against right now, and most of the meaningful efficiency gains in the field are direct attacks on one side or the other of this exact ratio.
+        </p>
+
+        <p>
+            A few of the real directions people are working on: mixture-of-experts models, where only a fraction of the model's total parameters get used for any given token, which shrinks the bytes that need loading without shrinking the model's overall capacity. Better quantization formats, going past int8 into even lower precision while finding ways to preserve quality, since every halving of bytes pushes intensity up for free. Speculative decoding, where a small, cheap model guesses several tokens ahead and a larger model just verifies them, which effectively raises the batch size during the part of inference that's normally hardest to keep efficient, generating tokens one at a time. And smarter serving systems, continuous batching being one example, that squeeze real-world traffic closer to that 240 threshold even when requests arrive unpredictably.
+        </p>
+
+        <p>
+            As someone actually using these models day to day rather than building the infrastructure behind them, the most direct way this affects you is through token count, which is the one lever you have control over. None of the batching or hardware optimization happens on your end, that's entirely the provider's problem to solve. But every token you send, in your prompt or in the response you ask for, is still doing real, measurable work on a real chip somewhere, and that's reflected directly in what you're charged per token. A long, repetitive prompt costs more than a tight one for the same reason a model takes longer to generate a long response than a short one, more tokens simply means more passes through the exact math we just walked through.
+        </p>
+
+        <div class="hand-callout">
+            <span class="hand-callout-label">tying it all together</span>
+            <p>The whole chain of reasoning starts from one simple ratio, FLOPs divided by bytes, and ends up explaining real decisions: why a provider quantizes its models to int8, why training and inference are efficient in such different ways, why serving teams build continuous batching systems, and why API pricing tends to favor high-volume customers who can keep batch sizes consistently high. A provider serving millions of requests can batch aggressively and stay compute-bound most of the time. A low-volume deployment, or one with bursty, unpredictable traffic, struggles to keep its effective batch size above 240 consistently, which is part of why dedicated capacity or reserved throughput gets priced differently than simple pay-per-token access.</p>
+        </div>
+
+        <p class="footnote">
+            This entire derivation follows the rooflines framework laid out in <a href="https://jax-ml.github.io/scaling-book/roofline/" target="_blank">"How To Scale Your Model," Austin et al., Google DeepMind, 2025</a>, which goes considerably further into network communication rooflines across multiple chips, tile sizes, and several worked problems if you want to go deeper than this post does.
+        </p>
+
+    </div>
+
+    <div class="next-post">
+        <span class="next-label">up next</span>
+        <div class="next-title">Why do AI projects fail? (It's not the model)</div>
+        <a href="/blog" class="next-link">Coming soon — back to blog →</a>
+    </div>
+</div>
+
+</body>
+</html>
