@@ -47,6 +47,8 @@
         }
         .nav-links a:hover { color: var(--ink); }
         .nav-links a.nav-pill, .nav-links a.nav-pill:hover { background: #8b1a1a; color: #ffffff; }
+        .nav-pill { transition: transform 0.25s cubic-bezier(.2,1.4,.4,1); }
+        .nav-pill:hover { transform: scale(1.08) rotate(-2deg); }
         .nav-pill {
             font-size: 11px; font-weight: 500; background: var(--red);
             color: #fff; padding: 8px 18px; border-radius: 100px;
@@ -74,40 +76,41 @@
         /* centre row: name left, image centre, space right */
         .hero-centre {
             display: grid;
-            grid-template-columns: auto auto 1fr;
+            grid-template-columns: 1fr 320px;
             align-items: end;
             margin-top: -4px;
             gap: 0 32px;
         }
         .hero-name-left {
             font-family: var(--f-serif);
-            font-size: clamp(36px, 5.5vw, 76px);
+            font-size: clamp(56px, 9vw, 132px);
             font-weight: 900; color: var(--red);
-            letter-spacing: -0.03em; line-height: 0.9;
+            letter-spacing: -0.03em; line-height: 0.86;
             text-transform: uppercase;
             align-self: end; padding-bottom: 8px;
+            opacity: 0; transform: translateY(60px) scale(0.9) rotate(0deg);
+            animation: heroRiseLeft 0.95s 0.1s cubic-bezier(.2,1.4,.4,1) forwards;
+            display: inline-block; cursor: default;
         }
-        .hero-img-wrap {
-            width: clamp(140px, 15vw, 220px);
-            position: relative; z-index: 2;
-            flex-shrink: 0;
-        }
-        .hero-img-wrap img {
-            width: 100%; display: block;
-            border-radius: 8px 8px 0 0;
-            object-fit: cover; object-position: top center;
-            max-height: 480px;
-            mix-blend-mode: multiply;
-        }
+        .hero-name-left:hover { transform: rotate(-3deg) scale(1.04) !important; transition: transform 0.3s cubic-bezier(.2,1.4,.4,1); }
         .hero-name-right {
             font-family: var(--f-serif);
-            font-size: clamp(36px, 5.5vw, 76px);
+            font-size: clamp(56px, 9vw, 132px);
             font-weight: 900; color: transparent;
             -webkit-text-stroke: 2px var(--red);
-            letter-spacing: -0.03em; line-height: 0.9;
+            letter-spacing: -0.03em; line-height: 0.86;
             text-transform: uppercase;
             align-self: end; padding-bottom: 8px;
-            text-align: right;
+            opacity: 0; transform: translateY(60px) scale(0.9) rotate(0deg);
+            animation: heroRiseRight 0.95s 0.28s cubic-bezier(.2,1.4,.4,1) forwards;
+            display: inline-block; cursor: default;
+        }
+        .hero-name-right:hover { transform: rotate(2deg) scale(1.05) !important; transition: transform 0.3s cubic-bezier(.2,1.4,.4,1); }
+        @keyframes heroRiseLeft {
+            to { opacity: 1; transform: translateY(0) scale(1) rotate(-1.5deg); }
+        }
+        @keyframes heroRiseRight {
+            to { opacity: 1; transform: translateY(0) scale(1) rotate(1deg); }
         }
 
         /* annot row */
@@ -182,7 +185,11 @@
             text-decoration: none; color: inherit;
         }
         .project-row:last-child { border-bottom: 1px solid var(--rule); }
+        .project-row { transition: transform 0.3s cubic-bezier(.2,1.3,.4,1), background 0.3s; }
+        .project-row:hover { transform: translateX(8px); background: rgba(139,26,26,0.03); }
         .project-row:hover .proj-name { color: var(--red); }
+        .project-row:hover .proj-status svg { transform: translate(2px,-2px) scale(1.15); }
+        .proj-status svg { transition: transform 0.25s cubic-bezier(.2,1.3,.4,1); }
 
         .proj-num {
             font-family: var(--f-hand); font-size: 20px; color: var(--ink-3);
@@ -233,7 +240,9 @@
         .fact-row {
             display: flex; align-items: baseline; gap: 16px;
             padding: 16px 0; border-bottom: 1px solid var(--rule);
+            transition: transform 0.3s cubic-bezier(.2,1.3,.4,1);
         }
+        .fact-row:hover { transform: translateX(8px); }
         .fact-row:first-child { padding-top: 0; }
         .fact-row:last-child { border-bottom: none; padding-bottom: 0; }
         .fact-val {
@@ -356,7 +365,10 @@
             .about-section { margin: 32px 16px 0; padding: 20px 18px; }
             footer { padding: 20px 16px; }
         }
-    </style>
+        /* scroll reveal animation, louder */
+    .reveal { opacity: 0; transform: translateY(36px) scale(0.97); transition: opacity 0.65s cubic-bezier(.2,1.3,.4,1), transform 0.65s cubic-bezier(.2,1.3,.4,1); }
+    .reveal.in-view { opacity: 1; transform: translateY(0) scale(1); }
+</style>
 </head>
 <body>
 
@@ -375,41 +387,56 @@
 <div class="hero">
 
     <!-- Hi, I'm -->
-    <div class="hero-name-top">
+    <div class="hero-name-top" style="opacity:0;animation:heroFadeIn 0.6s 0s ease forwards;">
         <span class="hi-sans">Hi,</span>
         <span class="im-serif">I'm</span>
     </div>
 
-    <!-- name + image + desc -->
+    <!-- big name + desc, funky offset typography -->
     <div class="hero-centre">
-        <!-- stacked name left of image -->
-        <div style="display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-end; padding-bottom:8px;">
+        <div style="position:relative;">
             <div class="hero-name-left">CHAITALI</div>
-            <div class="hero-name-left" style="color:transparent; -webkit-text-stroke:2px var(--red);">MANDAVIA</div>
+            <div class="hero-name-right" style="text-align:left; margin-top:-14px; margin-left:36px;">MANDAVIA</div>
+            <svg width="44" height="44" viewBox="0 0 44 44" style="position:absolute; top:-18px; left:-32px; opacity:0; animation:starPop 0.5s 0.9s cubic-bezier(.34,1.56,.64,1) forwards, starFloat 3s 1.4s ease-in-out infinite;">
+                <path d="M22 2 L25 18 L40 22 L25 26 L22 42 L19 26 L4 22 L19 18 Z" fill="var(--red)"/>
+            </svg>
         </div>
 
-        <!-- image -->
-        <div class="hero-img-wrap" style="position:relative;">
-            <img src="/static/chaitali.png" alt="Chaitali Mandavia"
-                 onerror="this.parentElement.style.display='none'">
-        </div>
-
-        <!-- right side desc -->
-        <div style="display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:16px; padding-left:8px;">
-            <p style="font-size:15px;line-height:1.8;color:var(--ink-2);font-weight:300;max-width:280px;">
+        <div style="display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:16px; opacity:0; animation:heroFadeIn 0.8s 0.55s ease forwards;">
+            <p style="font-size:15px;line-height:1.8;color:var(--ink-2);font-weight:300;max-width:300px;">
                 Senior Analyst at <strong style="color:var(--ink);font-weight:500;">Analysis Group</strong>, currently getting into AI. Berkeley Economics and Data Science, class of 2022. Based in NYC.
             </p>
-
         </div>
     </div>
 
     <div style="border-top:1px solid var(--rule);margin-top:20px;"></div>
 </div>
 
+<style>
+@keyframes heroFadeIn { to { opacity: 1; } }
+@keyframes starFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(8deg); }
+}
+@keyframes wiggleIn {
+    0% { opacity: 0; transform: translateY(24px) rotate(-4deg); }
+    55% { opacity: 1; transform: translateY(-4px) rotate(2deg); }
+    100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+.section-title-block.in-view .wiggle-in {
+    animation: wiggleIn 0.6s cubic-bezier(.2,1.3,.4,1) backwards;
+}
+@keyframes starPop {
+    0% { opacity: 0; transform: scale(0) rotate(-30deg); }
+    60% { opacity: 1; transform: scale(1.3) rotate(8deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+</style>
+
 <!-- WORK -->
 <div class="section">
-    <div class="section-title-block">
-        <h2><span>WORK</span> <span class="outline">&amp;</span> PROJECTS</h2>
+    <div class="section-title-block reveal">
+        <h2><span class="wiggle-in" style="display:inline-block;">WORK</span> <span class="outline wiggle-in" style="display:inline-block; animation-delay:0.1s;">&amp;</span> <span class="wiggle-in" style="display:inline-block; animation-delay:0.2s;">PROJECTS</span></h2>
 
     </div>
 
@@ -417,7 +444,7 @@
 
         <div class="proj-category-label">TCO Calculator</div>
 
-        <a href="/simulator" class="project-row">
+        <a href="/simulator" class="project-row reveal">
             <div>
                 <div class="proj-name">How much does AI actually cost to deploy?</div>
                 <div class="proj-desc">Nobody seemed to agree on what enterprise AI actually costs once you factor in oversight, compute, and setup. So I built something to model it properly.</div>
@@ -433,7 +460,7 @@
 
         <div class="proj-category-label">Deployment Projects</div>
 
-        <a href="/deployment-playbook" class="project-row">
+        <a href="/deployment-playbook" class="project-row reveal">
             <div>
                 <div class="proj-name">Deploying agentic AI for the semiconductor team at a long/short hedge fund</div>
                 <div class="proj-desc">I picked one team at a large multi-sector fund covering global semiconductors and worked through what it would actually take to build something useful for them, from the pitch all the way through to deployment.</div>
@@ -449,7 +476,7 @@
 
         <div class="proj-category-label">Blog</div>
 
-        <div class="project-row" style="cursor:pointer;" onclick="window.location='/blog'">
+        <div class="project-row reveal" style="cursor:pointer;" onclick="window.location='/blog'">
             <div>
                 <div class="proj-name">AI explained without the jargon</div>
                 <div class="proj-desc">I got interested in this space and kept running into terms that sounded intimidating but weren't, and things that were genuinely confusing that nobody explained well. So I started writing about them.</div>
@@ -463,7 +490,7 @@
 
         <div class="proj-category-label">Side Projects</div>
 
-        <a href="/keep-in-touch-demo" class="project-row">
+        <a href="/projects" class="project-row reveal">
             <div>
                 <div class="proj-name">Keep in Touch — a friend tracker that nudges you</div>
                 <div class="proj-desc">A board of polaroids for the people in your life. Flip a card to see when you last talked, log a text or call in one tap, and see what's coming up so nobody falls through the cracks.</div>
@@ -476,7 +503,7 @@
             <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </a>
 
-        <a href="/fitness-demo" class="project-row">
+        <a href="/projects" class="project-row reveal">
             <div>
                 <div class="proj-name">A fitness journal that talks back</div>
                 <div class="proj-desc">You speak your morning routine into it, and an LLM with guardrails pulls out the structured details (what you did, how long, how you felt) and tells you when an entry is ready to log.</div>
@@ -489,7 +516,7 @@
             <div class="proj-status live">Live <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline-block;vertical-align:middle;margin-left:3px;"><path d="M1 10 L10 1 M10 1 H4 M10 1 V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </a>
 
-        <div class="project-row" style="cursor:default;">
+        <div class="project-row reveal" style="cursor:default;">
             <div>
                 <div class="proj-name">An iMessage assistant that actually does things for you</div>
                 <div class="proj-desc">You text it like you would a friend and it handles things: blocks time on your calendar, cleans up a message you want to send, finds you a restaurant. Still building.</div>
@@ -509,39 +536,14 @@
     </div>
 
     <!-- embedded live demos -->
-    <div style="margin-top:36px;border:1px solid var(--rule);border-radius:16px;overflow:hidden;padding:20px;background:var(--cream-2);">
+    <div class="reveal" style="margin-top:36px;border:1px solid var(--rule);border-radius:16px;overflow:hidden;padding:20px;background:var(--cream-2);">
         <div style="font-family:var(--f-hand);font-size:16px;color:var(--ink-3);margin-bottom:14px;">keep in touch — a quick look</div>
         <iframe src="/keep-in-touch-demo" style="width:100%;height:560px;border:none;border-radius:12px;display:block;" loading="lazy" title="Keep in Touch demo"></iframe>
     </div>
 
-    <div style="margin-top:24px;border:1px solid var(--rule);border-radius:16px;overflow:hidden;padding:20px;background:var(--cream-2);">
+    <div class="reveal" style="margin-top:24px;border:1px solid var(--rule);border-radius:16px;overflow:hidden;padding:20px;background:var(--cream-2);">
         <div style="font-family:var(--f-hand);font-size:16px;color:var(--ink-3);margin-bottom:14px;">fitness journal — a quick look</div>
         <iframe src="/fitness-demo" style="width:100%;height:560px;border:none;border-radius:12px;display:block;" loading="lazy" title="Fitness journal demo"></iframe>
-    </div>
-</div>
-
-<!-- ABOUT -->
-<div class="about-wrap">
-    <div class="about-inner">
-        <div class="about-left">
-            <span class="about-label">A bit about me</span>
-            <p class="about-text">I've been at <strong>Analysis Group</strong> for 4.5 years as a Senior Analyst. Over the last year I worked on <strong>ALMA</strong>, a firmwide LLM tool that helps teams get through large document sets faster. That's what got me properly interested in this space.</p>
-            <p class="about-text">Originally from Mumbai, currently living in New York.</p>
-        </div>
-        <div class="about-right">
-            <div class="fact-row">
-                <div class="fact-val">Berkeley</div>
-                <div class="fact-label">Economics and Data Science, class of 2022</div>
-            </div>
-            <div class="fact-row">
-                <div class="fact-val">Mumbai</div>
-                <div class="fact-label">originally from here</div>
-            </div>
-            <div class="fact-row">
-                <div class="fact-val">New York</div>
-                <div class="fact-label">where I currently live</div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -555,5 +557,22 @@
     </div>
 </footer>
 
+<script>
+(function(){
+    var rows = document.querySelectorAll('.project-row.reveal');
+    rows.forEach(function(el, i){ el.style.transitionDelay = (i % 4) * 70 + 'ms'; });
+
+    var els = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el){ observer.observe(el); });
+})();
+</script>
 </body>
 </html>
