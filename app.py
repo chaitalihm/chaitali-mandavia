@@ -26,6 +26,10 @@ def post1():
 def post2():
     return render_template('post2.html')
 
+@app.route('/fitness-demo')
+def fitness_demo():
+    return render_template('fitness-demo.html')
+
 @app.route('/calculate', methods=['POST'])
 def calculate():
     data = request.get_json() or {}

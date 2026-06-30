@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fitness Journal — demo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+
+.fj-wrap{width:100%;display:flex;justify-content:center;}
+.fj-fit{width:920px;transform-origin:top left;}
+
+.fj-stage{
+  position:relative;width:920px;height:560px;overflow:hidden;
+  border-radius:16px;border:1px solid rgba(0,0,0,0.1);
+  background-color:#F2EDE4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect width='48' height='48' fill='%23F2EDE4'/%3E%3Ccircle cx='8' cy='8' r='0.7' fill='%23D8D2C6'/%3E%3Ccircle cx='32' cy='16' r='0.6' fill='%23D8D2C6'/%3E%3Ccircle cx='16' cy='36' r='0.7' fill='%23D8D2C6'/%3E%3Ccircle cx='40' cy='40' r='0.6' fill='%23D8D2C6'/%3E%3C/svg%3E");
+  font-family:'DM Sans',system-ui,sans-serif;
+  color:#2d2416;
+}
+
+/* TOP BAR */
+.fj-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  height:52px;padding:0 28px;
+  background:rgba(255,255,255,0.55);
+  border-bottom:1px solid rgba(45,36,22,0.1);
+}
+.fj-brand{
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;
+  color:#2d2416;letter-spacing:0.01em;
+}
+.fj-status{
+  font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+  color:#8b7a5a;display:flex;align-items:center;gap:8px;
+}
+.fj-dot{width:7px;height:7px;border-radius:50%;background:#c8784a;display:inline-block;transition:background 0.5s;}
+.fj-dot.done{background:#7aad56;}
+
+/* MAIN LAYOUT */
+.fj-body{display:flex;height:508px;min-height:0;}
+
+/* LEFT - stats panel */
+.fj-left{
+  width:260px;flex-shrink:0;
+  border-right:1px solid rgba(45,36,22,0.1);
+  padding:24px 22px;
+  display:flex;flex-direction:column;gap:20px;
+}
+.fj-section-label{
+  font-size:9px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;
+  color:#a8998a;margin-bottom:12px;
+}
+.fj-stat{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 14px;
+  background:rgba(255,255,255,0.5);
+  border:1px solid rgba(45,36,22,0.08);
+  border-radius:8px;
+  transition:background 0.4s,border-color 0.4s;
+}
+.fj-stat.filled{
+  background:rgba(139,26,26,0.06);
+  border-color:rgba(139,26,26,0.2);
+}
+.fj-stat-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+.fj-stat-body{}
+.fj-stat-key{font-size:9px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#a8998a;margin-bottom:3px;}
+.fj-stat-val{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;
+  color:#2d2416;min-height:26px;transition:color 0.3s;
+}
+.fj-stat-val.empty{color:#c8bfb0;}
+
+.fj-captured{
+  margin-top:auto;padding:10px 14px;
+  background:rgba(255,255,255,0.4);border:1px solid rgba(45,36,22,0.08);border-radius:8px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.fj-captured-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#a8998a;}
+.fj-captured-pct{
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#8b1a1a;
+  transition:all 0.5s;
+}
+
+/* RIGHT - chat panel */
+.fj-right{flex:1;display:flex;flex-direction:column;min-width:0;}
+
+.fj-chat{
+  flex:1 1 auto;min-height:0;padding:24px 28px;overflow:hidden;
+  display:flex;flex-direction:column;gap:14px;justify-content:flex-end;
+}
+
+/* chat bubbles */
+.fj-bubble{
+  max-width:76%;padding:11px 15px;
+  border-radius:14px;font-size:13px;line-height:1.6;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.35s ease,transform 0.35s ease;
+}
+.fj-bubble.show{opacity:1;transform:translateY(0);}
+.fj-bubble.ai{
+  align-self:flex-end;
+  background:rgba(255,255,255,0.7);border:1px solid rgba(45,36,22,0.1);
+  color:#5a4f40;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;
+  border-radius:14px 14px 4px 14px;
+}
+.fj-bubble.user{
+  align-self:flex-start;
+  background:#8b1a1a;color:#f4efe4;
+  border-radius:14px 14px 14px 4px;
+  font-size:13px;
+}
+
+/* input area */
+.fj-input-row{
+  padding:14px 22px 16px;
+  border-top:1px solid rgba(45,36,22,0.1);
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.3);
+}
+.fj-mic{
+  width:36px;height:36px;border-radius:50%;
+  background:#8b1a1a;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;cursor:pointer;
+  transition:transform 0.2s,background 0.3s;
+}
+.fj-mic.active{background:#c8784a;animation:pulse 1s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+.fj-mic svg{display:block;}
+.fj-input-field{
+  flex:1;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:15px;color:#a8998a;padding:0 4px;
+  border:none;background:transparent;outline:none;
+}
+.fj-log-btn{
+  font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  color:#8b1a1a;opacity:0;transition:opacity 0.4s;cursor:pointer;padding:6px 10px;
+}
+.fj-log-btn.show{opacity:1;}
+
+/* typewriter cursor */
+.fj-cursor-blink{
+  display:inline-block;width:1px;height:14px;
+  background:#2d2416;vertical-align:middle;margin-left:1px;
+  animation:blink 0.8s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* animated cursor */
+.fj-cursor{
+  position:absolute;left:0;top:0;width:24px;height:24px;z-index:40;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+  transition:transform 0.9s cubic-bezier(.4,0,.2,1);
+}
+
+/* caption */
+.fj-cap{
+  position:absolute;left:28px;bottom:18px;z-index:20;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;
+  color:#2d2416;opacity:0;transition:opacity 0.3s;
+}
+.fj-cap.show{opacity:1;}
+
+/* save flash */
+.fj-save-flash{
+  position:absolute;inset:0;background:rgba(122,173,86,0.15);
+  opacity:0;pointer-events:none;z-index:10;border-radius:16px;
+  transition:opacity 0.4s;
+}
+.fj-save-flash.go{opacity:1;}
+</style>
+</head>
+<body>
+<div class="fj-wrap"><div class="fj-fit"><div class="fj-stage" id="fj">
+
+  <!-- TOP BAR -->
+  <div class="fj-topbar">
+    <div class="fj-brand">daily routine journal</div>
+    <div class="fj-status">
+      <span class="fj-dot" id="fj-dot"></span>
+      <span id="fj-status-txt">capturing entry</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="fj-body">
+
+    <!-- LEFT STATS -->
+    <div class="fj-left">
+      <div>
+        <div class="fj-section-label">Entry state</div>
+
+        <div class="fj-stat" id="stat-move" style="margin-bottom:10px;">
+          <div class="fj-stat-icon">🏃</div>
+          <div class="fj-stat-body">
+            <div class="fj-stat-key">Movement</div>
+            <div class="fj-stat-val empty" id="val-move">—</div>
+          </div>
+        </div>
+
+        <div class="fj-stat" id="stat-time" style="margin-bottom:10px;">
+          <div class="fj-stat-icon">⏱</div>
+          <div class="fj-stat-body">
+            <div class="fj-stat-key">Duration</div>
+            <div class="fj-stat-val empty" id="val-time">—</div>
+          </div>
+        </div>
+
+        <div class="fj-stat" id="stat-energy">
+          <div class="fj-stat-icon">⚡</div>
+          <div class="fj-stat-body">
+            <div class="fj-stat-key">Energy state</div>
+            <div class="fj-stat-val empty" id="val-energy">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fj-captured">
+        <div class="fj-captured-label">Captured</div>
+        <div class="fj-captured-pct" id="fj-pct">0%</div>
+      </div>
+    </div>
+
+    <!-- RIGHT CHAT -->
+    <div class="fj-right">
+      <div class="fj-chat" id="fj-chat">
+        <div class="fj-bubble ai" id="b0">Tell me about your morning workout. What did you do?</div>
+        <div class="fj-bubble user" id="b1">I went for a run, about 45 minutes</div>
+        <div class="fj-bubble ai" id="b2">Got it — a 45 minute run. How did you feel afterwards? Energized, tired, sore?</div>
+        <div class="fj-bubble user" id="b3">pretty tired honestly</div>
+        <div class="fj-bubble ai" id="b4">All details captured. Ready to log this entry.</div>
+      </div>
+
+      <div class="fj-input-row">
+        <div class="fj-mic" id="fj-mic">
+          <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+            <rect x="4" y="0" width="6" height="11" rx="3" fill="white"/>
+            <path d="M1 8.5C1 11.8 3.7 14.5 7 14.5C10.3 14.5 13 11.8 13 8.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <line x1="7" y1="14.5" x2="7" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="4.5" y1="17" x2="9.5" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="fj-input-field" id="fj-input">Describe your morning routine here...</div>
+        <div class="fj-log-btn" id="fj-log">LOG</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- overlays -->
+  <div class="fj-save-flash" id="fj-flash"></div>
+  <div class="fj-cap" id="fj-cap"></div>
+  <svg class="fj-cursor" id="fj-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#222" stroke-width="1.5">
+    <path d="M4 2 L4 18 L8 14 L11 21 L14 20 L11 13 L17 13 Z"/>
+  </svg>
+
+</div></div></div>
+
+<script>
+(function(){
+  var root = document.getElementById('fj');
+  var cursor = document.getElementById('fj-cursor');
+  var cap = document.getElementById('fj-cap');
+  var dot = document.getElementById('fj-dot');
+  var statusTxt = document.getElementById('fj-status-txt');
+  var pct = document.getElementById('fj-pct');
+  var mic = document.getElementById('fj-mic');
+  var inputField = document.getElementById('fj-input');
+  var logBtn = document.getElementById('fj-log');
+  var flash = document.getElementById('fj-flash');
+
+  var px = 60, py = 60;
+
+  function pos(el){
+    var x=0,y=0,n=el;
+    while(n && n!==root){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}
+    return {x:x+el.offsetWidth/2, y:y+el.offsetHeight/2};
+  }
+
+  function moveTo(el){
+    var p = pos(el);
+    px = p.x - 4; py = p.y - 3;
+    cursor.style.transform = 'translate('+px+'px,'+py+'px)';
+  }
+
+  function click(){
+    cursor.style.transform = 'translate('+px+'px,'+py+'px) scale(0.78)';
+    setTimeout(function(){ cursor.style.transform = 'translate('+px+'px,'+py+'px)'; }, 160);
+  }
+
+  function setCap(t){
+    cap.classList.remove('show');
+    setTimeout(function(){
+      cap.textContent = t;
+      if(t) cap.classList.add('show');
+    }, 180);
+  }
+
+  function showBubble(id){ document.getElementById(id).classList.add('show'); }
+
+  function fillStat(statId, valId, val, newPct){
+    document.getElementById(statId).classList.add('filled');
+    var el = document.getElementById(valId);
+    el.classList.remove('empty');
+    el.textContent = val;
+    pct.textContent = newPct;
+  }
+
+  function typeInto(text, done){
+    inputField.style.color = '#2d2416';
+    var i = 0;
+    inputField.textContent = '';
+    function tick(){
+      if(i < text.length){
+        inputField.textContent += text[i++];
+        setTimeout(tick, 55 + Math.random()*30);
+      } else {
+        if(done) done();
+      }
+    }
+    tick();
+  }
+
+  // reset everything
+  function reset(){
+    ['b0','b1','b2','b3','b4'].forEach(function(id){ document.getElementById(id).classList.remove('show'); });
+    ['stat-move','stat-time','stat-energy'].forEach(function(id){ document.getElementById(id).classList.remove('filled'); });
+    ['val-move','val-time','val-energy'].forEach(function(id){
+      var el = document.getElementById(id); el.textContent='—'; el.classList.add('empty');
+    });
+    pct.textContent = '0%';
+    dot.classList.remove('done');
+    statusTxt.textContent = 'capturing entry';
+    logBtn.classList.remove('show');
+    mic.classList.remove('active');
+    inputField.textContent = 'Describe your morning routine here...';
+    inputField.style.color = '#a8998a';
+    flash.classList.remove('go');
+    setCap('');
+  }
+
+  var steps = [
+    // step 0: intro caption, show first AI bubble
+    {t:800, run:function(){
+      setCap('speak or type your morning routine');
+      showBubble('b0');
+    }},
+    // step 1: move to mic, activate it
+    {t:1600, run:function(){
+      moveTo(mic);
+    }},
+    {t:700, run:function(){
+      click();
+      mic.classList.add('active');
+      setCap('tap the mic and just talk');
+    }},
+    // step 2: type first message
+    {t:1200, run:function(){
+      mic.classList.remove('active');
+      moveTo(inputField);
+      typeInto('I went for a run, about 45 minutes', function(){});
+    }},
+    // step 3: show user bubble, fill movement + time
+    {t:2400, run:function(){
+      showBubble('b1');
+      inputField.textContent = 'Describe your morning routine here...';
+      inputField.style.color = '#a8998a';
+      setTimeout(function(){ fillStat('stat-move','val-move','run','33%'); }, 300);
+      setTimeout(function(){ fillStat('stat-time','val-time','45 min','66%'); }, 700);
+    }},
+    // step 4: AI asks about energy
+    {t:1800, run:function(){
+      showBubble('b2');
+      setCap('the model extracts what it understood');
+    }},
+    // step 5: type second message
+    {t:2200, run:function(){
+      moveTo(inputField);
+      typeInto('pretty tired honestly', function(){});
+    }},
+    // step 6: show user bubble, fill energy
+    {t:2000, run:function(){
+      showBubble('b3');
+      inputField.textContent = 'Describe your morning routine here...';
+      inputField.style.color = '#a8998a';
+      setTimeout(function(){ fillStat('stat-energy','val-energy','Tired','100%'); }, 400);
+      setTimeout(function(){
+        dot.classList.add('done');
+        statusTxt.textContent = 'entry complete';
+      }, 800);
+    }},
+    // step 7: AI confirms, show log button
+    {t:1800, run:function(){
+      showBubble('b4');
+      logBtn.classList.add('show');
+      setCap('guardrails verify before logging');
+      moveTo(logBtn);
+    }},
+    // step 8: click log
+    {t:2000, run:function(){
+      click();
+      flash.classList.add('go');
+      setCap('saved to your local journal');
+    }},
+    // step 9: reset
+    {t:2800, run:function(){
+      reset();
+      moveTo(mic);
+    }},
+  ];
+
+  var i = 0;
+  function tick(){
+    steps[i].run();
+    var delay = steps[i].t;
+    i = (i+1) % steps.length;
+    setTimeout(tick, delay);
+  }
+
+  // init position
+  moveTo(mic);
+  setTimeout(tick, 600);
+
+  // scale to container
+  var fit = document.querySelector('.fj-fit');
+  function scale(){
+    var w = fit.parentElement.clientWidth;
+    var s = Math.min(1, w/920);
+    fit.style.transform = 'scale('+s+')';
+    fit.parentElement.style.height = (560*s)+'px';
+  }
+  window.addEventListener('resize', scale);
+  scale();
+})();
+</script>
+</body>
+</html>
