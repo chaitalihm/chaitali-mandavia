@@ -30,6 +30,10 @@ def post2():
 def post3():
     return render_template('post3.html')
 
+@app.route('/blog/agentic-ai-vs-chatbot')
+def post4():
+    return render_template('post4.html')
+
 @app.route('/fitness-demo')
 def fitness_demo():
     return render_template('fitness-demo.html')
