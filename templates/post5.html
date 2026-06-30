@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is a token, really? — Chaitali Mandavia</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%238b1a1a'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='700' fill='%23f4efe4' text-anchor='middle'%3ECM%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cream:  #f4efe4; --cream-2: #ede6d8; --cream-3: #e2d9ca;
+            --red:    #8b1a1a; --ink: #1c1410; --ink-2: #6b5f50; --ink-3: #a8998a;
+            --rule:   rgba(28,20,16,0.13);
+            --f-serif: 'Playfair Display', Georgia, serif;
+            --f-sans:  'DM Sans', system-ui, sans-serif;
+            --f-hand:  'Caveat', cursive;
+        }
+        body { font-family: var(--f-sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+        nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 52px; }
+        .nav-logo { font-family: var(--f-serif); font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; }
+        .nav-links { display: flex; gap: 36px; align-items: center; }
+        .nav-links a { font-size: 12px; color: var(--ink-2); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+        .nav-links a.nav-pill, .nav-links a.nav-pill:hover { background: #8b1a1a; color: #ffffff; }
+        .nav-pill { font-size: 11px; font-weight: 500; background: #8b1a1a !important; color: #ffffff !important; padding: 8px 18px; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; display: inline-block; transition: transform 0.25s cubic-bezier(.2,1.4,.4,1); }
+        .nav-pill:hover { transform: scale(1.08) rotate(-2deg); }
+
+        .post-header { background: var(--red); padding: 52px 52px 44px; position: relative; overflow: hidden; }
+        .post-header-num { position: absolute; right: 48px; top: 24px; font-family: var(--f-hand); font-size: 120px; font-weight: 600; color: rgba(255,255,255,0.07); line-height: 1; user-select: none; }
+        .post-breadcrumb { font-size: 11px; color: rgba(244,239,228,0.5); margin-bottom: 20px; display: flex; gap: 8px; align-items: center; }
+        .post-breadcrumb a { color: rgba(244,239,228,0.5); text-decoration: none; }
+        .post-breadcrumb a:hover { color: rgba(244,239,228,0.8); }
+        .post-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(244,239,228,0.9); border-radius: 100px; padding: 3px 10px; display: inline-block; margin-bottom: 20px; }
+        .post-title { font-family: var(--f-serif); font-size: clamp(30px, 4.5vw, 50px); font-weight: 900; color: #f4efe4; letter-spacing: -0.03em; line-height: 1.05; max-width: 760px; margin-bottom: 24px; }
+        .post-meta { display: flex; gap: 24px; align-items: center; }
+        .post-meta-item { font-size: 12px; color: rgba(244,239,228,0.6); }
+        .post-meta-item strong { color: rgba(244,239,228,0.85); font-weight: 500; }
+
+        .post-body { max-width: 680px; margin: 0 auto; padding: 56px 52px 100px; }
+
+        .prose p { font-size: 16px; line-height: 1.85; color: var(--ink-2); font-weight: 300; margin-bottom: 24px; }
+        .prose p strong { color: var(--ink); font-weight: 500; }
+        .prose h2 { font-family: var(--f-serif); font-size: 26px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.2; margin: 48px 0 16px; }
+
+        .analogy-box { background: var(--red); padding: 28px 32px; margin: 32px 0; border-radius: 4px; }
+        .analogy-box-label { font-family: var(--f-hand); font-size: 16px; color: rgba(244,239,228,0.65); margin-bottom: 10px; display: block; }
+        .analogy-box p { font-size: 15px; line-height: 1.75; color: rgba(244,239,228,0.9); font-weight: 300; margin-bottom: 0; }
+        .analogy-box p strong { color: #f4efe4; font-weight: 500; }
+
+        .hand-callout { background: var(--cream-2); border: 1px solid var(--rule); padding: 24px 28px; margin: 32px 0; }
+        .hand-callout-label { font-family: var(--f-hand); font-size: 18px; color: var(--red); margin-bottom: 8px; display: block; }
+        .hand-callout p { font-size: 14px; line-height: 1.75; color: var(--ink-2); font-weight: 300; margin-bottom: 0; }
+        .hand-callout p + p { margin-top: 10px; }
+        .hand-callout p strong { color: var(--ink); font-weight: 500; }
+
+        /* tokenized word visual */
+        .token-demo { background: var(--cream-2); border: 1px solid var(--rule); padding: 28px 24px; margin: 32px 0; border-radius: 4px; text-align: center; }
+        .token-demo-label { font-family: var(--f-hand); font-size: 15px; color: var(--ink-3); margin-bottom: 20px; display: block; }
+        .token-pieces { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
+        .token-piece {
+            font-family: 'DM Sans', monospace; font-size: 16px; font-weight: 500;
+            padding: 8px 14px; border-radius: 4px; color: #f4efe4;
+        }
+        .token-piece:nth-child(1) { background: #8b1a1a; }
+        .token-piece:nth-child(2) { background: #a8462f; }
+        .token-piece:nth-child(3) { background: #c47a4a; }
+        .token-count { font-size: 12px; color: var(--ink-3); margin-top: 14px; }
+
+        /* flow block matching post3 style */
+        .flow-block {
+            background: var(--cream-2); color: var(--ink-2);
+            border: 1px solid var(--rule);
+            border-radius: 4px; padding: 22px 26px; margin: 28px 0;
+            font-family: 'DM Sans', monospace; font-size: 13px; line-height: 1.9;
+            overflow-x: auto;
+        }
+        .flow-block .step-num { color: var(--red); font-weight: 600; }
+        .flow-block .dim { color: var(--ink-3); }
+
+        /* graphic for compute scaling */
+        .graphic { background: var(--cream-2); border: 1px solid var(--rule); padding: 28px 24px; margin: 32px 0; border-radius: 4px; }
+        .graphic-label { font-family: var(--f-hand); font-size: 15px; color: var(--ink-3); margin-bottom: 18px; display: block; text-align: center; }
+
+        .footnote { font-size: 12px; color: var(--ink-3); line-height: 1.7; margin-top: 8px; }
+        .footnote a { color: var(--red); text-decoration: none; border-bottom: 1px solid rgba(139,26,26,0.3); }
+
+        .next-post { border-top: 1px solid var(--rule); padding-top: 48px; margin-top: 16px; }
+        .next-label { font-family: var(--f-hand); font-size: 16px; color: var(--ink-3); margin-bottom: 10px; display: block; }
+        .next-title { font-family: var(--f-serif); font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 12px; }
+        .next-link { font-size: 12px; color: var(--red); text-decoration: none; font-weight: 500; letter-spacing: 0.04em; }
+
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links a:not(.nav-pill) { display: none; }
+            .post-header { padding: 36px 20px 32px; }
+            .post-title { font-size: clamp(26px, 7vw, 38px); }
+            .post-body { padding: 36px 20px 60px; }
+            .prose p { font-size: 15px; }
+            .flow-block { font-size: 12px; padding: 16px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo">Chaitali Mandavia</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/simulator">TCO Simulator</a>
+        <a href="/deployment-playbook">Deployment Playbook</a>
+        <a href="/blog" class="active">Blog</a>
+        <a href="/projects">Projects</a>
+        <a href="mailto:mandaviachaitali@gmail.com" class="nav-pill">Say hello</a>
+    </div>
+</nav>
+
+<div class="post-header">
+    <div class="post-header-num">05</div>
+    <div class="post-breadcrumb">
+        <a href="/blog">Blog</a>
+        <span>/</span>
+        <span>Fundamentals</span>
+    </div>
+    <span class="post-tag">Fundamentals</span>
+    <h1 class="post-title">What is a token, really? Why "unbelievable" is three pieces, not one</h1>
+    <div class="post-meta">
+        <span class="post-meta-item">By <strong>Chaitali Mandavia</strong></span>
+        <span class="post-meta-item">2025</span>
+        <span class="post-meta-item">6 min read</span>
+    </div>
+</div>
+
+<div class="post-body">
+    <div class="prose">
+
+        <p>
+            When people talk about how much something costs to run on an LLM, or why a long prompt is slower than a short one, what they're really talking about is tokens. I used to assume a model reads words the way I do. It actually reads tokens, and a token is usually a piece of a word.
+        </p>
+
+        <h2>Why isn't every word just one token?</h2>
+
+        <p>
+            My first assumption was that a model would just have a dedicated slot for every English word. It would make sense, except English alone has well over 170,000 words, plus every other language, every technical term, every name people use. If every single word got its own slot, the model's vocabulary would balloon into millions of entries, which makes everything bigger and slower to run.
+        </p>
+
+        <p>
+            So instead, models use a smaller vocabulary, usually somewhere between 50,000 and 100,000 pieces, and build longer or rarer words out of smaller, reusable fragments. The word "unbelievable" might get split into three pieces:
+        </p>
+
+        <div class="token-demo">
+            <span class="token-demo-label">how "unbelievable" actually gets tokenized</span>
+            <div class="token-pieces">
+                <span class="token-piece">un</span>
+                <span class="token-piece">believ</span>
+                <span class="token-piece">able</span>
+            </div>
+            <div class="token-count">1 word → 3 tokens</div>
+        </div>
+
+        <h2>How does it decide where to split?</h2>
+
+        <p>
+            This is the part I found genuinely surprising. It's not a person deciding "un" means negation and "able" means capability. The vocabulary is built automatically using a process that just looks at which letter combinations show up together most often across an enormous amount of text, and merges those into single units. Roughly:
+        </p>
+
+        <div class="flow-block">
+<span class="dim">1.</span> Start by breaking everything into individual letters<br>
+&nbsp;&nbsp;<span class="step-num">"unbelievable"</span> → u-n-b-e-l-i-e-v-a-b-l-e<br>
+<span class="dim">2.</span> Find the letter pairs that show up together most often across the training text, merge them<br>
+&nbsp;&nbsp;<span class="dim">"a" + "b" appears constantly → merge into "ab"</span><br>
+<span class="dim">3.</span> Keep repeating this, thousands of times, building up bigger and bigger common chunks<br>
+&nbsp;&nbsp;<span class="dim">eventually "able" and "un" each earn their own token</span><br>
+<span class="dim">4.</span> Whatever chunks are left over once you run out of common merges become the final tokens
+        </div>
+
+        <p>
+            So "able" earns a slot in the vocabulary because that exact sequence of letters showed up together constantly during training. The fact that it happens to mean something to an English speaker is basically a coincidence of how often it appeared, nobody sat down and decided "able" deserved its own token because of what it means.
+        </p>
+
+        <div class="analogy-box">
+            <span class="analogy-box-label">what this means for a word with no real roots</span>
+            <p>Take a word like "xylophone." It has no useful prefix or suffix to split on, but the model will still chop it up into whatever chunks happened to be common during training. Maybe "xyl" and "ophone," maybe something else entirely, depending on what showed up frequently. <strong>The split is just a record of what letter sequences were statistically common during training. It has no relationship to what the word actually means.</strong></p>
+        </div>
+
+        <h2>Why this actually matters: tokens cost compute</h2>
+
+        <p>
+            Here's the part that connects directly to why companies charge per token, and why a long prompt is measurably slower and more expensive than a short one. Every single token a model processes has to go through the model's full pipeline, the embedding lookup, every layer of matrix multiplication, all of it. More tokens simply means more math.
+        </p>
+
+        <p>
+            This isn't a rough approximation, it's close to exact. The amount of computation a model does scales directly with how many tokens you give it. The arithmetic intensity of a matrix multiplication is roughly equal to the batch size, where batch size really just means how many tokens are being processed at once. Double the tokens, double the math. Ten times the tokens, ten times the math.
+        </p>
+
+        <div class="graphic">
+            <span class="graphic-label">why a longer prompt actually costs more compute</span>
+            <svg viewBox="0 0 600 180" style="width:100%;height:auto;" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, system-ui, sans-serif">
+                <text x="20" y="30" font-size="12" fill="#6b5f50" font-weight="500">100 tokens</text>
+                <rect x="20" y="40" width="60" height="30" rx="3" fill="#8b1a1a"/>
+                <text x="100" y="60" font-size="12" fill="#a8998a">→ a fixed amount of math</text>
+
+                <text x="20" y="110" font-size="12" fill="#6b5f50" font-weight="500">1,000 tokens</text>
+                <rect x="20" y="120" width="400" height="30" rx="3" fill="#8b1a1a"/>
+                <text x="440" y="140" font-size="12" fill="#a8998a">→ the model does 10x the math here</text>
+            </svg>
+        </div>
+
+        <p>
+            There's one more wrinkle worth knowing. The tokens the model generates in its response tend to be more expensive than the tokens in your prompt. Part of the reason is structural: moving data between the chip's memory and its compute cores has to happen for every token, and generation happens one token at a time in sequence, while your input prompt can be processed all at once, in parallel. That sequential nature of generation is part of why API pricing almost always charges more per output token than per input token, the output side is doing more relative work per token.
+        </p>
+
+        <div class="hand-callout">
+            <span class="hand-callout-label">the practical takeaway</span>
+            <p>When you're estimating cost for an AI deployment, the lever you're actually pulling is token count. A wordy, repetitive prompt costs more than a tight one because it has more tokens running through the same pipeline. The model isn't "thinking harder" about a longer prompt, it's just doing more of the same fixed math, over and over, for every extra token. This is also why summarizing a long document before passing it to a model, rather than pasting the whole thing in, can meaningfully cut cost without losing what actually matters.</p>
+        </div>
+
+        <p class="footnote">
+            The compute scaling explanation here draws on the rooflines framework from <a href="https://jax-ml.github.io/scaling-book/roofline/" target="_blank">"How To Scale Your Model," Austin et al., Google DeepMind, 2025</a>, which goes much deeper into exactly how token count, hardware FLOPs, and memory bandwidth interact if you want the full technical picture.
+        </p>
+
+    </div>
+
+    <div class="next-post">
+        <span class="next-label">up next</span>
+        <div class="next-title">The actual math behind why batch size matters</div>
+        <a href="/blog/why-batch-size-matters" class="next-link">Read the technical deep dive →</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -34,6 +34,14 @@ def post3():
 def post4():
     return render_template('post4.html')
 
+@app.route('/blog/tokens-not-words')
+def post5():
+    return render_template('post5.html')
+
+@app.route('/blog/why-batch-size-matters')
+def post6():
+    return render_template('post6.html')
+
 @app.route('/fitness-demo')
 def fitness_demo():
     return render_template('fitness-demo.html')
